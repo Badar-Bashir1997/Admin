@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+<?php
+ 
+$dataPoints = array(
+    array("y" => 25, "label" => "25/09/2021"),
+    array("y" => 15, "label" => "26/09/2021"),
+    array("y" => 25, "label" => "27/09/2021"),
+    array("y" => 5, "label" => "28/09/2021"),
+    array("y" => 10, "label" => "29/09/2021"),
+    array("y" => 0, "label" => "30/09/2021"),
+    array("y" => 20, "label" => "01/10/2021")
+);
+?>
+ <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -12,10 +24,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+   <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -38,6 +50,28 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+    <script>
+window.onload = function () {
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+    title: {
+        text: "Expenses and Income Graph"
+    },
+    axisY: {
+        title: "Amount"
+    },
+    axisX: {
+        title: "Date"
+    },
+    data: [{
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+    }]
+});
+chart.render();
+ 
+}
+</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -54,13 +88,13 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add
-        <small>Vendors</small>
+        Repoting
+        <small>Graph</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Add</a></li>
-        <li class="active">Vandors</li>
+        <li><a href="#">Repoting</a></li>
+        <li class="active">Graph</li>
       </ol>
     </section>
 
@@ -70,50 +104,13 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vandore</h3>
+          <h3 class="box-title">Repoting Graph</h3>
 
           
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <div class="row">
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="txtName" parsley-trigger="change" required
-                placeholder="Full Name" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Phone</label>
-                <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Email</label>
-                <input type="text" name="txtEmail" parsley-trigger="change" required
-                placeholder="Email" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-             <div class="col-md-6">
-              <div class="form-group">
-                <label>Address</label>
-                <input type="text" name="txtAddress" parsley-trigger="change" required
-                placeholder="Address" class="form-control">
-              </div>
-              <!-- /.form-group -->
-            </div>
-          </div>
-          <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
+          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
            
         </div>
         <!-- /.box-body -->
@@ -123,62 +120,16 @@ include("includes/sidebar.php");
       </div>
       <!-- /.box -->
     </section>
-
+    
  
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Vendors Record</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  
-                </tr>
-                
-                </tbody>
-                <tfoot>
-                <tr>
-                   <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
+
  
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-</div>
 
-
+    </div>
     
   <?php
   include("includes/footer.php");
@@ -191,6 +142,7 @@ include("includes/control_sidebar.php");
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>

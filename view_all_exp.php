@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -12,8 +12,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- DataTables -->
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+   <!-- DataTables -->
   <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/iCheck/all.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="plugins/colorpicker/bootstrap-colorpicker.min.css">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -29,8 +41,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
-<?php
+ <?php
 include("includes/header.php");
  ?>
   <!-- Left side column. contains the logo and sidebar -->
@@ -43,36 +54,37 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Broiler Farms 
-        <small>Records</small>
+        View
+        <small>Expenses</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">View All Records</li>
+        <li><a href="#">View all</a></li>
+        <li class="active">Expenses</li>
       </ol>
     </section>
 
     <!-- Main content -->
+    
+
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Broiler Farms Record</h3>
+              <h3 class="box-title">Expenses Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Farm No</th>
                   <th>Name</th>
-                  <th>Number of birds</th>
-                  <th>location</th>
-                  <th>soled</th>
-                  <th>remaning</th>
-                  <th>Add Sales</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,17 +95,17 @@ include("includes/sidebar.php");
                   <td> xyz</td>
                   <td>xyz</td>
                   <td> xyz</td>
-                  <td> <button type="button" class="btn bg-teal btn-sm" ><i class="fa fa-plus"></i>
-                </button></td>
                 </tr>
                 
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Farm No</th>
                   <th>Name</th>
-                  <th>Total Flocks</th>
-                  <th>location</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Status</th>
                 </tr>
                 </tfoot>
               </table>
@@ -106,22 +118,23 @@ include("includes/sidebar.php");
       </div>
       <!-- /.row -->
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+ 
+
+ 
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+    
   <?php
-include("includes/footer.php");
+  include("includes/footer.php");
   ?>
 
   <!-- Control Sidebar -->
    <?php
 include("includes/control_sidebar.php");
   ?>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-</div>
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
@@ -131,14 +144,32 @@ include("includes/control_sidebar.php");
 <!-- DataTables -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
+<!-- Select2 -->
+<script src="plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- SlimScroll 1.3.0 -->
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- Page script -->
 <script>
   $(function () {
     $("#example1").DataTable();

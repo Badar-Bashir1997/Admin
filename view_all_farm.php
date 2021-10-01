@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>Admin</title>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
@@ -38,15 +38,15 @@ include("includes/sidebar.php");
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-  <section class="content-header">
+    <section class="content-header">
       <h1>
-        Layer Flocks 
+        Farms 
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Farms</a></li>
-        <li class="active">Layer Flocks Records</li>
+        <li class="active">View All Records</li>
       </ol>
     </section>
     <section class="content">
@@ -54,19 +54,19 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Layer Flocks Record</h3>
+              <h3 class="box-title">Farms Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>Farm No</th>
-                  <th>start Date</th>
-                  <th>Expected End Date</th>
-                  <th>Number of Birds</th>
-                  <th>soled</th>
-                  <th>remaning</th>
+                  <th>Farm_id</th>
+                  <th>Name</th>
+                  <th>location</th>
+                  <th>Bread Type</th>
+                  <th>Phone no</th>
+                  <th>Email</th>
             <th style="text-align:center;width:100px;">Add row <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button></th>
@@ -125,8 +125,6 @@ include("includes/sidebar.php");
     </section>
 
 </div>
- <div class="control-sidebar-bg"></div>
-</div>
 
 <?php
 include("includes/footer.php");
@@ -136,6 +134,8 @@ include("includes/footer.php");
    <?php
 include("includes/control_sidebar.php");
   ?>
+ <div class="control-sidebar-bg"></div>
+</div>
 
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->

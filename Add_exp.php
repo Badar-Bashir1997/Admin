@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- DataTables -->
+   <!-- DataTables -->
   <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
@@ -55,12 +55,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Vendors</small>
+        <small>Expenses Categories</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Add</a></li>
-        <li class="active">Vandors</li>
+        <li class="active">Expenses Categories</li>
       </ol>
     </section>
 
@@ -70,7 +70,7 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vandore</h3>
+          <h3 class="box-title">Add New Expenses Catagories</h3>
 
           
         </div>
@@ -82,35 +82,52 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="txtName" parsley-trigger="change" required
-                placeholder="Full Name" class="form-control" >
+                placeholder="Name" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Phone</label>
-                <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" >
+                <label>Category</label>
+                <input type="text" name="txtCategory" parsley-trigger="change" required
+                placeholder="Category" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Email</label>
-                <input type="text" name="txtEmail" parsley-trigger="change" required
-                placeholder="Email" class="form-control" >
+                <label>Amount</label>
+                <input type="text" name="txtAmount" parsley-trigger="change" required
+                placeholder="Amount" class="form-control" >
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="txtDate" parsley-trigger="change" required
+                placeholder="dd/mm/yyyy" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
              <div class="col-md-6">
               <div class="form-group">
-                <label>Address</label>
-                <input type="text" name="txtAddress" parsley-trigger="change" required
-                placeholder="Address" class="form-control">
+                <label>Type</label>
+                <input type="text" name="txtType" parsley-trigger="change" required
+                placeholder="Type" class="form-control">
               </div>
               <!-- /.form-group -->
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Status</label>
+                <input type="text" name="txtStatus" parsley-trigger="change" required
+                placeholder="Status" class="form-control">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            
           </div>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
@@ -124,61 +141,14 @@ include("includes/sidebar.php");
       <!-- /.box -->
     </section>
 
- 
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Vendors Record</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  
-                </tr>
-                
-                </tbody>
-                <tfoot>
-                <tr>
-                   <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
+  
+
  
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-
-
     
   <?php
   include("includes/footer.php");

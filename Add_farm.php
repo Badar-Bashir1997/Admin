@@ -77,6 +77,7 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
                 <form action="#" method="post" name="form">
+                 
               <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="Farm_Name" parsley-trigger="change" required
@@ -88,14 +89,31 @@ include("includes/sidebar.php");
                 <input type="text" name="Farm_Location" parsley-trigger="change" required
                 placeholder="Farm Location" class="form-control" id="FarmLocation">
               </div>
+              <div class="form-group">
+                <label>Phone No</label>
+                <input type="text" name="txt_phone" parsley-trigger="change" required
+                placeholder="Phone Number" class="form-control" id="phone">
+              </div>
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <div class="col-md-6">
               <div class="form-group">
-                <label>Total Capacity</label>
-                <input type="text" name="Farm_total_capacity" parsley-trigger="change" required
-                placeholder="Farm Total Capacity" class="form-control" id="FarmCapacity">
+                <label>Farm Id</label>
+                <input type="text" name="Farm_id" parsley-trigger="change" required
+                placeholder="Farm id" class="form-control" id="Farm_id">
+              </div>
+               <div class="form-group">
+                <label>Breed Type</label>
+                <select class="form-control select2" style="width: 100%;">
+                  <option selected="selected">Broiler</option>
+                  <option>Layer</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" name="txt_email" parsley-trigger="change" required
+                placeholder="Contact Email" class="form-control" id="email">
               </div>
               <!-- /.form-group -->
             </div>

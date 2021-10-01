@@ -33,155 +33,109 @@
          
         </li>
         
-       
-      
         <li class="treeview">
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Broiler</span>
+          <a href="#"><i class="fa fa-home "></i> <span>Farms</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-           
-            <li>
-              <a href="#"><i class="fa fa-circle-o"></i> Farms
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="view__All_broiler_farms.php"><i class="fa fa-circle-o"></i>Viwe All</a></li>
-                <li><a href="Add_farm.php"><i class="fa fa-circle-o"></i>Add New</a></li>
-                <li>
-                  <a href="#"><i class="fa fa-circle-o"></i>Flocks
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
+           <ul class="treeview-menu">
+            <li><a href="view_all_farm.php"><i class="fa fa-home"></i>View all</a></li>
+            <li><a href="Add_farm.php"><i class="fa fa-home"></i>Add new</a></li>
+          </ul>
+
+
+        </li>
+      
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span>Broiler Flocks</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
                   <ul class="treeview-menu">
                     <li><a href="view_broiler_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="Add_b_Flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
                   </ul>
                 </li>
-              </ul>
-            </li>
-           
-          </ul>
-        </li>
 
           <li class="treeview">
             <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Layer</span>
+            <i class="fa fa-circle-o"></i> <span>Layer Flocks</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
               </a>
             <ul class="treeview-menu">
-           
-            <li>
-              <a href="#"><i class="fa fa-circle-o"></i> Farms
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="view__All_Layer_farms.php"><i class="fa fa-circle-o"></i>Viwe All</a></li>
-                <li><a href="Add_farm.php"><i class="fa fa-circle-o"></i>Add New</a></li>
-                <li>
-                  <a href="#"><i class="fa fa-circle-o"></i>Flocks
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
                     <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
                   </ul>
                 </li>
-              </ul>
-            </li>
-           
-          </ul>
-        </li>
 
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Feed Mills</span>
+            <i class="fa fa-industry"></i> <span>Feed Mills</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>x</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> y</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> z</a></li>
+            <li><a href="grain.php"><i class="fa fa-circle-o"></i>Grain</a></li>
+            <li><a href="#"><i class="fa fa-industry"></i>Purchase</a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Grain</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> X</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> y</a></li>
-          </ul>
-        </li>
+        
         </li>
 
           <li >
           <a href="vendors.php">
-            <i class="fa fa-circle-o"></i> <span>Vandors</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Payments</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow"></small>
-              <small class="label pull-right bg-green"></small>
-              <small class="label pull-right bg-red"></small>
-            </span>
+            <i class="fa fa-group (alias)"></i> <span>Vandors</span>
           </a>
         </li>
         <li >
+          <a href="payment.php">
+            <i class="fa  fa-money"></i> <span>Payments</span>
+            
+          </a>
+           
+        </li>
+        <li >
           <a href="brokers.php">
-            <i class="fa fa-circle-o"></i> <span>Brokers</span>
+            <i class="fa fa-group (alias)"></i> <span>Brokers</span>
           </a>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class=" fa fa-circle-o"></i> <span>Vehicles</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+        <li >
+          <a href="Add_Vehical.php">
+            <i class=" fa   fa-truck"></i> <span>Vehicles</span>
+            
           </a>
-          <ul class="treeview-menu">
-            <li><a href="Add_Vehical.php"><i class="fa fa-circle-o"></i>Add New Vehicals</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>View All Vehical</a></li>
           
-          </ul>
         </li>
-       <li class="treeview">
-          <a href="#">
-            <i class=" fa fa-circle-o"></i> <span>Employees</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+      
+       <li >
+          <a href="Add_Employees.php">
+            <i class=" fa fa-user"></i> <span>Employees</span>
+            
           </a>
-          <ul class="treeview-menu">
-            <li><a href="Add_Employees.php"><i class="fa fa-circle-o"></i>Add New Employees</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>View All Employees</a></li>
           
-          </ul>
         </li>
         
-        <li><a href="Add_users.php"><i class="fa fa-circle-o "></i> <span>Users</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o "></i> <span>Expenses</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o "></i> <span>Reporting</span></a></li>
+        <li><a href="Add_users.php"><i class="fa fa-users "></i> <span>Users</span></a></li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-money "></i> <span>Expenses</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+           <ul class="treeview-menu">
+            <li><a href="view_all_exp.php"><i class="fa fa-money"></i>View all</a></li>
+            <li><a href="Add_exp.php"><i class="fa fa-money"></i>Add new</a></li>
+          </ul>
+
+
+        </li>
+        <li><a href="repoting.php"><i class="fa fa-line-chart "></i> <span>Reporting</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

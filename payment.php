@@ -43,13 +43,13 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Layer Farms 
+        Payments
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">View All Records</li>
+        <li><a href="#">Payments</a></li>
+        <li class="active">payment options And History</li>
       </ol>
     </section>
 
@@ -59,17 +59,47 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Layer Farms Record</h3>
+              <h3 class="box-title">Payments options</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <div class="form-group">
+                
+               <input type="radio" id="cash" name="Status" value="Cash">
+                <label for="cash">Cash</label><br>
+                <input type="radio" id="Cradit" name="Status" value="Cradit" >
+                <label for="Cradit">Cradit</label><br> 
+                <input type="radio" id="Bank" name="Status" value="Bank" >
+                <label for="Bank">Bank</label><br> 
+              </div>
+               <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+      <!-- /.row -->
+    </section>
+
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Payments History</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Farm No</th>
-                  <th>Name</th>
-                  <th>Total Flocks</th>
-                  <th>location</th>
+                  <th>payment Purpose</th>
+                  <th>Date</th>
+                  <th>Payment Type</th>
+                  <th>Amount</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,10 +114,10 @@ include("includes/sidebar.php");
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Farm No</th>
-                  <th>Name</th>
-                  <th>Total Flocks</th>
-                  <th>location</th>
+                 <th>payment Purpose</th>
+                  <th>Date</th>
+                  <th>Payment Type</th>
+                  <th>Amount</th>
                 </tr>
                 </tfoot>
               </table>
