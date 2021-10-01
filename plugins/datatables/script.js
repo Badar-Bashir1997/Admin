@@ -3,17 +3,17 @@ $(document).ready(function() {
 	$('#example').DataTable(
 		{
 			"dom": '<"dt-buttons"Bf><"clear">lirtp',
-			"paging": false,
+			"paging": true,
 			"autoWidth": true,
 			"columnDefs": [
-				{ "orderable": false, "targets": 5 }
+				{ "orderable": true, "targets": 5 }
 			],
 			"buttons": [
 				'colvis',
 				'copyHtml5',
-        'csvHtml5',
+        		'csvHtml5',
 				'excelHtml5',
-        'pdfHtml5',
+        		'pdfHtml5',
 				'print'
 			]
 		}
