@@ -1,4 +1,6 @@
-
+<?php 
+ include("lib/session.php");
+ ?>
 <!DOCTYPE html>
 <html>
 <head>

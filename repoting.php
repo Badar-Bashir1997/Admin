@@ -10,6 +10,9 @@ $dataPoints = array(
     array("y" => 20, "label" => "01/10/2021")
 );
 ?>
+<?php 
+ include("lib/session.php");
+ ?>
  <!DOCTYPE html>
 <html>
 <head>

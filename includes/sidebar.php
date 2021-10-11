@@ -42,36 +42,41 @@
            <ul class="treeview-menu">
             <li><a href="view_all_farm.php"><i class="fa fa-home"></i>View all</a></li>
             <li><a href="Add_farm.php"><i class="fa fa-home"></i>Add new</a></li>
+            <li><a href="breed_type.php"><i class="fa fa-home"></i>Add Breed Type</a></li>
           </ul>
 
 
         </li>
-      
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Broiler Flocks</span>
+            <i class="fa fa-circle-o"></i> <span>Flocks</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+      <?php 
+      include("lib/DBConn.php");
+      $query = " SELECT * FROM sidebar ";
+      $result = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($result)){
+        $name= $row['name'];
+        ?>
+        <ul class="treeview-menu">
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span><?php echo $name ?></span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
                   <ul class="treeview-menu">
-                    <li><a href="view_broiler_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="view_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="Add_b_Flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
                   </ul>
-                </li>
-
-          <li class="treeview">
-            <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Layer Flocks</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-              </a>
-            <ul class="treeview-menu">
-                    <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
-                    <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
-                  </ul>
-                </li>
+                </ul>
+       <?php   }
+       ?> 
+       
+        </li>
 
         <li class="treeview">
           <a href="#">

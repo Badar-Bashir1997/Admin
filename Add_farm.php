@@ -1,3 +1,6 @@
+<?php 
+ include("lib/session.php");
+ ?>
  <!DOCTYPE html>
 <html>
 <head>
@@ -107,7 +110,16 @@ include("includes/sidebar.php");
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;">
                   <option selected="selected">Broiler</option>
-                  <option>Layer</option>
+                   <?php 
+      include("lib/DBConn.php");
+      $query = " SELECT * FROM sidebar ";
+      $result = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($result)){
+        $name= $row['name'];
+        ?>
+                  <option><?php echo $name ?></option>
+                  <?php   }
+       ?> 
                 </select>
               </div>
               <div class="form-group">

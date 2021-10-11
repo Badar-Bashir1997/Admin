@@ -1,16 +1,12 @@
 <?php 
  include("lib/session.php");
  ?>
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
-<link rel="stylesheet" href="plugins/datatables/style.css">
+  <title>Admin Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -19,7 +15,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
@@ -37,7 +32,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -61,12 +56,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Vehical</small>
+        <small>Breed Type</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Add</a></li>
-        <li class="active">Vehical</li>
+        <li><a href="#">Breed</a></li>
+        <li class="active">Add New Breed Type</li>
       </ol>
     </section>
 
@@ -76,44 +71,58 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vehical</h3>
+          <h3 class="box-title">Add New Breed Type</h3>
 
           
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
+            <div class="col-md-6">
+                <form action="#" method="post" name="form">
+                 
+              <div class="form-group">
+                <label>Breed Name</label>
+                <input type="text" name="Breed_Name" parsley-trigger="change" required
+                placeholder="Breed Name" class="form-control" id="BreedName">
+              </div>
+              
             <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="txtName" parsley-trigger="change" required
-                placeholder="Full Name" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Model</label>
-                <input type="text" name="txtmodel" parsley-trigger="change" required
-                placeholder="Vehical Model" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Registration No</label>
-                <input type="text" name="txtreg" parsley-trigger="change" required
-                placeholder="Vehical Registration Number" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-             
-          </div>
+          
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
-           
+           <button type="submit" name="BtnSubmit" class="btn btn-primary" onclick="return onRegister();" >Submit</button>
+            <?php
+            include("lib/DBConn.php");
+            if(isset($_REQUEST['BtnSubmit']))
+    {$name=$_REQUEST['Breed_Name'];
+        
+        $Query = "INSERT INTO sidebar(name) values('$name') " ;
+        echo "Query";
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='breed_type.php?success';
+            </script>
+<?php
+ 
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='breed_type.php?success';
+    </script>
+        <?php
+    }
+
+
+}
+?>
+           </form>
         </div>
         <!-- /.box-body -->
 
@@ -121,54 +130,10 @@ include("includes/sidebar.php");
         
       </div>
       <!-- /.box -->
-    </section>
-<section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Vehical Record</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Model</th>
-                  <th>Registration no</th>
-                   <th>Update/Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>2021</td>
-                  <td>9999</td>
-                  <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-                  
-                </tr>
-                
-                </tbody>
-               
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
- 
+      </section>
+
+     
+
 
  
   <!-- /.control-sidebar -->
@@ -176,7 +141,6 @@ include("includes/sidebar.php");
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-    
   <?php
   include("includes/footer.php");
   ?>
@@ -191,7 +155,6 @@ include("includes/control_sidebar.php");
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->
@@ -218,17 +181,20 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script  src="plugins/datatables/script.js"></script>
+ <script> 
+    function onRegister()
+          {
+            if(document.form.Breed_Name.value == "")
+            {
+            alert("Enter Breed Name");
+            document.form.Breed_Name.focus();
+            return (false);
+            }
+            else
+            {
+                return (true);
+            }
+          }
+        </script>  
 </body>
 </html>

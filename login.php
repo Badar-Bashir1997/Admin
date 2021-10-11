@@ -7,15 +7,15 @@
 		$b = $_REQUEST['TxtPassword'];
 		if ($dbname != null)
 		{
-			$query = " SELECT * FROM admin WHERE email = '$a' AND password = '$b'";
-			//echo $query
+			$query = " SELECT * FROM admin WHERE Email = '$a' AND Password = '$b'";
+			
 			$result = mysqli_query($conn,$query);
 			if (mysqli_num_rows($result) > 0)
 			{
 				$mem = mysqli_fetch_object($result);
         		$_SESSION['SESS_ID'] = $mem->id;
-				$_SESSION['SESS_Name'] = $mem->username;
-				header("Location: dashboard.php");
+				$_SESSION['SESS_Name'] = $mem->Email;
+				header("Location: index.php");
 				exit();
 				//echo "Success";
 			}
@@ -40,13 +40,13 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body ">
+<body style="background:#222d32;">
 
 <section>
 	<br><br><br><br><br>
-	<div class="container " >
-	<div class="card col d-flex justify-content-center" style="width: 500px; background-color: rgba(0,0,255,.1)>
-<form>
+	<div class="container col-md-5" >
+	<div class="card ">
+<form role="form" method="post">
 	 <center>
 		<h4 class="header-title m-t-0">Admin Login Area</h4><br>
 	</center>
@@ -65,8 +65,7 @@
 </form>
 </div>
 </div>
-</div>
-</div>
+
 </section>
 
 

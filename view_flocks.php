@@ -1,9 +1,12 @@
+<?php 
+ include("lib/session.php");
+ ?>
 <!DOCTYPE html>
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>Admin</title>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
@@ -40,13 +43,13 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
    <section class="content-header">
       <h1>
-        Broiler Flocks 
+         Flocks 
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Farms</a></li>
-        <li class="active">Broiler Flocks Records</li>
+        <li class="active">Flocks Records</li>
       </ol>
     </section>
     <section class="content">
@@ -54,7 +57,7 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Broiler Flocks Record</h3>
+              <h3 class="box-title">Flocks Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -67,9 +70,7 @@ include("includes/sidebar.php");
                   <th>Number of Birds</th>
                   <th>soled</th>
                   <th>remaning</th>
-            <th style="text-align:center;width:100px;">Add row <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button></th>
+            <th style="text-align:center;width:100px;">Update & Delete</th>
         </tr>
     </thead>
     <tbody>

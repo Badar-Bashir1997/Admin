@@ -1,3 +1,6 @@
+<?php 
+ include("lib/session.php");
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,34 +141,7 @@ include("includes/sidebar.php");
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-             <!-- <<table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  
-                </tr>
-                
-                </tbody>
-                <tfoot>
-                <tr>
-                   <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-                </tfoot>
-            </table>-->
+           
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>

@@ -6,7 +6,7 @@ $(document).ready(function() {
 			"paging": true,
 			"autoWidth": true,
 			"columnDefs": [
-				{ "orderable": true, "targets": 5 }
+				{ "orderable": true, "targets": 3 }
 			],
 			"buttons": [
 				'colvis',
