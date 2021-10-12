@@ -1,5 +1,40 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+  if(isset($_REQUEST['BtnSubmit']))
+
+    {
+        $name=$_REQUEST['Farm_Name'];
+        $location=$_REQUEST['Farm_Location'];
+        $phone=$_REQUEST['txt_phone'];
+        $f_id=$_REQUEST['Farm_id'];
+        $b_type=$_REQUEST['breed_type'];
+        $email=$_REQUEST['txt_email'];
+
+        $Query = "INSERT INTO farm(f_id,name,location,Breed_type,phone_no,email) values('$f_id','$name','$location','$b_type','$phone','$email')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+
+
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='Add_farm.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_farm.php?success';
+    </script>
+        <?php
+    }
+}
+
+
  ?>
  <!DOCTYPE html>
 <html>
@@ -108,10 +143,10 @@ include("includes/sidebar.php");
               </div>
                <div class="form-group">
                 <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;">
-                  <option selected="selected">Broiler</option>
+                <select class="form-control select2" style="width: 100%;" name="breed_type">
+                  
                    <?php 
-      include("lib/DBConn.php");
+      
       $query = " SELECT * FROM sidebar ";
       $result = mysqli_query($conn,$query);
       while($row = mysqli_fetch_array($result)){
@@ -124,7 +159,7 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group">
                 <label>Email</label>
-                <input type="text" name="txt_email" parsley-trigger="change" required
+                <input type="email" name="txt_email" parsley-trigger="change" required
                 placeholder="Contact Email" class="form-control" id="email">
               </div>
               <!-- /.form-group -->

@@ -1,5 +1,40 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+if(isset($_REQUEST['BtnSubmit']))
+
+    {
+        $st_date=$_REQUEST['st_date'];
+        $End_date=$_REQUEST['end_date'];
+        $no_of_birds=$_REQUEST['no_of_birds'];
+        $Purchase_cost=$_REQUEST['Purchase_cost'];
+        $Farm=$_REQUEST['Farm'];
+        $Query = "INSERT INTO flock(start_date,end_date,nob,Purchase_cost,farm_name) 
+        values('$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+
+
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='Add_l_flocks.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_l_flocks.php?success';
+    </script>
+        <?php
+    }
+}
+
+
+
  ?>
  <!DOCTYPE html>
 <html>
@@ -79,14 +114,14 @@ include("includes/sidebar.php");
         <div class="box-body">
           <div class="row">
             <div class="col-md-6">
-               
+             <form action="#" method="post" name="form">  
               <div class="form-group">
                 <label>Start Date</label>
                <div class="input-group date">
                   <div class="input-group-addon">
                    
                   </div>
-                  <input type="date" class="form-control pull-right" >
+                  <input type="date" name="st_date" class="form-control pull-right" >
                 </div>
               </div>
               <!-- /.form-group -->
@@ -96,7 +131,7 @@ include("includes/sidebar.php");
                   <div class="input-group-addon">
                     
                   </div>
-                  <input type="date" class="form-control pull-right" >
+                  <input type="date" name="end_date" class="form-control pull-right" >
                 </div>
               </div>
               <!-- /.form-group -->
@@ -119,10 +154,29 @@ include("includes/sidebar.php");
               </div>
               <!-- /.form-group -->
             </div>
+             <div class="col-md-6">
+              <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm">
+                  
+                   <?php 
+      
+      $query = " SELECT * FROM farm where Breed_type='Layer'";
+      $result = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($result)){
+        $name= $row['name'];
+        ?>
+                  <option><?php echo $name ?></option>
+                  <?php   }
+       ?> 
+                </select>
+              </div>
+              <!-- /.form-group -->
+            </div>
           </div>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" onclick="return onRegister();" >Submit</button>
-           
+           <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
+           </form>
         </div>
         <!-- /.box-body -->
 

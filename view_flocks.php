@@ -1,5 +1,6 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
  ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -74,23 +75,37 @@ include("includes/sidebar.php");
         </tr>
     </thead>
     <tbody>
-        <tr>
-           <td>1</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-        
+        <?php
+                    $query = "SELECT * FROM flock";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?>      
+                              <tr>
+                                  <td><?php echo $row['f_id']; ?></td> 
+                                  <td><?php echo $row['start_date']; ?></td>
+                                  <td><?php echo $row['end_date']; ?></td>
+                                  <td><?php echo $row['nob']; ?></td>
+                                  <td><?php echo $row['Purchase_cost']; ?></td>
+                                  <td><?php echo $row['farm_name']; ?></td>
+                                  <td>
+                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                  </button>
+                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
+                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </button>
+                                    </td>
+                                     </tr>
+                                       <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
     </tbody>
 </table>
 

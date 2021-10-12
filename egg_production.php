@@ -1,17 +1,39 @@
-<?php
- 
-$dataPoints = array(
-    array("y" => 40, "label" => "25/09/2021"),
-    array("y" => 15, "label" => "26/09/2021"),
-    array("y" => 25, "label" => "27/09/2021"),
-    array("y" => 5, "label" => "28/09/2021"),
-    array("y" => 10, "label" => "29/09/2021"),
-    array("y" => 0, "label" => "30/09/2021"),
-    array("y" => 20, "label" => "01/10/2021")
-);
-?>
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+if(isset($_REQUEST['BtnSubmit']))
+
+    {
+        $Farm=$_REQUEST['Farm'];
+        $Flock=$_REQUEST['Flock'];
+        $e_Date=$_REQUEST['e_Date'];
+        $no_of_Eggs=$_REQUEST['no_of_Eggs'];
+        $Query = "INSERT INTO egg_production(f_id,flock_id,date,noe) 
+        values('$Farm',' $Flock','$e_Date','$no_of_Eggs')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+
+
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='egg_production.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='egg_production.php?success';
+    </script>
+        <?php
+    }
+}
+
+
+
  ?>
  <!DOCTYPE html>
 <html>
@@ -27,8 +49,6 @@ $dataPoints = array(
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-   <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
@@ -53,28 +73,6 @@ $dataPoints = array(
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-    <script>
-window.onload = function () {
- 
-var chart = new CanvasJS.Chart("chartContainer", {
-    title: {
-        text: "Expenses and Income Graph"
-    },
-    axisY: {
-        title: "Amount"
-    },
-    axisX: {
-        title: "Date"
-    },
-    data: [{
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-    }]
-});
-chart.render();
- 
-}
-</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -91,13 +89,13 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Repoting
-        <small>Graph</small>
+        Add
+        <small>Egg Production</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Repoting</a></li>
-        <li class="active">Graph</li>
+        <li><a href="#">Eggs</a></li>
+        <li class="active">Production</li>
       </ol>
     </section>
 
@@ -107,14 +105,75 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Repoting Graph</h3>
+          <h3 class="box-title">Add Egg Production</h3>
 
           
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-           
+          <div class="row">
+            <div class="col-md-6">
+             <form action="#" method="post" name="form">  
+              
+              <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm">
+                  
+                   <?php 
+      
+      $query = " SELECT * FROM farm where Breed_type='Layer'";
+      $result = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($result)){
+        $f_id= $row['f_id'];
+        ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+       ?> 
+                </select>
+              </div>
+              <!-- /.form-group -->
+            
+              <!-- /.form-group -->
+              <div class="form-group">
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock">
+                  
+                   <?php 
+      
+      $query = " SELECT * FROM flock ";
+      $result = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($result)){
+        $id= $row['f_id'];
+        ?>
+                  <option><?php echo $id ?></option>
+                  <?php   }
+       ?> 
+                </select>
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <!-- /.col -->
+             <div class="col-md-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="Date" name="e_Date" parsley-trigger="change" required
+                 class="form-control" id="PurchaseCost">
+              </div>
+              <!-- /.form-group -->
+            </div>
+             <div class="col-md-6">
+              <div class="form-group">
+                <label>Number Of Eggs Laid</label>
+                <input type="text" name="no_of_Eggs" parsley-trigger="change" required
+                placeholder="Number Of Eggs Laid" class="form-control" id="NumberOfBirds">
+              </div>
+              <!-- /.form-group -->
+            </div>
+          </div>
+          <!-- /.row -->
+           <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
+           </form>
         </div>
         <!-- /.box-body -->
 
@@ -123,7 +182,8 @@ include("includes/sidebar.php");
       </div>
       <!-- /.box -->
     </section>
-    
+
+     
  
 
  
@@ -131,10 +191,8 @@ include("includes/sidebar.php");
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-
-    </div>
-    
-  <?php
+</div>
+ <?php
   include("includes/footer.php");
   ?>
 
@@ -145,13 +203,9 @@ include("includes/control_sidebar.php");
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->
@@ -178,18 +232,6 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
+
 </body>
 </html>

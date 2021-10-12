@@ -1,5 +1,6 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
  ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -68,28 +69,42 @@ include("includes/sidebar.php");
                   <th>Bread Type</th>
                   <th>Phone no</th>
                   <th>Email</th>
-            <th style="text-align:center;width:100px;">Add row <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-           <td>1</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
+                  <th>Update/Delete</th>
+           
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    $query = "SELECT * FROM farm";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?>      
+                              <tr>
+                                  <td><?php echo $row['f_id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['location']; ?></td>
+                                  <td><?php echo $row['Breed_type']; ?></td>
+                                  <td><?php echo $row['phone_no']; ?></td>
+                                  <td><?php echo $row['email']; ?></td>
+                                  <td>
+                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                  </button>
+                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
+                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </button>
+                                    </td>
+                                     </tr>
+                                       <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
         
     </tbody>
 </table>

@@ -113,7 +113,7 @@
              <div class="col-md-6">
               <div class="form-group">
                 <label>Date</label>
-                <input type="dd/mm/yyyy" name="txtDate" parsley-trigger="change" required
+                <input type="date" name="txtDate" parsley-trigger="change" required
                 placeholder="" class="form-control">
               </div>
               <!-- /.form-group -->

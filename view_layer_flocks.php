@@ -1,12 +1,13 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
  ?>
 <!DOCTYPE html>
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>Admin</title>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
@@ -64,35 +65,49 @@ include("includes/sidebar.php");
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>Farm No</th>
+            
+                  <th>Flock id</th>
                   <th>start Date</th>
                   <th>Expected End Date</th>
                   <th>Number of Birds</th>
-                  <th>soled</th>
-                  <th>remaning</th>
-            <th style="text-align:center;width:100px;">Add row <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button></th>
+                  <th>Purchase Cost</th>
+                  <th>Farm Name</th>
+                  <th>Update/Delete</th>
+            
         </tr>
     </thead>
     <tbody>
-        <tr>
-           <td>1</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-        
+        <?php
+                    $query = "SELECT * FROM flock";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?>      
+                              <tr>
+                                  <td><?php echo $row['f_id']; ?></td> 
+                                  <td><?php echo $row['start_date']; ?></td>
+                                  <td><?php echo $row['end_date']; ?></td>
+                                  <td><?php echo $row['nob']; ?></td>
+                                  <td><?php echo $row['Purchase_cost']; ?></td>
+                                  <td><?php echo $row['farm_name']; ?></td>
+                                  <td>
+                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                  </button>
+                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
+                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </button>
+                                    </td>
+                                     </tr>
+                                       <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
     </tbody>
 </table>
 

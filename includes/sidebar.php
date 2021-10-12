@@ -42,7 +42,7 @@
            <ul class="treeview-menu">
             <li><a href="view_all_farm.php"><i class="fa fa-home"></i>View all</a></li>
             <li><a href="Add_farm.php"><i class="fa fa-home"></i>Add new</a></li>
-            <li><a href="breed_type.php"><i class="fa fa-home"></i>Add Breed Type</a></li>
+            
           </ul>
 
 
@@ -54,16 +54,25 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-      <?php 
-      include("lib/DBConn.php");
-      $query = " SELECT * FROM sidebar ";
-      $result = mysqli_query($conn,$query);
-      while($row = mysqli_fetch_array($result)){
-        $name= $row['name'];
-        ?>
         <ul class="treeview-menu">
+          <li>
           <a href="#">
-            <i class="fa fa-circle-o"></i> <span><?php echo $name ?></span>
+            <i class="fa fa-circle-o"></i> <span>Layer</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+                  <ul class="treeview-menu">
+                    <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
+                    <li><a href="egg_production.php"><i class="fa fa-circle-o"></i> Egg Production</a></li>
+                  </ul>
+                </li>
+                </ul>
+              <ul class="treeview-menu">
+          <li>
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span>Broiler</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -72,9 +81,8 @@
                     <li><a href="view_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="Add_b_Flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
                   </ul>
+                </li>
                 </ul>
-       <?php   }
-       ?> 
        
         </li>
 
@@ -90,9 +98,35 @@
             <li><a href="#"><i class="fa fa-industry"></i>Purchase</a></li>
           </ul>
         </li>
-        
+         <li class="treeview">
+          <a href="#">
+            <i class="fa fa-money"></i> <span>Sales</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-money"></i>Eggs</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Maniture</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Bags</a></li>
+          </ul>
         </li>
-
+        
+           <li class="treeview">
+          <a href="#">
+            <i class="fa fa-money"></i> <span>Purchase</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-money"></i>Grain</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Desiel</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Wood</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Medicine</a></li>
+            <li><a href="#"><i class="fa fa-money"></i>Misc</a></li>
+          </ul>
+        </li>
           <li >
           <a href="vendors.php">
             <i class="fa fa-group (alias)"></i> <span>Vandors</span>
