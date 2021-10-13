@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2021 at 02:59 PM
+-- Generation Time: Oct 13, 2021 at 02:32 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -43,23 +43,66 @@ INSERT INTO `admin` (`id`, `Email`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bags_sales`
+--
+
+CREATE TABLE `bags_sales` (
+  `id` int(11) NOT NULL,
+  `qnty_of_bags` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `b_date` date NOT NULL,
+  `p_method` varchar(50) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bags_sales`
+--
+
+INSERT INTO `bags_sales` (`id`, `qnty_of_bags`, `price`, `b_date`, `p_method`) VALUES
+(1, 100, 500, '2021-10-13', 'Cash');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `desiel`
+--
+
+CREATE TABLE `desiel` (
+  `id` int(11) NOT NULL,
+  `qnty_desiel` double NOT NULL,
+  `price` double NOT NULL,
+  `d_date` date NOT NULL,
+  `p_method` varchar(50) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `desiel`
+--
+
+INSERT INTO `desiel` (`id`, `qnty_desiel`, `price`, `d_date`, `p_method`) VALUES
+(1, 40, 6000, '2021-10-13', 'Cash');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `egg_production`
 --
 
 CREATE TABLE `egg_production` (
-  `id` int(11) NOT NULL,
+  `e_id` int(11) NOT NULL,
   `f_id` varchar(50) CHARACTER SET latin1 NOT NULL,
   `flock_id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `noe` int(11) NOT NULL
+  `noe_p` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `egg_production`
 --
 
-INSERT INTO `egg_production` (`id`, `f_id`, `flock_id`, `date`, `noe`) VALUES
-(1, '4444', 1, '2021-10-12', 200);
+INSERT INTO `egg_production` (`e_id`, `f_id`, `flock_id`, `date`, `noe_p`) VALUES
+(7, '555', 1, '2021-10-13', 400),
+(8, '555', 1, '2021-10-13', 200);
 
 -- --------------------------------------------------------
 
@@ -74,6 +117,15 @@ CREATE TABLE `egg_sales` (
   `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `egg_sales`
+--
+
+INSERT INTO `egg_sales` (`id`, `Sale_Date`, `noe`, `payment_method`, `price`) VALUES
+(7, '2021-10-13', 200, 'Cash', 888),
+(8, '2021-10-13', 100, 'Cradit', 999),
+(9, '2021-10-13', 50, 'Cash', 777);
 
 -- --------------------------------------------------------
 
@@ -126,21 +178,23 @@ INSERT INTO `flock` (`f_id`, `start_date`, `end_date`, `nob`, `Purchase_cost`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sidebar`
+-- Table structure for table `menure_sales`
 --
 
-CREATE TABLE `sidebar` (
+CREATE TABLE `menure_sales` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) CHARACTER SET latin1 NOT NULL
+  `qnty_of_menure` double NOT NULL,
+  `price` int(11) NOT NULL,
+  `m_date` date NOT NULL,
+  `p_method` varchar(50) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `sidebar`
+-- Dumping data for table `menure_sales`
 --
 
-INSERT INTO `sidebar` (`id`, `name`) VALUES
-(1, 'Broiler'),
-(2, 'Layer');
+INSERT INTO `menure_sales` (`id`, `qnty_of_menure`, `price`, `m_date`, `p_method`) VALUES
+(1, 20, 5000, '2021-10-13', 'Cash');
 
 --
 -- Indexes for dumped tables
@@ -153,10 +207,22 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `bags_sales`
+--
+ALTER TABLE `bags_sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `desiel`
+--
+ALTER TABLE `desiel`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `egg_production`
 --
 ALTER TABLE `egg_production`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`e_id`);
 
 --
 -- Indexes for table `egg_sales`
@@ -177,9 +243,9 @@ ALTER TABLE `flock`
   ADD PRIMARY KEY (`f_id`);
 
 --
--- Indexes for table `sidebar`
+-- Indexes for table `menure_sales`
 --
-ALTER TABLE `sidebar`
+ALTER TABLE `menure_sales`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -193,16 +259,28 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `bags_sales`
+--
+ALTER TABLE `bags_sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `desiel`
+--
+ALTER TABLE `desiel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `egg_production`
 --
 ALTER TABLE `egg_production`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `e_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `flock`
@@ -211,10 +289,10 @@ ALTER TABLE `flock`
   MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `sidebar`
+-- AUTO_INCREMENT for table `menure_sales`
 --
-ALTER TABLE `sidebar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `menure_sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

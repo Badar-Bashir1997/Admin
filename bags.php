@@ -1,45 +1,43 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
-  if(isset($_REQUEST['BtnSubmit']))
+ if(isset($_REQUEST['BtnSubmit']))
 
     {
-        $name=$_REQUEST['Farm_Name'];
-        $location=$_REQUEST['Farm_Location'];
-        $phone=$_REQUEST['txt_phone'];
-        $f_id=$_REQUEST['Farm_id'];
-        $b_type=$_REQUEST['breed_type'];
-        $email=$_REQUEST['txt_email'];
-
-        $Query = "INSERT INTO farm(f_id,name,location,Breed_type,phone_no,email) values('$f_id','$name','$location','$b_type','$phone','$email')" ;
-        $confirm_status = mysqli_query($conn,$Query);
+        $qnty_of_bags=$_REQUEST['qnty_of_bags'];
+        $price=$_REQUEST['price'];
+        $e_Date=$_REQUEST['e_Date'];
+        $Status=$_REQUEST['Status'];
+        $Query = "INSERT INTO bags_sales(qnty_of_bags,price,b_date,p_method) 
+        values('$qnty_of_bags',' $price','$e_Date','$Status')" ;
+ $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-        ?>
+
+
+?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_farm.php?success';
+            window.location.href='bags.php?success';
             </script>
-        <?php
+<?php
     }
     else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_farm.php?success';
+        window.location.href='bags.php?success';
     </script>
         <?php
     }
 }
-
-
- ?>
- <!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Dashboard</title>
+  <title>Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -80,12 +78,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Farm</small>
+        <small>Bags Sales</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">Add New Farms</li>
+        <li><a href="#">Bags</a></li>
+        <li class="active">Sales</li>
       </ol>
     </section>
 
@@ -95,60 +93,64 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Farm</h3>
+          <h3 class="box-title">Add Bags Sales</h3>
 
           
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+            <form action="#" method="post" name="form">
           <div class="row">
             <div class="col-md-6">
-                <form action="#" method="post" name="form">
-                 
               <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="Farm_Name" parsley-trigger="change" required
-                placeholder="Farm Name" class="form-control" id="FarmName">
+                <label>Quentity of Bags</label>
+               <input type="text" name="qnty_of_bags" parsley-trigger="change" required
+                placeholder="Quentity of Bags" class="form-control" id="qnty_of_bags">
               </div>
               <!-- /.form-group -->
+            
+              <!-- /.form-group -->
               <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="Farm_Location" parsley-trigger="change" required
-                placeholder="Farm Location" class="form-control" id="FarmLocation">
-              </div>
-              <div class="form-group">
-                <label>Phone No</label>
-                <input type="text" name="txt_phone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" id="phone">
+                <label>Price</label>
+                <input type="Number" name="price" parsley-trigger="change" required 
+                placeholder="Price" class="form-control" id="price">
               </div>
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
-            <div class="col-md-6">
+            <!-- /.col -->
+             <div class="col-md-6">
               <div class="form-group">
-                <label>Farm Id</label>
-                <input type="text" name="Farm_id" parsley-trigger="change" required
-                placeholder="Farm id" class="form-control" id="Farm_id">
-              </div>
-               <div class="form-group">
-                <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;" name="breed_type">
-                  <option>Broiler</option>
-                  <option>Layer</option>
-                  <option>Both</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="txt_email" parsley-trigger="change" required
-                placeholder="Contact Email" class="form-control" id="email">
+                <label>Date</label>
+                <input type="Date" name="e_Date" parsley-trigger="change" required
+                 class="form-control" id="e_Date">
               </div>
               <!-- /.form-group -->
             </div>
-            <!-- /.col -->
+             <div class="col-md-6">
+              <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Payments Method</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <div class="form-group">
+                
+               <input type="radio" id="cash" name="Status" value="Cash">
+                <label for="cash">Cash</label><br>
+                <input type="radio" id="Cradit" name="Status" value="Cradit" >
+                <label for="Cradit">Cradit</label><br> 
+                <input type="radio" id="Bank" name="Status" value="Bank" >
+                <label for="Bank">Bank</label><br> 
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+              <!-- /.form-group -->
+            </div>
           </div>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" onclick="return onRegister();" >Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
         <!-- /.box-body -->
@@ -157,15 +159,20 @@ include("includes/sidebar.php");
         
       </div>
       <!-- /.box -->
-      </section>
+    </section>
   <div class="control-sidebar-bg"></div>
 </div>
-  <?php
+ <?php
   include("includes/footer.php");
   ?>
+
+  <!-- Control Sidebar -->
    <?php
 include("includes/control_sidebar.php");
   ?>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -195,32 +202,21 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
- <script> 
+<script> 
     function onRegister()
           {
-            if(document.form.Farm_Name.value == "")
+            if(document.form.qnty_of_bags.value == "")
             {
-            alert("Enter Farm Name");
-            document.form.Farm_Name.focus();
+            alert("Enter Quentity of Bags");
+            document.form.qnty_of_bags.focus();
             return (false);
             }
-             else if(document.form.Farm_Location.value == "")
-            {
-            alert("Enter Farm Location");
-            document.form.Farm_Location.focus();
-            return (false);
-            }
-            else if(document.form.Farm_total_capacity.value == "")
-            {
-            alert("Enter Farm Capacity");
-            document.form.Farm_total_capacity.focus();
-            return (false);
-            }
+             
             else
             {
                 return (true);
             }
           }
-        </script>  
+          </script> 
 </body>
 </html>
