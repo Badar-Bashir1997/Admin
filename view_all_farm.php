@@ -82,19 +82,17 @@ include("includes/sidebar.php");
                            {
                             ?>      
                               <tr>
-                                  <td><?php echo $row['f_id']; ?></td> 
+                                  <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['name']; ?></td>
                                   <td><?php echo $row['location']; ?></td>
                                   <td><?php echo $row['Breed_type']; ?></td>
                                   <td><?php echo $row['phone_no']; ?></td>
                                   <td><?php echo $row['email']; ?></td>
                                   <td>
-                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                  </button>
-                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
-                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    </button>
+                             
+                            <a href="update_farm.php?f_id=<?php echo $row['f_id']; ?>"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                  <a href="delete_Farm.php?f_id=<?php echo $row['f_id']; ?>" 
+                            onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                     </td>
                                      </tr>
                                        <?php

@@ -2,7 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
-
     {
         $qnty_of_dsl=$_REQUEST['qnty_of_dsl'];
         $price=$_REQUEST['price'];
@@ -13,8 +12,6 @@
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-
-
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
@@ -67,12 +64,9 @@
  <?php
 include("includes/header.php");
  ?>
-  <!-- Left side column. contains the logo and sidebar -->
  <?php
 include("includes/sidebar.php");
  ?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -150,10 +144,6 @@ include("includes/sidebar.php");
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
-        <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
     </section>
@@ -162,20 +152,12 @@ include("includes/sidebar.php");
  <?php
   include("includes/footer.php");
   ?>
-
-  <!-- Control Sidebar -->
    <?php
 include("includes/control_sidebar.php");
   ?>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>

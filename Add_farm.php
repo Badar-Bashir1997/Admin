@@ -11,7 +11,7 @@
         $b_type=$_REQUEST['breed_type'];
         $email=$_REQUEST['txt_email'];
 
-        $Query = "INSERT INTO farm(f_id,name,location,Breed_type,phone_no,email) values('$f_id','$name','$location','$b_type','$phone','$email')" ;
+        $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email) values('$f_id','$name','$location','$b_type','$phone','$email')" ;
         $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {

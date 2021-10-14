@@ -22,7 +22,7 @@
       </form>
       <ul class="sidebar-menu">
         <li class="header">MAIN Menu</li>
-        <li class="active ">
+        <li class="treeview">
           <a href="index.php">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -46,22 +46,12 @@
             </span>
           </a>
         <ul class="treeview-menu">
-          <li>
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Layer</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                  <ul class="treeview-menu">
-                    <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
-                    <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
-                    <li><a href="egg_production.php"><i class="fa fa-circle-o"></i> Egg Production</a></li>
-                  </ul>
-                </li>
+          <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i>View all</a></li>
+            <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i>Add new</a></li>
+          
                 </ul>
-              <ul class="treeview-menu">
-          <li>
+                </li>
+                <li class="treeview">
           <a href="#">
             <i class="fa fa-circle-o"></i> <span>Broiler</span>
             <span class="pull-right-container">
@@ -73,7 +63,18 @@
                     <li><a href="Add_b_Flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
                   </ul>
                 </li>
-                </ul>
+                <li class="treeview">
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span>Layer</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                  <ul class="treeview-menu">
+                    <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
+                    <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
+                    <li><a href="egg_production.php"><i class="fa fa-circle-o"></i> Egg Production</a></li>
+                  </ul>
                 </li>
                <li class="treeview">
               <a href="#">
@@ -157,3 +158,11 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+  <script >
+var url = window.location;
+$('ul.sidebar-menu a').filter(function() {
+   return this.href == url;
+}).parent().addClass('active');
+$('ul.treeview-menu a').filter(function() {
+   return this.href == url;
+}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');</script>

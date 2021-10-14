@@ -14,8 +14,6 @@ if(isset($_REQUEST['BtnSubmit']))
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-
-
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
@@ -64,24 +62,12 @@ if(isset($_REQUEST['BtnSubmit']))
   <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
  <?php
 include("includes/header.php");
- ?>
-  <!-- Left side column. contains the logo and sidebar -->
- <?php
 include("includes/sidebar.php");
  ?>
 
@@ -102,7 +88,7 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-
+        <form action="process.php" method="post" name="form">  
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -111,20 +97,61 @@ include("includes/sidebar.php");
           
         </div>
         <!-- /.box-header -->
+
         <div class="box-body">
           <div class="row">
             <div class="col-md-6">
-             <form action="#" method="post" name="form">  
               <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" onchange="getSelectValue();">
+                  
+                   <?php 
+      
+                   $query = " SELECT * FROM farm ";
+                   $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $name= $row['Farm_id'];
+                      ?>
+                  <option><?php echo $name ?></option>
+                  <?php   }
+                     ?> 
+                     
+                </select>
+              </div>
+             <div class="form-group">
                 <label>Start Date</label>
                <div class="input-group date">
                   <div class="input-group-addon">
-                   
                   </div>
                   <input type="date" name="st_date" class="form-control pull-right" >
                 </div>
+              </div>           
+                <div class="form-group">
+                <label>Number Of Birds</label>
+                <input type="text" name="no_of_birds" parsley-trigger="change" required
+                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds">
               </div>
-              <!-- /.form-group -->
+               </div>
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label>Breed Type</label>
+                <select class="form-control select2" style="width: 100%;" name="Breed_type">
+                  <script>
+                   function getSelectValue()
+                  {
+                  var selectedValue = document.getElementById("Farm").value;
+                    document.cookie = "selectedValue = " + selectedValue 
+
+                   }
+                 getSelectValue();
+                   </script>
+                   
+                  <option></option>
+                   
+                </select>
+              </div>
               <div class="form-group">
                 <label>Expeted End Date</label>
                 <div class="input-group date">
@@ -135,54 +162,25 @@ include("includes/sidebar.php");
                 </div>
               </div>
               <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Number Of Birds</label>
-                <input type="text" name="no_of_birds" parsley-trigger="change" required
-                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds">
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-             <div class="col-md-6">
               <div class="form-group">
                 <label>Purchase Cost</label>
                 <input type="text" name="Purchase_cost" parsley-trigger="change" required
                 placeholder="Purchase Cost" class="form-control" id="PurchaseCost">
               </div>
-              <!-- /.form-group -->
             </div>
-             <div class="col-md-6">
-              <div class="form-group">
-                <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm">
-                  
-                   <?php 
-      
-      $query = " SELECT * FROM farm where Breed_type='Layer'";
-      $result = mysqli_query($conn,$query);
-      while($row = mysqli_fetch_array($result)){
-        $name= $row['name'];
-        ?>
-                  <option><?php echo $name ?></option>
-                  <?php   }
-       ?> 
-                </select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-          </div>
+            <!-- /.col -->
+            <!-- /.col -->
+                       </div>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
-           </form>
+           
         </div>
         <!-- /.box-body -->
 
         
         
       </div>
+      </form>
       <!-- /.box -->
     </section>
 
@@ -235,6 +233,11 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>
