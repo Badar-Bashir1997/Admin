@@ -103,7 +103,7 @@ include("includes/sidebar.php");
             <div class="col-md-6">
               <div class="form-group">
                 <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" onchange="getSelectValue();">
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" onchange="Farm_id(this.value);">
                   
                    <?php 
       
@@ -112,7 +112,7 @@ include("includes/sidebar.php");
                      while($row = mysqli_fetch_array($result)){
                      $name= $row['Farm_id'];
                       ?>
-                  <option><?php echo $name ?></option>
+                  <option value="<?php echo $name ?>"><?php echo $name ?></option>
                   <?php   }
                      ?> 
                      
@@ -137,18 +137,27 @@ include("includes/sidebar.php");
 
               <div class="form-group">
                 <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;" name="Breed_type">
-                  <script>
-                   function getSelectValue()
-                  {
-                  var selectedValue = document.getElementById("Farm").value;
-                    document.cookie = "selectedValue = " + selectedValue 
-
-                   }
-                 getSelectValue();
-                   </script>
+                <select class="form-control select2" style="width: 100%;"id="breed" name="Breed_type" id="select_b">
+                <script>
+                    function Farm_id(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    var t = this.responseText;
                    
-                  <option></option>
+                    optionText = t;
+                  optionValue = t;
+
+                $('#breed').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+                       }
+                      };
+                   xhttp.open("GET", "ajax_file.php?q="+str, true);
+                   xhttp.send();
+                      }
+                     
+                      </script>
                    
                 </select>
               </div>
