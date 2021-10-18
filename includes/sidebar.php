@@ -47,35 +47,21 @@
           </a>
         <ul class="treeview-menu">
           <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i>View all</a></li>
-            <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i>Add new</a></li>
+            <li><a href="Add_flocks.php"><i class="fa fa-circle-o"></i>Add new</a></li>
           
                 </ul>
                 </li>
-                <li class="treeview">
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Broiler</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                  <ul class="treeview-menu">
-                    <li><a href="view_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
-                    <li><a href="Add_b_Flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
-                  </ul>
-                </li>
-                <li class="treeview">
-          <a href="#">
-            <i class="fa fa-circle-o"></i> <span>Layer</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                  <ul class="treeview-menu">
-                    <li><a href="view_layer_flocks.php"><i class="fa fa-circle-o"></i> View All</a></li>
-                    <li><a href="Add_l_flocks.php"><i class="fa fa-circle-o"></i> Add Nwe</a></li>
-                    <li><a href="egg_production.php"><i class="fa fa-circle-o"></i> Egg Production</a></li>
-                  </ul>
-                </li>
+                <li >
+                <a href="Broiler.php">
+                  <i class="fa fa-circle-o"></i> <span>Broiler</span>
+                   </a>
+                     </li>
+               
+                 <li >
+                <a href="Layer.php">
+                  <i class="fa fa-circle-o"></i> <span>Layer</span>
+                   </a>
+                     </li>
                <li class="treeview">
               <a href="#">
             <i class="fa fa-industry"></i> <span>Feed Mills</span>

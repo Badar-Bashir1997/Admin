@@ -51,11 +51,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Dashboard
-        <small>Control panel</small>
+        <small>Broiler</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
+         <li class="active">Broiler</li>
       </ol>
     </section>
 
@@ -68,7 +69,7 @@ include("includes/sidebar.php");
           <div class="small-box bg-aqua">
             <div class="inner">
               <?php 
-                 $query=" SELECT count(f_id) as f_id FROM farm";
+                 $query=" SELECT count(f_id) as f_id FROM farm Where Breed_type='Broiler' OR Breed_type='Both'";
                 $result1 = mysqli_query($conn, $query);
                $row = mysqli_fetch_array($result1);
                ?>
@@ -87,7 +88,7 @@ include("includes/sidebar.php");
           <div class="small-box bg-green">
             <div class="inner">
               <?php 
-                 $query=" SELECT count(f_id) as f_id FROM flock";
+                 $query=" SELECT count(f_id) as f_id FROM flock Where Breed_type='Broiler'";
                 $result1 = mysqli_query($conn, $query);
                $row = mysqli_fetch_array($result1);
 
@@ -109,10 +110,10 @@ include("includes/sidebar.php");
             <div class="inner">
               <h3>xyz</h3>
 
-              <p>Totel Users</p>
+              <p>Totel Sales</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-ios-cart-outline"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>

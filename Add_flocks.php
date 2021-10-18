@@ -3,21 +3,24 @@
  include("lib/DBConn.php");
 if(isset($_REQUEST['BtnSubmit']))
 
-    {
+
+   
+ {
         $st_date=$_REQUEST['st_date'];
         $End_date=$_REQUEST['end_date'];
         $no_of_birds=$_REQUEST['no_of_birds'];
         $Purchase_cost=$_REQUEST['Purchase_cost'];
         $Farm=$_REQUEST['Farm'];
-        $Query = "INSERT INTO flock(start_date,end_date,nob,Purchase_cost,farm_name) 
-        values('$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm')" ;
+        $Breed_type=$_REQUEST['breed'];
+        $Query = "INSERT INTO flock(start_date,end_date,nob,Purchase_cost,farm_name,Breed_type) 
+        values('$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_l_flocks.php?success';
+            window.location.href='Add_flocks.php?success';
             </script>
 <?php
     }
@@ -25,7 +28,7 @@ if(isset($_REQUEST['BtnSubmit']))
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_l_flocks.php?success';
+        window.location.href='Add_flocks.php?success';
     </script>
         <?php
     }
@@ -88,7 +91,7 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-        <form action="process.php" method="post" name="form">  
+        <form action="#" method="post" name="form">  
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -137,20 +140,40 @@ include("includes/sidebar.php");
 
               <div class="form-group">
                 <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;"id="breed" name="Breed_type" id="select_b">
+                <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >
                 <script>
                     function Farm_id(str) {
                       xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                     var t = this.responseText;
-                   
-                    optionText = t;
-                  optionValue = t;
-
-                $('#breed').append(`<option value="${optionValue}">
+                   if(t=="Both"){
+                    $('#breed')
+                    .find('option')
+                   .remove();
+                    optionText = "Broiler";
+                   optionValue = "Broiler";
+                   $('#breed').append(`<option value="${optionValue}">
                   ${optionText}
                 </option>`);
+                   optionText = "Layer";
+                   optionValue = "Layer";
+                   $('#breed').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+
+                   }
+                   else{
+                    optionText = t;
+                   optionValue = t;
+                   
+                   $('#breed')
+                    .find('option')
+                   .remove();
+                         
+                $('#breed').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);}
                        }
                       };
                    xhttp.open("GET", "ajax_file.php?q="+str, true);
