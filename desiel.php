@@ -3,12 +3,14 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
     {
+      $Farm=$_REQUEST['Farm'];
+        $Flock=$_REQUEST['Flock'];
         $qnty_of_dsl=$_REQUEST['qnty_of_dsl'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO desiel(qnty_desiel,price,d_date,p_method) 
-        values('$qnty_of_dsl',' $price','$e_Date','$Status')" ;
+        $Query = "INSERT INTO desiel(Farm_id,flock_id,qnty_desiel,price,d_date,p_method) 
+        values('$Farm',' $Flock','$qnty_of_dsl',' $price','$e_Date','$Status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -95,6 +97,22 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);"required>
+                  <option></option>
+                   <?php 
+      
+                   $query = " SELECT * FROM farm";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+                   ?> 
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Desiel Quentity</label>
                <input type="text" name="qnty_of_dsl" parsley-trigger="change" required
                 placeholder="Desiel Quentity" class="form-control" id="qnty_of_dsl">
@@ -113,12 +131,39 @@ include("includes/sidebar.php");
             <!-- /.col -->
              <div class="col-md-6">
               <div class="form-group">
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);"required>
+                   <script>
+                    function Farm_id(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    var t = this.responseText;
+                    optionText = t;
+                   optionValue = t;
+                   
+                   $('#Flock')
+                    .find('option')
+                   .remove();
+                         $('#Flock').append(`<option ></option>`);
+                $('#Flock').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+                       }
+                      };
+                   xhttp.open("GET", "flock_id_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                     
+                      </script>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Date</label>
                 <input type="Date" name="d_Date" parsley-trigger="change" required
                  class="form-control" id="d_Date">
               </div>
-            </div>
-             <div class="col-md-6">
+            
               <div class="box">
             <div class="box-header">
               <h3 class="box-title">Payments Method</h3>
@@ -127,8 +172,8 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash">
-                <label for="cash">Cash</label><br>
+               <input type="radio" id="cash" name="Status" value="Cash"checked>
+                <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" >
                 <label for="Cradit">Cradit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" >
@@ -197,5 +242,11 @@ include("includes/control_sidebar.php");
             }
           }
           </script> 
+          <script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

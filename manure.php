@@ -4,12 +4,14 @@
  if(isset($_REQUEST['BtnSubmit']))
 
     {
+      $Farm=$_REQUEST['Farm'];
+        $Flock=$_REQUEST['Flock'];
         $qnty_of_menure=$_REQUEST['qnty_of_menure'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO menure_sales(qnty_of_menure,price,m_date,p_method) 
-        values('$qnty_of_menure',' $price','$e_Date','$Status')" ;
+        $Query = "INSERT INTO menure_sales(Farm_id,flock_id,qnty_of_menure,price,m_date,p_method) 
+        values('$Farm',' $Flock','$qnty_of_menure',' $price','$e_Date','$Status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -103,6 +105,22 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+                  <option></option>
+                   <?php 
+      
+                   $query = " SELECT * FROM farm ";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+                   ?> 
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Quentity of Menure in Kg</label>
                <input type="text" name="qnty_of_menure" parsley-trigger="change" required
                 placeholder="Quentity of Menure in Kg" class="form-control" id="qnty_of_menure">
@@ -121,13 +139,41 @@ include("includes/sidebar.php");
             <!-- /.col -->
              <div class="col-md-6">
               <div class="form-group">
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
+                   <script>
+                    var t = new Array();
+                    function Farm_id(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    t= this.responseText;
+                   $('#Flock')
+                    .find('option')
+                   .remove();
+                   $('#Flock').append(`<option ></option>`);
+                   
+                    optionText = t;
+                   optionValue = t;  
+                $('#Flock').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+                       }
+                      };
+                   xhttp.open("GET", "flock_id_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                     
+                      </script>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Date</label>
                 <input type="Date" name="e_Date" parsley-trigger="change" required
                  class="form-control" id="e_Date">
               </div>
               <!-- /.form-group -->
-            </div>
-             <div class="col-md-6">
+            
               <div class="box">
             <div class="box-header">
               <h3 class="box-title">Payments Method</h3>
@@ -218,5 +264,11 @@ include("includes/control_sidebar.php");
             }
           }
           </script> 
+          <script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

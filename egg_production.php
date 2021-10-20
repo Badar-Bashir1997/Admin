@@ -8,7 +8,7 @@ if(isset($_REQUEST['BtnSubmit']))
         $Flock=$_REQUEST['Flock'];
         $e_Date=$_REQUEST['e_Date'];
         $no_of_Eggs=$_REQUEST['no_of_Eggs'];
-        $Query = "INSERT INTO egg_production(f_id,flock_id,date,noe_p) 
+        $Query = "INSERT INTO egg_production(Farm_id,flock_id,e_date,noe_p) 
         values('$Farm',' $Flock','$e_Date','$no_of_Eggs')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
@@ -117,49 +117,59 @@ include("includes/sidebar.php");
               
               <div class="form-group">
                 <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm">
-                  
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+                  <option></option>
                    <?php 
       
-      $query = " SELECT * FROM farm where Breed_type='Layer'";
-      $result = mysqli_query($conn,$query);
-      while($row = mysqli_fetch_array($result)){
-        $f_id= $row['f_id'];
-        ?>
+                   $query = " SELECT * FROM farm where Breed_type='Layer'";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
                   <option><?php echo $f_id ?></option>
                   <?php   }
-       ?> 
+                   ?> 
                 </select>
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-              <div class="form-group">
-                <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock">
-                  
-                   <?php 
-      
-      $query = " SELECT * FROM flock ";
-      $result = mysqli_query($conn,$query);
-      while($row = mysqli_fetch_array($result)){
-        $id= $row['f_id'];
-        ?>
-                  <option><?php echo $id ?></option>
-                  <?php   }
-       ?> 
-                </select>
+                <div class="form-group">
+                <label>Date</label>
+                <input type="Date" name="e_Date" parsley-trigger="change" required
+                 class="form-control" id="PurchaseCost">
               </div>
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->
              <div class="col-md-6">
               <div class="form-group">
-                <label>Date</label>
-                <input type="Date" name="e_Date" parsley-trigger="change" required
-                 class="form-control" id="PurchaseCost">
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock">
+                  
+                   <script>
+                    function Farm_id(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    var t = this.responseText;
+                    optionText = t;
+                   optionValue = t;
+                   
+                   $('#Flock')
+                    .find('option')
+                   .remove();
+                         
+                $('#Flock').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+                       }
+                      };
+                   xhttp.open("GET", "flock_id_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                     
+                      </script>
+                </select>
               </div>
+              
               <!-- /.form-group -->
             </div>
              <div class="col-md-6">
@@ -232,6 +242,11 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

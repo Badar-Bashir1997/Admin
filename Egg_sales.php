@@ -4,12 +4,14 @@
  if(isset($_REQUEST['BtnSubmit']))
 
     {
+        $Farm=$_REQUEST['Farm'];
+        $Flock=$_REQUEST['Flock'];
         $no_of_Eggs=$_REQUEST['no_of_Eggs'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO egg_sales(Sale_Date,noe,payment_method,price) 
-        values('$e_Date',' $no_of_Eggs','$Status','$price')" ;
+        $Query = "INSERT INTO egg_sales(Farm_id,flock_id,Sale_Date,noe,payment_method,price) 
+        values('$Farm',' $Flock','$e_Date',' $no_of_Eggs','$Status','$price')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -103,20 +105,58 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Number of Eggs</label>
-                  
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+                  <option></option>
                    <?php 
       
-                     $query = " SELECT * FROM egg_production ";
-                     $result = mysqli_query($conn,$query);
-                     $noe='0';
-                      while($row = mysqli_fetch_array($result)){
-                       $noe=$noe+ $row['noe_p'];
-        
-                          }
-                           ?> 
-               <input type="text" name="no_of_Eggs" parsley-trigger="change" required
-                placeholder="Maximum No of Eggs <?php echo $noe ?>" class="form-control" id="NumberOfEggs">
+                   $query = " SELECT * FROM farm where Breed_type='Layer'";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+                   ?> 
+                </select>
+              </div>
+              <div class="form-group" id="parent">
+                <label>Number of Eggs</label>
+                 <input type="text" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
+                 class="form-control" id="no_of_Eggs">
+                <script>
+                 var t;
+                    function flock(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    t = this.responseText;  
+                    document.getElementById("no_of_Eggs").value=t;
+                       }
+                      };
+                   xhttp.open("GET", "flock_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                      function onRegister()
+                       {
+                         if(document.form.no_of_Eggs.value >t)
+                        {
+                         alert("Enter Valid Number of Eggs");
+                        document.form.no_of_Eggs.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
+
+
+                      </script>
+                  
+                    
+              
               </div>
               <!-- /.form-group -->
             
@@ -131,6 +171,34 @@ include("includes/sidebar.php");
             <!-- /.col -->
             <!-- /.col -->
              <div class="col-md-6">
+              <div class="form-group">
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
+                   <script>
+                    function Farm_id(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    var t = this.responseText;
+                    optionText = t;
+                   optionValue = t;
+                   
+                   $('#Flock')
+                    .find('option')
+                   .remove();
+                         $('#Flock').append(`<option ></option>`);
+                $('#Flock').append(`<option value="${optionValue}">
+                  ${optionText}
+                </option>`);
+                       }
+                      };
+                   xhttp.open("GET", "flock_id_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                     
+                      </script>
+                </select>
+              </div>
               <div class="form-group">
                 <label>Date</label>
                 <input type="Date" name="e_Date" parsley-trigger="change" required
@@ -213,21 +281,11 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-<script> 
-    function onRegister()
-          {
-            if(document.form.no_of_Eggs.value > "<?php echo $noe_p ?>")
-            {
-            alert("Enter Valid Number of Eggs");
-            document.form.no_of_Eggs.focus();
-            return (false);
-            }
-             
-            else
-            {
-                return (true);
-            }
-          }
-          </script> 
 </body>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </html>

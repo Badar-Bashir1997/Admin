@@ -57,11 +57,19 @@
                    </a>
                      </li>
                
-                 <li >
-                <a href="Layer.php">
-                  <i class="fa fa-circle-o"></i> <span>Layer</span>
-                   </a>
-                     </li>
+                 <li class="treeview">
+          <a href="#">
+            <i class="fa fa-circle-o"></i> <span>Layer</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        <ul class="treeview-menu">
+          <li><a href="Layer.php"><i class="fa fa-circle-o"></i>View All Detail</a></li>
+            <li><a href="egg_production.php"><i class="fa fa-circle-o"></i>Egg Production</a></li>
+          
+                </ul>
+                </li>
                <li class="treeview">
               <a href="#">
             <i class="fa fa-industry"></i> <span>Feed Mills</span>

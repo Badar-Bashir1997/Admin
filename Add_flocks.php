@@ -6,14 +6,16 @@ if(isset($_REQUEST['BtnSubmit']))
 
    
  {
+        $f_id=$_REQUEST['Flock_id'];
+        $f_name=$_REQUEST['Flock_Name'];
         $st_date=$_REQUEST['st_date'];
         $End_date=$_REQUEST['end_date'];
         $no_of_birds=$_REQUEST['no_of_birds'];
         $Purchase_cost=$_REQUEST['Purchase_cost'];
         $Farm=$_REQUEST['Farm'];
         $Breed_type=$_REQUEST['breed'];
-        $Query = "INSERT INTO flock(start_date,end_date,nob,Purchase_cost,farm_name,Breed_type) 
-        values('$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
+        $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type) 
+        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -105,18 +107,26 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <label>Flock Name</label>
+                <input type="text" name="Flock_Name" parsley-trigger="change" required
+                placeholder="Flock Name" class="form-control" id="FlockName">
+              </div>
+              <div class="form-group">
                 <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" onchange="Farm_id(this.value);">
-                  
+                <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" >
+                  <option></option>
                    <?php 
-      
+                      
                    $query = " SELECT * FROM farm ";
                    $result = mysqli_query($conn,$query);
+                   
                      while($row = mysqli_fetch_array($result)){
                      $name= $row['Farm_id'];
                       ?>
                   <option value="<?php echo $name ?>"><?php echo $name ?></option>
-                  <?php   }
+                  <?php   
+                    }
+
                      ?> 
                      
                 </select>
@@ -137,7 +147,11 @@ include("includes/sidebar.php");
                </div>
 
             <div class="col-md-6">
-
+                <div class="form-group">
+                <label>Flock Id</label>
+                <input type="text" name="Flock_id" parsley-trigger="change" required
+                placeholder="Flock id" class="form-control" id="Flock_id">
+              </div>
               <div class="form-group">
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >

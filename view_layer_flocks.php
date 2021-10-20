@@ -67,6 +67,7 @@ include("includes/sidebar.php");
         <tr>
             
                   <th>Flock id</th>
+                  <th>Flock Name</th>
                   <th>start Date</th>
                   <th>Expected End Date</th>
                   <th>Number of Birds</th>
@@ -85,12 +86,13 @@ include("includes/sidebar.php");
                            {
                             ?>      
                               <tr>
-                                  <td><?php echo $row['f_id']; ?></td> 
+                                  <td><?php echo $row['flock_id']; ?></td> 
+                                  <td><?php echo $row['Flock_name']; ?></td> 
                                   <td><?php echo $row['start_date']; ?></td>
                                   <td><?php echo $row['end_date']; ?></td>
                                   <td><?php echo $row['nob']; ?></td>
                                   <td><?php echo $row['Purchase_cost']; ?></td>
-                                  <td><?php echo $row['farm_name']; ?></td>
+                                  <td><?php echo $row['Farm_id']; ?></td>
                                   <td>
                                    <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
