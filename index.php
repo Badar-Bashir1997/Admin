@@ -40,7 +40,6 @@
  <?php
 include("includes/header.php");
  ?>
-  <!-- Left side column. contains the logo and sidebar -->
  <?php
 include("includes/sidebar.php");
  ?>
@@ -58,9 +57,52 @@ include("includes/sidebar.php");
         <li class="active">Dashboard</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
+      <div class="box-body">
+    <form action="#" method="post" name="form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Start Date</label>
+                <input type="Date" name="s_Date" parsley-trigger="change" required
+                 class="form-control" id="s_Date">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>End Date</label>
+                <input type="Date" name="e_date" parsley-trigger="change" required
+                 class="form-control" id="e_date">
+          </div>
+        </div>
+      </div>
+      <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
+    </form>
+  </div>
+  <?php 
+  // $tl='0';
+  // $t='0';
+  function add(){
+          $GLOBALS['tl']=$GLOBALS['tl']+$GLOBALS['t'];
+        }  
+if(isset($_REQUEST['BtnSubmit']))
+    {
+        // $start_Date=$_REQUEST['s_Date'];
+        // $end_date=$_REQUEST['e_date'];
+        // $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date'";
+        // $result = mysqli_query($conn,$qry);
+       // while($row = mysqli_fetch_array($result))
+        // {
+        // $flk_id=$row['flock_id'];
+        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='Layer2(20/10/2021)')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' Layer2(20/10/2021)')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' Layer2(20/10/2021)')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' Layer2(20/10/2021)')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' Layer2(20/10/2021)' ";
+        $result1 = mysqli_query($conn,$Query);
+        $row1 = mysqli_fetch_array($result1);
+        // $t=$row1['ttl'];
+            
+ // }
+}
+   ?>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -107,6 +149,12 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
+              <?php 
+                 $query=" SELECT count(f_id) as f_id FROM flock";
+                $result1 = mysqli_query($conn, $query);
+               $row = mysqli_fetch_array($result1);
+
+               ?>
               <h3>xyz</h3>
 
               <p>Totel Users</p>
@@ -179,9 +227,15 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>Xyz</h3>
+              <?php 
+                 $query=" SELECT count(id) as id FROM admin";
+                $result1 = mysqli_query($conn, $query);
+               $row = mysqli_fetch_array($result1);
 
-              <p>Xyz</p>
+               ?>
+              <h3><?php echo $row['id']; ?></h3>
+
+              <p>Totel Admin</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -194,7 +248,7 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>Xyz</h3>
+              <h3><?php echo $row1['ttl']; ?></h3>
 
               <p>Totel Income</p>
             </div>

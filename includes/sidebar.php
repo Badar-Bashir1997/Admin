@@ -29,14 +29,14 @@
           </a>
         </li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-home "></i> <span>Farms</span>
+          <a href="#"><i class="iconify" data-icon="iconoir:farm"></i> <span>Farms</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
            <ul class="treeview-menu">
-            <li><a href="view_all_farm.php"><i class="fa fa-home"></i>View all</a></li>
-            <li><a href="Add_farm.php"><i class="fa fa-home"></i>Add new</a></li>
+            <li><a href="view_all_farm.php"><i class="iconify" data-icon="iconoir:farm"></i>View all</a></li>
+            <li><a href="Add_farm.php"><i class="iconify" data-icon="iconoir:farm"></i>Add new</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -47,12 +47,12 @@
             </span>
           </a>
         <ul class="treeview-menu">
-          <li><a href="view_layer_flocks.php"><i class="iconify" data-icon="vs:chicken"></i>View all</a></li>
+          <li><a href="view_flocks.php"><i class="iconify" data-icon="vs:chicken"></i>View all</a></li>
             <li><a href="Add_flocks.php"><i class="iconify" data-icon="vs:chicken"></i>Add new</a></li>
           
                 </ul>
                 </li>
-                <li >
+                <li>
                 <a href="Broiler.php">
                   <i  class="iconify" data-icon="emojione-monotone:chicken"></i> <span>Broiler</span>
                    </a>
@@ -92,6 +92,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="Egg_sales.php"><i class="iconify" data-icon="jam:eggs"></i>Eggs</a></li>
+            <li><a href="Broiler_sales.php"><i class="iconify" data-icon="emojione-monotone:chicken"></i>Broiler Sales</a></li>
             <li><a href="manure.php"><i class="fa fa-money"></i>Manure</a></li>
             <li><a href="bags.php"><i class="fa fa-money"></i>Bags</a></li>
           </ul>
@@ -133,7 +134,7 @@
         </li>
        <li >
           <a href="Add_Employees.php">
-            <i class=" fa fa-user"></i> <span>Employees</span>
+            <i class="iconify" data-icon="clarity:employee-group-solid"></i> <span>Employees</span>
           </a>
         </li>
         <li><a href="Add_users.php"><i class="fa fa-users "></i> <span>Users</span></a></li>
@@ -160,4 +161,5 @@ $('ul.sidebar-menu a').filter(function() {
 }).parent().addClass('active');
 $('ul.treeview-menu a').filter(function() {
    return this.href == url;
-}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');</script>
+}).parentsUntil(".sidebar-menu >.treeview-menu").addClass('active');
+</script>

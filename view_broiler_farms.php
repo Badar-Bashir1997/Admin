@@ -12,10 +12,8 @@
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
 <link rel="stylesheet" href="plugins/datatables/style.css">
-
  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -42,15 +40,15 @@ include("includes/sidebar.php");
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-  <section class="content-header">
+    <section class="content-header">
       <h1>
-        Layer Flocks 
+        Broiler Farms 
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">Layer Flocks Records</li>
+        <li><a href="#">Broiler Farms</a></li>
+        <li class="active">View All Records</li>
       </ol>
     </section>
     <section class="content">
@@ -58,58 +56,49 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Layer Flocks Record</h3>
+              <h3 class="box-title">Broiler Farms Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            
-                  <th>Flock id</th>
-                  <th>Flock Name</th>
-                  <th>start Date</th>
-                  <th>Expected End Date</th>
-                  <th>Number of Birds</th>
-                  <th>Purchase Cost</th>
-                  <th>Farm Name</th>
+                  <th>Farm_id</th>
+                  <th>Name</th>
+                  <th>location</th>
+                  <th>Bread Type</th>
+                  <th>Phone no</th>
+                  <th>Email</th>
                   <th>Update/Delete</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-                    $query = "SELECT * FROM flock";
-                    $result = mysqli_query($conn,$query);
-                      if ($result->num_rows > 0) {            
+           
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    $query = "SELECT * FROM farm  Where Breed_type='Broiler' OR Breed_type='Both'";
+                    $result = mysqli_query($conn,$query);           
                         while($row = mysqli_fetch_array($result))
                            {
                             ?>      
                               <tr>
-                                  <td><?php echo $row['flock_id']; ?></td> 
-                                  <td><?php echo $row['Flock_name']; ?></td> 
-                                  <td><?php echo $row['start_date']; ?></td>
-                                  <td><?php echo $row['end_date']; ?></td>
-                                  <td><?php echo $row['nob']; ?></td>
-                                  <td><?php echo $row['Purchase_cost']; ?></td>
-                                  <td><?php echo $row['Farm_id']; ?></td>
+                                  <td><?php echo $row['Farm_id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['location']; ?></td>
+                                  <td><?php echo $row['Breed_type']; ?></td>
+                                  <td><?php echo $row['phone_no']; ?></td>
+                                  <td><?php echo $row['email']; ?></td>
                                   <td>
-                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                  </button>
-                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
-                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    </button>
+                             
+                            <a href="update_farm.php?f_id=<?php echo $row['f_id']; ?>"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                  <a href="delete_Farm.php?f_id=<?php echo $row['f_id']; ?>" 
+                            onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                     </td>
                                      </tr>
                                        <?php
                                                  }
-                                                }
-                                            else
-                                              {
-                                                echo "No Result Found";
-                                              }
+                                               
                                                     ?>
+        
     </tbody>
 </table>
 
@@ -145,8 +134,6 @@ include("includes/sidebar.php");
     </section>
 
 </div>
- <div class="control-sidebar-bg"></div>
-</div>
 
 <?php
 include("includes/footer.php");
@@ -156,6 +143,8 @@ include("includes/footer.php");
    <?php
 include("includes/control_sidebar.php");
   ?>
+ <div class="control-sidebar-bg"></div>
+</div>
 
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->

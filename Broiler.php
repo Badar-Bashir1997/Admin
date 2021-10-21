@@ -79,7 +79,7 @@ include("includes/sidebar.php");
             <div class="icon">
               <i class="fa fa-industry"></i>
             </div>
-            <a href="view_all_farm.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="view_broiler_farms.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -100,7 +100,7 @@ include("includes/sidebar.php");
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="view_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="view_broiler_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -108,6 +108,12 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
+              <?php 
+                 $query=" SELECT count(f_id) as f_id FROM flock Where Breed_type='Broiler'";
+                $result1 = mysqli_query($conn, $query);
+               $row = mysqli_fetch_array($result1);
+
+               ?>
               <h3>xyz</h3>
 
               <p>Totel Sales</p>

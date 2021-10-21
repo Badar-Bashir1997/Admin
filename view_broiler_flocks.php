@@ -42,9 +42,9 @@ include("includes/sidebar.php");
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-  <section class="content-header">
+   <section class="content-header">
       <h1>
-        Flocks 
+         Flocks 
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
@@ -65,34 +65,32 @@ include("includes/sidebar.php");
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            
-                  <th>Flock id</th>
-                  <th>Flock Name</th>
+            <th>Farm id</th>
+            <th>Flock id</th>
+            <th>Flock Name</th>
                   <th>start Date</th>
                   <th>Expected End Date</th>
                   <th>Number of Birds</th>
                   <th>Purchase Cost</th>
-                  <th>Farm Name</th>
-                  <th>Update/Delete</th>
-            
+            <th style="text-align:center;width:100px;">Update & Delete</th>
         </tr>
     </thead>
     <tbody>
         <?php
-                    $query = "SELECT * FROM flock";
+                    $query = "SELECT * FROM flock where Breed_type='Broiler'";
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
                            {
                             ?>      
                               <tr>
+                                  <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td> 
                                   <td><?php echo $row['Flock_name']; ?></td> 
                                   <td><?php echo $row['start_date']; ?></td>
                                   <td><?php echo $row['end_date']; ?></td>
                                   <td><?php echo $row['nob']; ?></td>
                                   <td><?php echo $row['Purchase_cost']; ?></td>
-                                  <td><?php echo $row['Farm_id']; ?></td>
                                   <td>
                                    <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -148,6 +146,7 @@ include("includes/sidebar.php");
  <div class="control-sidebar-bg"></div>
 </div>
 
+
 <?php
 include("includes/footer.php");
   ?>
@@ -156,7 +155,6 @@ include("includes/footer.php");
    <?php
 include("includes/control_sidebar.php");
   ?>
-
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
