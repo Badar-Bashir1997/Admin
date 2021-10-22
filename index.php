@@ -77,32 +77,117 @@ include("includes/sidebar.php");
           </div>
         </div>
       </div>
-      <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
+      <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
     </form>
   </div>
   <?php 
-  // $tl='0';
-  // $t='0';
-  function add(){
-          $GLOBALS['tl']=$GLOBALS['tl']+$GLOBALS['t'];
-        }  
+   $tl=0;
+   $ttl_e=0;
+   $p_l=0;
 if(isset($_REQUEST['BtnSubmit']))
     {
-        // $start_Date=$_REQUEST['s_Date'];
-        // $end_date=$_REQUEST['e_date'];
-        // $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date'";
-        // $result = mysqli_query($conn,$qry);
-       // while($row = mysqli_fetch_array($result))
-        // {
-        // $flk_id=$row['flock_id'];
-        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='Layer2(20/10/2021)')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' Layer2(20/10/2021)')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' Layer2(20/10/2021)')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' Layer2(20/10/2021)')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' Layer2(20/10/2021)' ";
+      // $dataPoints = array();
+        $start_Date=$_REQUEST['s_Date'];
+        $end_date=$_REQUEST['e_date'];
+        $s_date=new DateTime($_REQUEST['s_Date']);
+         $e_date=new DateTime($_REQUEST['e_date']);
+        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date'";
+         $result = mysqli_query($conn,$qry);
+         
+        while($row = mysqli_fetch_array($result))
+         {
+          $flk_id='';
+          $Query='';
+          $Query1='';
+        $flk_id=$row['flock_id'];
+        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' $flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
         $result1 = mysqli_query($conn,$Query);
         $row1 = mysqli_fetch_array($result1);
-        // $t=$row1['ttl'];
+        $tl =$tl+$row1['ttl'];
+          $Query1="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.flock_id='$flk_id')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.flock_id='$flk_id')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.flock_id='$flk_id')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.flock_id='$flk_id')) as t_e FROM desiel WHERE desiel.flock_id='$flk_id'";
+        $result2 = mysqli_query($conn,$Query1);
+        $row2 = mysqli_fetch_array($result2);
+        $ttl_e =$ttl_e+$row2['t_e'];
+              }
+              $p_l=$tl-$ttl_e;
+            //   $row3='0';
+            //   for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
+            //   {
+            //     $st_date=$i->format('Y-m-d');
+            //   $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date')) as te FROM desiel WHERE desiel.d_date='$st_date'";
+            //   $result3 = mysqli_query($conn,$Query2);
+            //  $row3 = mysqli_fetch_array($result3);
+            //  $r=$row3['te'];
+            //  if($r>0){
+            //   array_push($dataPoints, array("y" => 40, "label" =>"25/09/2021"));
+            // }
+            }
             
- // }
+             // <script>chart_v();</script> 
+             
+            // }
+           
+            ?>
+            <script>
+ window.onload = function (){
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+    title: {
+        text: "Expenses and Income Graph"
+    },
+    axisY: {
+        title: "Amount"
+    },
+    axisX: {
+        title: "Date"
+    },
+    data: [{
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>;
+    },
+    {
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>;
+    },
+    {
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>;
+    }]
+});
+chart.render();
+ 
 }
-   ?>
+</script>
+<?php
+ 
+$dataPoints = array(
+    array("y" => 40, "label" => "25/09/2021"),
+    array("y" => 15, "label" => "26/09/2021"),
+    array("y" => 25, "label" => "27/09/2021"),
+    array("y" => 5, "label" => "28/09/2021"),
+    array("y" => 10, "label" => "29/09/2021"),
+    array("y" => 0, "label" => "30/09/2021"),
+    array("y" => 20, "label" => "01/10/2021")
+);
+$dataPoints1 = array(
+    array("y" => 50, "label" => "25/09/2021"),
+    array("y" => 35, "label" => "26/09/2021"),
+    array("y" => 20, "label" => "27/09/2021"),
+    array("y" => 15, "label" => "28/09/2022"),
+    array("y" => 12, "label" => "29/09/2022"),
+    array("y" => 0, "label" => "30/09/2022"),
+    array("y" => 20, "label" => "01/10/2022")
+);
+$dataPoints2 = array(
+    array("y" => 100, "label" => "25/09/2021"),
+    array("y" => 35, "label" => "26/09/2021"),
+    array("y" => 70, "label" => "27/09/2021"),
+    array("y" => 15, "label" => "28/09/2022"),
+    array("y" => 60, "label" => "29/09/2022"),
+    array("y" => 10, "label" => "30/09/2022"),
+    array("y" => 90, "label" => "01/10/2022")
+);
+?>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -160,7 +245,7 @@ if(isset($_REQUEST['BtnSubmit']))
               <p>Totel Users</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-person"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -170,7 +255,7 @@ if(isset($_REQUEST['BtnSubmit']))
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>xyz</h3>
+              <h3><?php echo $p_l ?></h3>
 
               <p>Profit/Loss</p>
             </div>
@@ -187,16 +272,11 @@ if(isset($_REQUEST['BtnSubmit']))
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM farm";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-               ?>
-              <h3><?php echo $row['f_id']; ?></h3>
-              <p>Number of Farms</p>
+              <h3><?php echo $ttl_e; ?></h3>
+              <p>Totel Expenditure</p>
             </div>
             <div class="icon">
-              <i class="fa fa-industry"></i>
+              <i class="iconify" data-icon="iconoir:farm"></i>
             </div>
             <a href="view_all_farm.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -248,7 +328,7 @@ if(isset($_REQUEST['BtnSubmit']))
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3><?php echo $row1['ttl']; ?></h3>
+              <h3><?php echo $tl; ?></h3>
 
               <p>Totel Income</p>
             </div>
@@ -266,19 +346,22 @@ if(isset($_REQUEST['BtnSubmit']))
         <!-- Left col -->
         <section class="col-lg-7 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
-          <div class="nav-tabs-custom">
-            <!-- Tabs within a box -->
-            <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-              <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-              <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-            </ul>
-            <div class="tab-content no-padding">
-              <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
-            </div>
-          </div>
+           <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Repoting Graph</h3>
+
+          
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+           
+        </div>
+        <!-- /.box-body -->
+
+        
+        
+      </div>
           <!-- /.nav-tabs-custom -->
 
           <!-- Chat box -->
@@ -667,6 +750,7 @@ include("includes/control_sidebar.php");
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>

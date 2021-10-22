@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2021 at 03:15 PM
+-- Generation Time: Oct 22, 2021 at 03:52 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -61,7 +61,7 @@ CREATE TABLE `bags_sales` (
 --
 
 INSERT INTO `bags_sales` (`id`, `Farm_id`, `flock_id`, `qnty_of_bags`, `price`, `b_date`, `p_method`) VALUES
-(2, 'badar(sahiwal)', ' Layer2(20/10/2021)', 100, 10000, '2021-10-20', 'Cash');
+(3, '123_barket_barketmarkeet', ' Layer(19/10/2021)', 100, 1000, '2021-10-22', 'Cash');
 
 -- --------------------------------------------------------
 
@@ -72,12 +72,19 @@ INSERT INTO `bags_sales` (`id`, `Farm_id`, `flock_id`, `qnty_of_bags`, `price`, 
 CREATE TABLE `broiler_sales` (
   `id` int(11) NOT NULL,
   `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `f_id` int(11) NOT NULL,
+  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `nob_sale` int(11) NOT NULL,
   `sale_date` date NOT NULL,
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `broiler_sales`
+--
+
+INSERT INTO `broiler_sales` (`id`, `Farm_id`, `flock_id`, `nob_sale`, `sale_date`, `p_method`, `price`) VALUES
+(2, '12xyz(sahiwal)', 'broiler1(21/10/2021)', 50, '2021-11-30', 'Cash', 15000);
 
 -- --------------------------------------------------------
 
@@ -100,7 +107,7 @@ CREATE TABLE `desiel` (
 --
 
 INSERT INTO `desiel` (`id`, `Farm_id`, `flock_id`, `qnty_desiel`, `price`, `d_date`, `p_method`) VALUES
-(3, 'badar(sahiwal)', ' Layer2(20/10/2021)', 40, 6000, '2021-10-20', 'Cash');
+(4, '123_barket_barketmarkeet', 'Layer(19/10/2021)', 40, 6000, '2021-10-22', 'Cash');
 
 -- --------------------------------------------------------
 
@@ -121,10 +128,8 @@ CREATE TABLE `egg_production` (
 --
 
 INSERT INTO `egg_production` (`id`, `Farm_id`, `flock_id`, `e_date`, `noe_p`) VALUES
-(1, '123_barket(barketmarkeet)', ' Layer(19/10/2021)', '2021-10-20', 400),
-(2, '123_barket(barketmarkeet)', ' Layer(19/10/2021)', '2021-10-21', 400),
-(3, 'badar(sahiwal)', ' Layer2(20/10/2021)', '2021-10-20', 400),
-(4, 'badar(sahiwal)', ' Layer2(20/10/2021)', '2021-10-21', 400);
+(5, '123_barket_barketmarkeet', ' Layer(19/10/2021)', '2021-10-22', 400),
+(6, 'badar(sahiwal)', ' Layer2(20/10/2021)', '2021-10-22', 400);
 
 -- --------------------------------------------------------
 
@@ -147,8 +152,8 @@ CREATE TABLE `egg_sales` (
 --
 
 INSERT INTO `egg_sales` (`id`, `Farm_id`, `flock_id`, `Sale_Date`, `noe`, `payment_method`, `price`) VALUES
-(17, '123_barket(barketmarkeet)', ' Layer(19/10/2021)', '2021-10-20', 200, 'Cash', 4000),
-(18, 'badar(sahiwal)', ' Layer2(20/10/2021)', '2021-10-20', 200, 'Cash', 4000);
+(23, '123_barket_barketmarkeet', ' Layer(19/10/2021)', '2021-10-22', 200, 'Cash', 4000),
+(24, 'badar(sahiwal)', ' Layer2(20/10/2021)', '2021-10-22', 200, 'Cash', 4000);
 
 -- --------------------------------------------------------
 
@@ -171,9 +176,9 @@ CREATE TABLE `farm` (
 --
 
 INSERT INTO `farm` (`f_id`, `Farm_id`, `name`, `location`, `Breed_type`, `phone_no`, `email`) VALUES
-(561, '123_barket(barketmarkeet)', 'Barket', 'barket markeet', 'Layer', '030000000000', 'bdr@gmail.com'),
-(562, '123_bdr(bdr,sahiwal)', 'bdr', 'sahiwal', 'Broiler', '030000000000', 'bdr@gmail.com'),
-(563, 'badar(sahiwal)', 'badar', 'sahiwal', 'Layer', '030000000000', 'bdr@gmail.com');
+(564, '123_barket_barketmarkeet', 'Barket', 'barket markeet', 'Layer', '030000000000', 'bdr@gmail.com'),
+(565, '12xyz(sahiwal)', 'xyz', 'sahiwal', 'Broiler', '030000000000', 'bdr@gmail.com'),
+(566, 'badar(sahiwal)', 'badar', 'sahiwal', 'Both', '030000000000', 'bdr@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -198,9 +203,9 @@ CREATE TABLE `flock` (
 --
 
 INSERT INTO `flock` (`f_id`, `flock_id`, `Flock_name`, `start_date`, `end_date`, `nob`, `Purchase_cost`, `Farm_id`, `Breed_type`) VALUES
-(5, 'Layer(19/10/2021)', 'Layer', '2021-10-19', '2023-10-19', 666, 66666, '123_barket(barketmarkeet)', 'Layer'),
-(6, 'Layer2(20/10/2021)', 'Layer2', '2021-10-20', '2023-10-20', 666, 66666, 'badar(sahiwal)', 'Layer'),
-(8, 'xyz(20/10/2021)', 'xyz', '2021-10-20', '2024-11-20', 666, 66666, '123_barket(barketmarkeet)', 'Layer');
+(10, 'Layer(19/10/2021)', 'Layer', '2021-10-19', '2023-10-22', 666, 66666, '123_barket_barketmarkeet', 'Layer'),
+(11, 'broiler1(21/10/2021)', 'broiler1', '2021-10-21', '2021-12-05', 100, 50000, '12xyz(sahiwal)', 'Broiler'),
+(12, 'Layer2(20/10/2021)', 'Layer2', '2021-10-20', '2023-10-22', 666, 66666, 'badar(sahiwal)', 'Layer');
 
 -- --------------------------------------------------------
 
@@ -211,11 +216,27 @@ INSERT INTO `flock` (`f_id`, `flock_id`, `Flock_name`, `start_date`, `end_date`,
 CREATE TABLE `layer_sales` (
   `id` int(11) NOT NULL,
   `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `f_id` int(11) NOT NULL,
+  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `nob_sale` int(11) NOT NULL,
   `s_date` date NOT NULL,
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `price` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `medicine`
+--
+
+CREATE TABLE `medicine` (
+  `id` int(11) NOT NULL,
+  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `medicine_name` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `price` double NOT NULL,
+  `m_date` date NOT NULL,
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -239,8 +260,24 @@ CREATE TABLE `menure_sales` (
 --
 
 INSERT INTO `menure_sales` (`id`, `Farm_id`, `flock_id`, `qnty_of_menure`, `price`, `m_date`, `p_method`) VALUES
-(1, '123_barket_barketmarkeet', 'Layer(19/10/2021)', 20, 5000, '2021-10-13', 'Cash'),
-(2, 'badar(sahiwal)', ' Layer2(20/10/2021)', 20, 5000, '2021-10-20', 'Cash');
+(3, '123_barket_barketmarkeet', ' Layer(19/10/2021)', 20, 400, '2021-10-22', 'Cash'),
+(4, 'badar(sahiwal)', ' Layer2(20/10/2021)', 20, 2000, '2021-10-22', 'Cash');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `misc`
+--
+
+CREATE TABLE `misc` (
+  `id` int(11) NOT NULL,
+  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `price` double NOT NULL,
+  `m_date` date NOT NULL,
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -274,6 +311,22 @@ CREATE TABLE `totel_sales` (
 `flock_id` varchar(100)
 ,`sales` decimal(32,0)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wood`
+--
+
+CREATE TABLE `wood` (
+  `id` int(11) NOT NULL,
+  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `qnty_wood` double NOT NULL,
+  `price` double NOT NULL,
+  `w_date` date NOT NULL,
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -361,9 +414,27 @@ ALTER TABLE `layer_sales`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `medicine`
+--
+ALTER TABLE `medicine`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `menure_sales`
 --
 ALTER TABLE `menure_sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `misc`
+--
+ALTER TABLE `misc`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `wood`
+--
+ALTER TABLE `wood`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -380,55 +451,73 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `bags_sales`
 --
 ALTER TABLE `bags_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `broiler_sales`
 --
 ALTER TABLE `broiler_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `desiel`
 --
 ALTER TABLE `desiel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `egg_production`
 --
 ALTER TABLE `egg_production`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `farm`
 --
 ALTER TABLE `farm`
-  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=564;
+  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=567;
 
 --
 -- AUTO_INCREMENT for table `flock`
 --
 ALTER TABLE `flock`
-  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `layer_sales`
 --
 ALTER TABLE `layer_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `medicine`
+--
+ALTER TABLE `medicine`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `menure_sales`
 --
 ALTER TABLE `menure_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `misc`
+--
+ALTER TABLE `misc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wood`
+--
+ALTER TABLE `wood`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

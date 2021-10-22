@@ -110,7 +110,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Layer'";
+                   $query = " SELECT * FROM farm where Breed_type='Layer' OR Breed_type='Both'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
