@@ -2,12 +2,77 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  ?>
+  <?php 
+   $tl=0;
+   $ttl_e=0;
+   $p_l=0;
+if(isset($_REQUEST['BtnSubmit']))
+    {
+       $dataPoints = array();
+       $dataPoints1 = array();
+        $start_Date=$_REQUEST['s_Date'];
+        $end_date=$_REQUEST['e_date'];
+        $s_date=new DateTime($_REQUEST['s_Date']);
+         $e_date=new DateTime($_REQUEST['e_date']);
+        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Layer' ";
+         $result = mysqli_query($conn,$qry);
+         $result0 = mysqli_query($conn,$qry);
+        while($row = mysqli_fetch_array($result))
+         {
+          $flk_id='';
+          $Query='';
+          $Query1='';
+        $flk_id=$row['flock_id'];
+        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) +(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' $flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
+        $result1 = mysqli_query($conn,$Query);
+        $row1 = mysqli_fetch_array($result1);
+        $tl =$tl+$row1['ttl'];
+          $Query1="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.flock_id='$flk_id')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.flock_id='$flk_id')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.flock_id='$flk_id')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.flock_id='$flk_id')) as t_e FROM desiel WHERE desiel.flock_id='$flk_id'";
+        $result2 = mysqli_query($conn,$Query1);
+        $row2 = mysqli_fetch_array($result2);
+        $ttl_e =$ttl_e+$row2['t_e'];
+              }
+              $p_l=$tl-$ttl_e;
+              $row3='0';
+              $roe4='0';
+              while($row0 = mysqli_fetch_array($result0))
+              {$flk_id1='';
+                $flk_id1=$row0['flock_id'];
+               for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
+              
+              {
+
+                 $st_date=$i->format('Y-m-d');
+               $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date' AND flock.flock_id='$flk_id1' )+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date' AND medicine.flock_id='$flk_id1')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date' AND misc.flock_id='$flk_id1')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date' AND wood.flock_id='$flk_id1')) as te FROM desiel WHERE desiel.d_date='$st_date' AND desiel.flock_id='$flk_id1'";
+               $result3 = mysqli_query($conn,$Query2);
+              $row3 = mysqli_fetch_array($result3);
+              $ts=$row3['te'];
+
+              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date' AND broiler_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' AND menure_sales.flock_id='$flk_id1')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' AND bags_sales.flock_id='$flk_id1'";
+               $result4 = mysqli_query($conn,$Query3);
+              $row4 = mysqli_fetch_array($result4);
+              $ti=$row4['ti'];              
+
+              if($ts>0){
+               array_push($dataPoints, array("y" =>$ts, "label" =>$st_date));
+             }
+             if($ti>0){
+               array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
+             }
+            }}?>
+
+            
+              <script>chart_v();</script> 
+             <?php 
+             }
+           
+            ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Dashboard</title>
+  <title>Layer Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -16,6 +81,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -62,6 +129,27 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
+      <div class="box-body">
+    <form action="#" method="post" name="form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Start Date</label>
+                <input type="Date" name="s_Date" parsley-trigger="change" required
+                 class="form-control" id="s_Date">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>End Date</label>
+                <input type="Date" name="e_date" parsley-trigger="change" required
+                 class="form-control" id="e_date">
+          </div>
+        </div>
+      </div>
+      <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
+    </form>
+  </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -69,7 +157,7 @@ include("includes/sidebar.php");
           <div class="small-box bg-aqua">
             <div class="inner">
               <?php 
-                 $query=" SELECT count(f_id) as f_id FROM farm Where Breed_type='Layer' OR Breed_type='Both'";
+                 $query=" SELECT count(f_id) as f_id FROM farm Where Breed_type='Broiler' OR Breed_type='Both'";
                 $result1 = mysqli_query($conn, $query);
                $row = mysqli_fetch_array($result1);
                ?>
@@ -79,7 +167,7 @@ include("includes/sidebar.php");
             <div class="icon">
               <i class="fa fa-industry"></i>
             </div>
-            <a href="view_all_farm.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="view_broiler_farms.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -88,7 +176,7 @@ include("includes/sidebar.php");
           <div class="small-box bg-green">
             <div class="inner">
               <?php 
-                 $query=" SELECT count(f_id) as f_id FROM flock Where Breed_type='Layer'";
+                 $query=" SELECT count(f_id) as f_id FROM flock Where Breed_type='Broiler'";
                 $result1 = mysqli_query($conn, $query);
                $row = mysqli_fetch_array($result1);
 
@@ -100,7 +188,7 @@ include("includes/sidebar.php");
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="view_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="view_broiler_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -108,9 +196,9 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>xyz</h3>
+              <h3><?php echo $ttl_e; ?></h3>
 
-              <p>Totel Sales</p>
+              <p>Totel Expenditure</p>
             </div>
             <div class="icon">
               <i class="ion ion-ios-cart-outline"></i>
@@ -123,7 +211,7 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>xyz</h3>
+              <h3><?php echo $p_l ?></h3>
 
               <p>Profit/Loss</p>
             </div>
@@ -195,7 +283,7 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>Xyz</h3>
+              <h3><?php echo $tl; ?></h3>
 
               <p>Totel Income</p>
             </div>
@@ -207,8 +295,29 @@ include("includes/sidebar.php");
         </div>
         <!-- ./col -->
       </div>
+      <!-- /.row -->
+      <!-- Main row -->
       <div class="row">
         <!-- Left col -->
+        <section class="content col-lg-7 connectedSortable">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Repoting Graph</h3>
+
+          
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+           
+        </div>
+        <!-- /.box-body -->
+
+        
+        
+      </div>
+      <!-- /.box -->
+    </section>
         <section class="col-lg-7 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           <div class="nav-tabs-custom">
@@ -226,6 +335,94 @@ include("includes/sidebar.php");
           </div>
           <!-- /.nav-tabs-custom -->
 
+          <!-- Chat box -->
+          <div class="box box-success">
+            <div class="box-header">
+              <i class="fa fa-comments-o"></i>
+
+              <h3 class="box-title">Chat</h3>
+
+              <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                <div class="btn-group" data-toggle="btn-toggle">
+                  <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="box-body chat" id="chat-box">
+              <!-- chat item -->
+              <div class="item">
+                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+
+                <p class="message">
+                  <a href="#" class="name">
+                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
+                    Mike Doe
+                  </a>
+                  I would like to meet you to discuss the latest news about
+                  the arrival of the new theme. They say it is going to be one the
+                  best themes on the market
+                </p>
+                <div class="attachment">
+                  <h4>Attachments:</h4>
+
+                  <p class="filename">
+                    Theme-thumbnail-image.jpg
+                  </p>
+
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
+                  </div>
+                </div>
+                <!-- /.attachment -->
+              </div>
+              <!-- /.item -->
+              <!-- chat item -->
+              <div class="item">
+                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
+
+                <p class="message">
+                  <a href="#" class="name">
+                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
+                    Alexander Pierce
+                  </a>
+                  I would like to meet you to discuss the latest news about
+                  the arrival of the new theme. They say it is going to be one the
+                  best themes on the market
+                </p>
+              </div>
+              <!-- /.item -->
+              <!-- chat item -->
+              <div class="item">
+                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
+
+                <p class="message">
+                  <a href="#" class="name">
+                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
+                    Susan Doe
+                  </a>
+                  I would like to meet you to discuss the latest news about
+                  the arrival of the new theme. They say it is going to be one the
+                  best themes on the market
+                </p>
+              </div>
+              <!-- /.item -->
+            </div>
+            <!-- /.chat -->
+            <div class="box-footer">
+              <div class="input-group">
+                <input class="form-control" placeholder="Type message...">
+
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box (chat box) -->
+
+          <!-- TO DO List -->
           <div class="box box-primary">
             <div class="box-header">
               <i class="ion ion-clipboard"></i>
@@ -522,8 +719,34 @@ include("includes/control_sidebar.php");
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+<script>
+window.onload = function () {
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+    title: {
+        text: "Expenses and Income Graph"
+    },
+    axisY: {
+        title: "Amount"
+    },
+    axisX: {
+        title: "Date"
+    },
+    data: [{
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+    },
+    {
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+    }]
+});
+chart.render();
+ 
+}
+</script>
 <!-- jQuery 2.2.3 -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -538,6 +761,10 @@ include("includes/control_sidebar.php");
 <script src="plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+
 <!-- jvectormap -->
 <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>

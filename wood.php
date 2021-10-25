@@ -10,7 +10,7 @@
         $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
         $Query = "INSERT INTO wood(Farm_id,flock_id,qnty_wood,price,w_date,payment_method) 
-        values('$Farm',' $Flock','$qnty_of_wood',' $price','$e_Date','$Status')" ;
+        values('$Farm','$Flock','$qnty_of_wood','$price','$e_Date','$Status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {

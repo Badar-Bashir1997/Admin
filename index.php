@@ -2,6 +2,36 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  ?>
+ <!-- <?php
+ 
+$dataPoints = array(
+    // array("y" => 40, "label" => "25/09/2021"),
+    // array("y" => 15, "label" => "26/09/2021"),
+    // array("y" => 25, "label" => "27/09/2021"),
+    // array("y" => 5, "label" => "28/09/2021"),
+    // array("y" => 10, "label" => "29/09/2021"),
+    // array("y" => 0, "label" => "30/09/2021"),
+    // array("y" => 20, "label" => "01/10/2021")
+);
+$dataPoints1 = array(
+    // array("y" => 50, "label" => "25/09/2021"),
+    // array("y" => 35, "label" => "26/09/2021"),
+    // array("y" => 20, "label" => "27/09/2021"),
+    // array("y" => 15, "label" => "28/09/2022"),
+    // array("y" => 12, "label" => "29/09/2022"),
+    // array("y" => 0, "label" => "30/09/2022"),
+    // array("y" => 20, "label" => "01/10/2022")
+);
+$dataPoints2 = array(
+    // array("y" => 100, "label" => "25/09/2021"),
+    // array("y" => 35, "label" => "26/09/2021"),
+    // array("y" => 70, "label" => "27/09/2021"),
+    // array("y" => 15, "label" => "28/09/2022"),
+    // array("y" => 60, "label" => "29/09/2022"),
+    // array("y" => 10, "label" => "30/09/2022"),
+    // array("y" => 90, "label" => "01/10/2022")
+);
+?> -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +46,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -86,12 +118,13 @@ include("includes/sidebar.php");
    $p_l=0;
 if(isset($_REQUEST['BtnSubmit']))
     {
-      // $dataPoints = array();
+       $dataPoints = array();
+       $dataPoints1 = array();
         $start_Date=$_REQUEST['s_Date'];
         $end_date=$_REQUEST['e_date'];
         $s_date=new DateTime($_REQUEST['s_Date']);
          $e_date=new DateTime($_REQUEST['e_date']);
-        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date'";
+        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' ";
          $result = mysqli_query($conn,$qry);
          
         while($row = mysqli_fetch_array($result))
@@ -110,84 +143,37 @@ if(isset($_REQUEST['BtnSubmit']))
         $ttl_e =$ttl_e+$row2['t_e'];
               }
               $p_l=$tl-$ttl_e;
-            //   $row3='0';
-            //   for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
-            //   {
-            //     $st_date=$i->format('Y-m-d');
-            //   $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date')) as te FROM desiel WHERE desiel.d_date='$st_date'";
-            //   $result3 = mysqli_query($conn,$Query2);
-            //  $row3 = mysqli_fetch_array($result3);
-            //  $r=$row3['te'];
-            //  if($r>0){
-            //   array_push($dataPoints, array("y" => 40, "label" =>"25/09/2021"));
-            // }
-            }
+              $row3='0';
+              $roe4='0';
+               for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
+              {
+                 $st_date=$i->format('Y-m-d');
+               $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date')) as te FROM desiel WHERE desiel.d_date='$st_date'";
+               $result3 = mysqli_query($conn,$Query2);
+              $row3 = mysqli_fetch_array($result3);
+              $r=$row3['te'];
+
+              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.Sale_Date='$st_date')+(SELECT IFNULL(SUM(layer_sales.price),0)FROM layer_sales WHERE layer_sales.s_date='$st_date')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date'";
+               $result4 = mysqli_query($conn,$Query3);
+              $row4 = mysqli_fetch_array($result4);
+              $ti=$row4['ti'];              
+
+              if($r>0){
+               array_push($dataPoints, array("y" =>$r, "label" =>$st_date));
+             }
+             if($ti>0){
+               array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
+             }
+            }?>
+
             
-             // <script>chart_v();</script> 
-             
-            // }
+              <script>chart_v();</script> 
+             <?php 
+             }
            
             ?>
-            <script>
- window.onload = function (){
- 
-var chart = new CanvasJS.Chart("chartContainer", {
-    title: {
-        text: "Expenses and Income Graph"
-    },
-    axisY: {
-        title: "Amount"
-    },
-    axisX: {
-        title: "Date"
-    },
-    data: [{
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>;
-    },
-    {
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>;
-    },
-    {
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>;
-    }]
-});
-chart.render();
- 
-}
-</script>
-<?php
- 
-$dataPoints = array(
-    array("y" => 40, "label" => "25/09/2021"),
-    array("y" => 15, "label" => "26/09/2021"),
-    array("y" => 25, "label" => "27/09/2021"),
-    array("y" => 5, "label" => "28/09/2021"),
-    array("y" => 10, "label" => "29/09/2021"),
-    array("y" => 0, "label" => "30/09/2021"),
-    array("y" => 20, "label" => "01/10/2021")
-);
-$dataPoints1 = array(
-    array("y" => 50, "label" => "25/09/2021"),
-    array("y" => 35, "label" => "26/09/2021"),
-    array("y" => 20, "label" => "27/09/2021"),
-    array("y" => 15, "label" => "28/09/2022"),
-    array("y" => 12, "label" => "29/09/2022"),
-    array("y" => 0, "label" => "30/09/2022"),
-    array("y" => 20, "label" => "01/10/2022")
-);
-$dataPoints2 = array(
-    array("y" => 100, "label" => "25/09/2021"),
-    array("y" => 35, "label" => "26/09/2021"),
-    array("y" => 70, "label" => "27/09/2021"),
-    array("y" => 15, "label" => "28/09/2022"),
-    array("y" => 60, "label" => "29/09/2022"),
-    array("y" => 10, "label" => "30/09/2022"),
-    array("y" => 90, "label" => "01/10/2022")
-);
-?>
+            
+
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -344,9 +330,8 @@ $dataPoints2 = array(
       <!-- Main row -->
       <div class="row">
         <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-           <div class="box box-default">
+        <section class="content col-lg-7 connectedSortable">
+      <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Repoting Graph</h3>
 
@@ -362,9 +347,9 @@ $dataPoints2 = array(
         
         
       </div>
-          <!-- /.nav-tabs-custom -->
-
-          <!-- Chat box -->
+      <!-- /.box -->
+    </section>
+        <section class="col-lg-7 connectedSortable">
           <div class="box box-success">
             <div class="box-header">
               <i class="fa fa-comments-o"></i>
@@ -748,7 +733,32 @@ include("includes/control_sidebar.php");
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+ <script>
+window.onload = function () {
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+    title: {
+        text: "Expenses and Income Graph"
+    },
+    axisY: {
+        title: "Amount"
+    },
+    axisX: {
+        title: "Date"
+    },
+    data: [{
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+    },
+    {
+        type: "line",
+        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+    }]
+});
+chart.render();
+ 
+}
+</script>
 <!-- jQuery 2.2.3 -->
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -765,11 +775,12 @@ include("includes/control_sidebar.php");
 <script src="plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- jvectormap -->
 <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="plugins/daterangepicker/daterangepicker.js"></script>

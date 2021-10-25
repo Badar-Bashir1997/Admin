@@ -11,7 +11,7 @@
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
         $Query = "INSERT INTO egg_sales(Farm_id,flock_id,Sale_Date,noe,payment_method,price) 
-        values('$Farm',' $Flock','$e_Date',' $no_of_Eggs','$Status','$price')" ;
+        values('$Farm','$Flock','$e_Date','$no_of_Eggs','$Status','$price')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -180,8 +180,8 @@ include("includes/sidebar.php");
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                     var t = this.responseText;
-                    optionText = t;
-                   optionValue = t;
+                    optionText =t;
+                   optionValue =t;
                    
                    $('#Flock')
                     .find('option')

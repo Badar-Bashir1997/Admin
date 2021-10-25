@@ -129,8 +129,6 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-
-      <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Repoting Graph</h3>

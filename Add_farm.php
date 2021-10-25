@@ -127,8 +127,8 @@ include("includes/sidebar.php");
             <div class="col-md-6">
               <div class="form-group">
                 <label>Farm Id</label>
-                <input type="text" name="Farm_id" parsley-trigger="change" required
-                placeholder="Farm id" class="form-control" id="Farm_id">
+                <input type="text" name="Farm_id" parsley-trigger="change" 
+                placeholder="Farm id" class="form-control" id="Farm_id" disabled>
               </div>
                <div class="form-group">
                 <label>Breed Type</label>

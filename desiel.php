@@ -10,7 +10,7 @@
         $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
         $Query = "INSERT INTO desiel(Farm_id,flock_id,qnty_desiel,price,d_date,p_method) 
-        values('$Farm',' $Flock','$qnty_of_dsl',' $price','$e_Date','$Status')" ;
+        values('$Farm','$Flock','$qnty_of_dsl','$price','$e_Date','$Status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {

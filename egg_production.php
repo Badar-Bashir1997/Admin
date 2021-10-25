@@ -9,7 +9,7 @@ if(isset($_REQUEST['BtnSubmit']))
         $e_Date=$_REQUEST['e_Date'];
         $no_of_Eggs=$_REQUEST['no_of_Eggs'];
         $Query = "INSERT INTO egg_production(Farm_id,flock_id,e_date,noe_p) 
-        values('$Farm',' $Flock','$e_Date','$no_of_Eggs')" ;
+        values('$Farm','$Flock','$e_Date','$no_of_Eggs')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {

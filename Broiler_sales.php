@@ -11,7 +11,7 @@
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
         $Query = "INSERT INTO broiler_sales(Farm_id,flock_id,sale_Date,nob_sale,p_method,price) 
-        values('$Farm',' $Flock','$e_Date',' $no_of_birds','$Status','$price')" ;
+        values('$Farm','$Flock','$e_Date',' $no_of_birds','$Status','$price')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
