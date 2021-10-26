@@ -129,9 +129,6 @@ if(isset($_REQUEST['BtnSubmit']))
          
         while($row = mysqli_fetch_array($result))
          {
-          $flk_id='';
-          $Query='';
-          $Query1='';
         $flk_id=$row['flock_id'];
         $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' $flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
         $result1 = mysqli_query($conn,$Query);
@@ -143,8 +140,6 @@ if(isset($_REQUEST['BtnSubmit']))
         $ttl_e =$ttl_e+$row2['t_e'];
               }
               $p_l=$tl-$ttl_e;
-              $row3='0';
-              $roe4='0';
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               {
                  $st_date=$i->format('Y-m-d');

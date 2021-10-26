@@ -2,11 +2,8 @@
  include("lib/session.php");
  include("lib/DBConn.php");
 if(isset($_REQUEST['BtnSubmit']))
-
-
-   
  {
-        $f_id=$_REQUEST['Flock_id'];
+  $f_id=$_REQUEST['Flock_id'];
         $f_name=$_REQUEST['Flock_Name'];
         $st_date=$_REQUEST['st_date'];
         $End_date=$_REQUEST['end_date'];
@@ -14,6 +11,19 @@ if(isset($_REQUEST['BtnSubmit']))
         $Purchase_cost=$_REQUEST['Purchase_cost'];
         $Farm=$_REQUEST['Farm'];
         $Breed_type=$_REQUEST['breed'];
+        $sql = "SELECT flock_id FROM flock WHERE Farm_id='$Farm' AND start_date BETWEEN '$st_date' AND '$End_date' or (end_date BETWEEN '$st_date' AND '$End_date')";
+        $result = mysqli_query($conn,$sql);
+        $row = mysqli_fetch_array($result);
+  if ($row['flock_id']==!'') {
+     ?>
+        <script>alert('Flock is already in stock');
+        window.location.href='Add_flocks.php?success';
+    </script>
+        <?php
+
+  }
+     else{
+        
         $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type) 
         values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
  $confirm_status = mysqli_query($conn,$Query);
@@ -34,10 +44,7 @@ if(isset($_REQUEST['BtnSubmit']))
     </script>
         <?php
     }
-}
-
-
-
+}}
  ?>
  <!DOCTYPE html>
 <html>
@@ -109,7 +116,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Flock Name</label>
                 <input type="text" name="Flock_Name" parsley-trigger="change" required
-                placeholder="Flock Name" class="form-control" id="FlockName">
+                placeholder="Flock Name" class="form-control" id="FlockName" onchange="myChangeFunction(this)">
               </div>
               <div class="form-group">
                 <label>Select Farm</label>
@@ -136,7 +143,7 @@ include("includes/sidebar.php");
                <div class="input-group date">
                   <div class="input-group-addon">
                   </div>
-                  <input type="date" name="st_date" class="form-control pull-right" >
+                  <input type="date" name="st_date" class="form-control pull-right" onchange="myChangeFunction2(this)">
                 </div>
               </div>           
                 <div class="form-group">
@@ -150,8 +157,19 @@ include("includes/sidebar.php");
                 <div class="form-group">
                 <label>Flock Id</label>
                 <input type="text" name="Flock_id" parsley-trigger="change" required
-                placeholder="Flock id" class="form-control" id="Flock_id">
+                placeholder="Flock id" class="form-control" id="Flock_id" readonly>
               </div>
+              <script >
+                function myChangeFunction(input1) {
+                  document.getElementById('Flock_id').value ='';
+               var input2 = document.getElementById('Flock_id');
+                input2.value =input2.value+input1.value;
+                       }
+                       function myChangeFunction2(input1) {
+               var input2 = document.getElementById('Flock_id');
+                input2.value =input2.value+"("+ input1.value+")";
+                       }
+                </script>
               <div class="form-group">
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >

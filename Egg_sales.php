@@ -121,17 +121,17 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group" id="parent">
-                <label>Number of Eggs</label>
+                <label >Number of Eggs:-</label>
                  <input type="text" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
                  class="form-control" id="no_of_Eggs">
                 <script>
-                 var t;
                     function flock(str) {
                       xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
-                    t = this.responseText;  
-                    document.getElementById("no_of_Eggs").value=t;
+                   globalThis.t = this.responseText;  
+                    document.getElementById("no_of_Eggs").placeholder="Maximum Number of Eggs="+t;
+                    
                        }
                       };
                    xhttp.open("GET", "flock_ajax.php?q="+str, true);
@@ -139,7 +139,7 @@ include("includes/sidebar.php");
                       }
                       function onRegister()
                        {
-                         if(document.form.no_of_Eggs.value >t)
+                    if(document.form.no_of_Eggs.value >t)
                         {
                          alert("Enter Valid Number of Eggs");
                         document.form.no_of_Eggs.focus();

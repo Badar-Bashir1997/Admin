@@ -2,12 +2,14 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  ?>
-  <?php 
+ <?php 
    $tl=0;
-   $ttl_e=0;
+   $tle=0;
+   $te=0;
    $p_l=0;
 if(isset($_REQUEST['BtnSubmit']))
     {
+      
        $dataPoints = array();
        $dataPoints1 = array();
         $start_Date=$_REQUEST['s_Date'];
@@ -15,51 +17,36 @@ if(isset($_REQUEST['BtnSubmit']))
         $s_date=new DateTime($_REQUEST['s_Date']);
          $e_date=new DateTime($_REQUEST['e_date']);
         $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Layer' ";
-         $result = mysqli_query($conn,$qry);
-         $result0 = mysqli_query($conn,$qry);
-        while($row = mysqli_fetch_array($result))
-         {
-          $flk_id='';
-          $Query='';
-          $Query1='';
-        $flk_id=$row['flock_id'];
-        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) +(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' $flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
-        $result1 = mysqli_query($conn,$Query);
-        $row1 = mysqli_fetch_array($result1);
-        $tl =$tl+$row1['ttl'];
-          $Query1="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.flock_id='$flk_id')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.flock_id='$flk_id')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.flock_id='$flk_id')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.flock_id='$flk_id')) as t_e FROM desiel WHERE desiel.flock_id='$flk_id'";
-        $result2 = mysqli_query($conn,$Query1);
-        $row2 = mysqli_fetch_array($result2);
-        $ttl_e =$ttl_e+$row2['t_e'];
-              }
-              $p_l=$tl-$ttl_e;
-              $row3='0';
-              $roe4='0';
-              while($row0 = mysqli_fetch_array($result0))
-              {$flk_id1='';
-                $flk_id1=$row0['flock_id'];
+         
+              
+              
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               
+              {$result = mysqli_query($conn,$qry);
+                  while($row=mysqli_fetch_array($result))
               {
-
+                $flk_id1=$row['flock_id'];
                  $st_date=$i->format('Y-m-d');
                $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date' AND flock.flock_id='$flk_id1' )+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date' AND medicine.flock_id='$flk_id1')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date' AND misc.flock_id='$flk_id1')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date' AND wood.flock_id='$flk_id1')) as te FROM desiel WHERE desiel.d_date='$st_date' AND desiel.flock_id='$flk_id1'";
                $result3 = mysqli_query($conn,$Query2);
               $row3 = mysqli_fetch_array($result3);
-              $ts=$row3['te'];
-
+              $tle=$row3['te'];
+              $te=$te+$tle;
               $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date' AND broiler_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' AND menure_sales.flock_id='$flk_id1')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' AND bags_sales.flock_id='$flk_id1'";
                $result4 = mysqli_query($conn,$Query3);
               $row4 = mysqli_fetch_array($result4);
               $ti=$row4['ti'];              
-
-              if($ts>0){
-               array_push($dataPoints, array("y" =>$ts, "label" =>$st_date));
+              $tl=$tl+$ti;
+              if($tle>0){
+               array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
              }
              if($ti>0){
                array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
              }
-            }}?>
+            }
+             }
+              $p_l=$tl-$te;
+             ?>
 
             
               <script>chart_v();</script> 
@@ -196,7 +183,7 @@ include("includes/sidebar.php");
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?php echo $ttl_e; ?></h3>
+              <h3><?php echo $te; ?></h3>
 
               <p>Totel Expenditure</p>
             </div>
