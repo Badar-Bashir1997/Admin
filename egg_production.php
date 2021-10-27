@@ -142,29 +142,55 @@ include("includes/sidebar.php");
              <div class="col-md-6">
               <div class="form-group">
                 <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock">
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock">
                   
                    <script>
                     function Farm_id(str) {
-                      xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                    var t = this.responseText;
-                    optionText = t;
-                   optionValue = t;
-                   
-                   $('#Flock')
-                    .find('option')
+                      $('#Flock')
+                     .find('option')
                    .remove();
-                         
+                   $('#Flock').append(`<option value=""></option>`);
+                     // xhttp = new XMLHttpRequest();
+                    //xhttp.onreadystatechange = function() {
+                  //if (this.readyState == 4 && this.status == 200) {
+                //     $('#Flock')
+                //     .find('option')
+                //    .remove();
+                //    var l= this.responseText.length; 
+                //     var t= this.responseText;
+                //     var t=this;
+                //      for(var i=0; i<l; i++){
+                //     optionText = t[i].id;
+                //    optionValue = t[i].id;         
+                // $('#Flock').append(`<option value="${optionValue}">
+                //   ${optionText}
+                // </option>`);
+                //      }
+                       
+                //       };
+                //    xhttp.open("GET", "flock_id_ajax.php?q="+str,dataType: 'JSON', true);
+                //    xhttp.send();
+                
+                      //}
+                      $.ajax({
+              url: "flock_id_ajax.php ?q="+str,
+        type: 'get',
+        dataType: 'JSON',
+        success: function(response){
+            var len = response.length;
+            for(var i=0; i<len; i++){
+                var id = response[i].id;
+                optionText = response[i].id;
+                optionValue = response[i].id;
+
                 $('#Flock').append(`<option value="${optionValue}">
-                  ${optionText}
+                 ${optionText}
                 </option>`);
-                       }
-                      };
-                   xhttp.open("GET", "flock_id_ajax.php?q="+str, true);
-                   xhttp.send();
-                      }
+            }
+
+        }
+    });
+                    }
                      
                       </script>
                 </select>

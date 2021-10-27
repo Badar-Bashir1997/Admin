@@ -120,6 +120,8 @@ if(isset($_REQUEST['BtnSubmit']))
     {
        $dataPoints = array();
        $dataPoints1 = array();
+       $label1 = array();
+       $label2 = array();
         $start_Date=$_REQUEST['s_Date'];
         $end_date=$_REQUEST['e_date'];
         $s_date=new DateTime($_REQUEST['s_Date']);
@@ -140,6 +142,7 @@ if(isset($_REQUEST['BtnSubmit']))
         $ttl_e =$ttl_e+$row2['t_e'];
               }
               $p_l=$tl-$ttl_e;
+              $l=0;
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               {
                  $st_date=$i->format('Y-m-d');
@@ -155,10 +158,13 @@ if(isset($_REQUEST['BtnSubmit']))
 
               if($r>0){
                array_push($dataPoints, array("y" =>$r, "label" =>$st_date));
+               $label1[$l]=$i;
              }
              if($ti>0){
                array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
+               array_push($label2, array($st_date));
              }
+             $l++;
             }?>
 
             
@@ -334,7 +340,7 @@ if(isset($_REQUEST['BtnSubmit']))
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+          <canvas id="lineChart"></canvas>
            
         </div>
         <!-- /.box-body -->
@@ -728,34 +734,69 @@ include("includes/control_sidebar.php");
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  <script>
-window.onload = function () {
+// window.onload = function () {
  
-var chart = new CanvasJS.Chart("chartContainer", {
-    title: {
-        text: "Expenses and Income Graph"
-    },
-    axisY: {
-        title: "Amount"
-    },
-    axisX: {
-        title: "Date"
-    },
-    data: [{
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-    },
-    {
-        type: "line",
-        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-    }]
-});
-chart.render();
+// var chart = new CanvasJS.Chart("chartContainer", {
+//     title: {
+//         text: "Expenses and Income Graph"
+//     },
+//     axisY: {
+//         title: "Amount"
+//     },
+//     axisX: {
+//         title: "Date"
+//     },
+//     data: [{
+//         type: "line",
+//         dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+//     },
+//     {
+//         type: "line",
+//         dataPoints:<?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+//     }]
+// });
+// chart.render();
  
+// }
+var i=0;
+var ctxL = document.getElementById("lineChart").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: [<?php echo json_encode($label1[0]->format('d-m-y')); ?>,'1','2'],
+datasets: [{
+label: "Expenses",
+data: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>,
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
+},
+{
+label: "Income",
+data: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>,
+backgroundColor: [
+'rgba(0, 137, 132, .2)',
+],
+borderColor: [
+'rgba(0, 10, 130, .7)',
+],
+borderWidth: 2
 }
+]
+},
+options: {
+responsive: true
+}
+});
 </script>
 <!-- jQuery 2.2.3 -->
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>

@@ -6,6 +6,9 @@ $result = mysqli_query($conn,$sql);
 mysqli_close($conn);
 while($row = mysqli_fetch_array($result))
 {
-echo $row['flock_id'] === "" ? "no suggestion" : $row['flock_id'];
+$id=$row['flock_id'];
+$return_arr[]=array("id" => $id);
 }
+echo json_encode($return_arr);
+
  ?>
