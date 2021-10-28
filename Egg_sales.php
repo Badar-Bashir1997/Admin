@@ -122,16 +122,15 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group" id="parent">
                 <label >Number of Eggs:-</label>
-                 <input type="text" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
-                 class="form-control" id="no_of_Eggs">
+                 <input type="Number" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
+                 class="form-control" id="no_of_Eggs" onkeyup="onRegister();">
                 <script>
                     function flock(str) {
                       xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
-                   globalThis.t = this.responseText;  
-                    document.getElementById("no_of_Eggs").placeholder="Maximum Number of Eggs="+t;
-                    
+                  window.t = this.responseText;  
+                    document.getElementById("no_of_Eggs").placeholder="Maximum Number of Eggs="+window.t;
                        }
                       };
                    xhttp.open("GET", "flock_ajax.php?q="+str, true);
@@ -139,7 +138,8 @@ include("includes/sidebar.php");
                       }
                       function onRegister()
                        {
-                    if(document.form.no_of_Eggs.value >t)
+                         var b = parseInt(window.t);
+                    if(document.form.no_of_Eggs.value>b)
                         {
                          alert("Enter Valid Number of Eggs");
                         document.form.no_of_Eggs.focus();
@@ -180,28 +180,6 @@ include("includes/sidebar.php");
                      .find('option')
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
-                     // xhttp = new XMLHttpRequest();
-                    //xhttp.onreadystatechange = function() {
-                  //if (this.readyState == 4 && this.status == 200) {
-                //     $('#Flock')
-                //     .find('option')
-                //    .remove();
-                //    var l= this.responseText.length; 
-                //     var t= this.responseText;
-                //     var t=this;
-                //      for(var i=0; i<l; i++){
-                //     optionText = t[i].id;
-                //    optionValue = t[i].id;         
-                // $('#Flock').append(`<option value="${optionValue}">
-                //   ${optionText}
-                // </option>`);
-                //      }
-                       
-                //       };
-                //    xhttp.open("GET", "flock_id_ajax.php?q="+str,dataType: 'JSON', true);
-                //    xhttp.send();
-                
-                      //}
                       $.ajax({
               url: "flock_id_ajax.php ?q="+str,
         type: 'get',

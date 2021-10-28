@@ -16,10 +16,7 @@ if(isset($_REQUEST['BtnSubmit']))
         $end_date=$_REQUEST['e_date'];
         $s_date=new DateTime($_REQUEST['s_Date']);
          $e_date=new DateTime($_REQUEST['e_date']);
-        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Layer' ";
-         
-              
-              
+        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Layer'";
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               
               {$result = mysqli_query($conn,$qry);
@@ -32,13 +29,19 @@ if(isset($_REQUEST['BtnSubmit']))
               $row3 = mysqli_fetch_array($result3);
               $tle=$row3['te'];
               $te=$te+$tle;
-              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date' AND broiler_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' AND menure_sales.flock_id='$flk_id1')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' AND bags_sales.flock_id='$flk_id1'";
+              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(egg_sales.price),0) FROM egg_sales WHERE egg_sales.Sale_Date='$st_date' AND egg_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.s_date='$st_date' AND layer_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' AND menure_sales.flock_id='$flk_id1')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' AND bags_sales.flock_id='$flk_id1'";
                $result4 = mysqli_query($conn,$Query3);
               $row4 = mysqli_fetch_array($result4);
               $ti=$row4['ti'];              
               $tl=$tl+$ti;
+              if($ti>0 && $tle<=0){
+              array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
+             }
               if($tle>0){
                array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
+             }
+             if($tle>0 && $ti<=0){
+              array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
              }
              if($ti>0){
                array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
@@ -720,11 +723,11 @@ var chart = new CanvasJS.Chart("chartContainer", {
         title: "Date"
     },
     data: [{
-        type: "line",
+        type: "area",
         dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
     },
     {
-        type: "line",
+        type: "area",
         dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
     }]
 });

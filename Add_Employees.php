@@ -1,5 +1,37 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+ if(isset($_REQUEST['BtnSubmit']))
+ {
+        $Farm=$_REQUEST['Farm'];
+        $name=$_REQUEST['txtName'];
+        $phone=$_REQUEST['txtPhone'];
+        $Email=$_REQUEST['txtEmail'];
+        $Address=$_REQUEST['txtAddress'];
+        $Date=$_REQUEST['txtDate'];
+        $salary=$_REQUEST['txtSalary'];
+        $Status=$_REQUEST['Status'];
+        $Query = "INSERT INTO employees(Farm_id,name,phone_no,email,address,join_date,salary,status) 
+        values('$Farm','$name','$phone','$Email','$Address','$Date','$salary','$Status')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='Add_Employees.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_Employees.php?success';
+    </script>
+        <?php
+    }
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -38,12 +70,6 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -72,7 +98,7 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-
+      <form action="#" method="post" class="was-validated">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -86,9 +112,20 @@ include("includes/sidebar.php");
             <!-- /.col -->
             <div class="col-md-6">
               <div class="form-group">
-                <label>Employee Id</label>
-                <input type="text" name="txtid" parsley-trigger="change" required
-                placeholder="Employee Id" class="form-control" >
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);"required>
+                  <option></option>
+                   <?php 
+      
+                   $query = " SELECT * FROM farm";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+                   ?> 
+                </select>
               </div>
               <!-- /.form-group -->
             </div>
@@ -104,7 +141,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" >
+                placeholder="Phone Number" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
               </div>
               <!-- /.form-group -->
             </div>
@@ -135,8 +172,16 @@ include("includes/sidebar.php");
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                <label>Salary</label>
+                <input type="Number" name="txtSalary" parsley-trigger="change" required
+                placeholder="Salary" class="form-control">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
                 <label>Status</label><br>
-               <input type="radio" id="Active" name="Status" value="Active">
+               <input type="radio" id="Active" name="Status" value="Active" checked>
                 <label for="Active">Active</label><br>
                 <input type="radio" id="block" name="Status" value="Block" >
                 <label for="block">Block</label><br> 
@@ -147,13 +192,10 @@ include("includes/sidebar.php");
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
            
-        </div>
-        <!-- /.box-body -->
-
-        
-        
+        </div> 
       </div>
       <!-- /.box -->
+    </form>
     </section>
 
   <section class="content">
@@ -168,25 +210,36 @@ include("includes/sidebar.php");
               <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                  <th>Employee id</th>
+                  <th>Emp id</th>
+                  <th>Farm</th>
                   <th>Name</th>
                   <th>Phone</th>
                   <th>Email</th>
                   <th>Address</th>
                   <th>Joining Date</th>
+                  <th>Salary</th>
                   <th>Status</th>
                   <th>Update/Delete</th>
                 </tr>
                 </thead>
                 <tbody>
+                  <?php
+                    $query = "SELECT * FROM employees Where status='Active'";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?> 
                 <tr>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
+                                  <td><?php echo $row['id']; ?></td>
+                                  <td><?php echo $row['Farm_id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['phone_no']; ?></td>
+                                  <td><?php echo $row['email']; ?></td>
+                                  <td><?php echo $row['address']; ?></td>
+                                  <td><?php echo $row['join_date']; ?></td>
+                                  <td><?php echo $row['salary']; ?></td>
+                                  <td><?php echo $row['status']; ?></td>
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -196,19 +249,16 @@ include("includes/sidebar.php");
                 </button>
             </td>
                 </tr>
-                
+                <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>Employee id</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                  <th>Joining Date</th>
-                  <th>Status</th>
-                </tr>
-                </tfoot>
+                
               </table>
             </div>
             <!-- /.box-body -->
@@ -280,5 +330,11 @@ include("includes/control_sidebar.php");
 <script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script  src="plugins/datatables/script.js"></script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

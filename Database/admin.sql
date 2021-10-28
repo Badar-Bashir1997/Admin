@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2021 at 02:49 PM
+-- Generation Time: Oct 28, 2021 at 03:06 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -83,6 +83,27 @@ INSERT INTO `broiler_sales` (`id`, `Farm_id`, `flock_id`, `nob_sale`, `sale_date
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `brokers`
+--
+
+CREATE TABLE `brokers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `phone_no` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `email` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `Address` varchar(100) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `brokers`
+--
+
+INSERT INTO `brokers` (`id`, `name`, `phone_no`, `email`, `Address`) VALUES
+(1, 'ccc', '+923486332584', 'bdr@gmail.com', 'ccc');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `desiel`
 --
 
@@ -117,7 +138,9 @@ CREATE TABLE `egg_production` (
 INSERT INTO `egg_production` (`id`, `Farm_id`, `flock_id`, `e_date`, `noe_p`) VALUES
 (7, 'xyz(sahiwal)', 'Layer(19/10/2021)', '2021-10-30', 400),
 (8, 'xyz(sahiwal)', 'Layer(19/10/2021)', '2021-10-31', 400),
-(9, 'xy(cc)', 'Layer3(01/10/2021)', '2021-10-30', 400);
+(9, 'xy(cc)', 'Layer3(01/10/2021)', '2021-10-30', 400),
+(10, 'xyz(sahiwal)', 'Layer(19/10/2021)', '2021-10-28', 400),
+(11, '123_Lahore', 'Layer2(20/10/2021)', '2021-10-28', 400);
 
 -- --------------------------------------------------------
 
@@ -134,6 +157,39 @@ CREATE TABLE `egg_sales` (
   `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `egg_sales`
+--
+
+INSERT INTO `egg_sales` (`id`, `Farm_id`, `flock_id`, `Sale_Date`, `noe`, `payment_method`, `price`) VALUES
+(31, '123_Lahore', 'Layer2(20/10/2021)', '2021-10-28', 200, 'Cash', 4000),
+(32, 'xyz(sahiwal)', 'Layer(19/10/2021)', '2021-10-28', 400, 'Cash', 8000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `phone_no` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `email` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `address` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `join_date` date NOT NULL,
+  `salary` int(11) NOT NULL,
+  `status` varchar(50) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`id`, `Farm_id`, `name`, `phone_no`, `email`, `address`, `join_date`, `salary`, `status`) VALUES
+(2, '123_barket_barketmarkeet', 'ccc', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-10-28', 10000, 'Active');
 
 -- --------------------------------------------------------
 
@@ -279,6 +335,26 @@ CREATE TABLE `remaning_eggs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `vehicals`
+--
+
+CREATE TABLE `vehicals` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `model` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `reg_no` varchar(100) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vehicals`
+--
+
+INSERT INTO `vehicals` (`id`, `name`, `model`, `reg_no`) VALUES
+(1, 'bmw', '2019', '2019-abc');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wood`
 --
 
@@ -324,6 +400,12 @@ ALTER TABLE `broiler_sales`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `brokers`
+--
+ALTER TABLE `brokers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `desiel`
 --
 ALTER TABLE `desiel`
@@ -339,6 +421,12 @@ ALTER TABLE `egg_production`
 -- Indexes for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -378,6 +466,12 @@ ALTER TABLE `misc`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `vehicals`
+--
+ALTER TABLE `vehicals`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wood`
 --
 ALTER TABLE `wood`
@@ -406,6 +500,12 @@ ALTER TABLE `broiler_sales`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `brokers`
+--
+ALTER TABLE `brokers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `desiel`
 --
 ALTER TABLE `desiel`
@@ -415,13 +515,19 @@ ALTER TABLE `desiel`
 -- AUTO_INCREMENT for table `egg_production`
 --
 ALTER TABLE `egg_production`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `farm`
@@ -457,6 +563,12 @@ ALTER TABLE `menure_sales`
 -- AUTO_INCREMENT for table `misc`
 --
 ALTER TABLE `misc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `vehicals`
+--
+ALTER TABLE `vehicals`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --

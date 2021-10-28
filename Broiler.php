@@ -16,8 +16,6 @@ if(isset($_REQUEST['BtnSubmit']))
         $s_date=new DateTime($_REQUEST['s_Date']);
          $e_date=new DateTime($_REQUEST['e_date']);
         $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Broiler' ";
-           
-             
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               {  $result = mysqli_query($conn,$qry);
                  while($row=mysqli_fetch_array($result))
@@ -34,8 +32,14 @@ if(isset($_REQUEST['BtnSubmit']))
               $row4 = mysqli_fetch_array($result4);
               $ti=$row4['ti'];              
               $tl=$tl+$ti;
+              if($ti>0 && $tle<=0){
+              array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
+             }
               if($tle>0){
                array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
+             }
+             if($tle>0 && $ti<=0){
+              array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
              }
              if($ti>0){
                array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
@@ -43,11 +47,7 @@ if(isset($_REQUEST['BtnSubmit']))
             }
              }
               $p_l=$ti-$te;
-             ?>
-
-            
-              <script>chart_v();</script> 
-             <?php 
+             
              }
            
             ?>
@@ -717,11 +717,11 @@ var chart = new CanvasJS.Chart("chartContainer", {
         title: "Date"
     },
     data: [{
-        type: "line",
+        type: "area",
         dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
     },
     {
-        type: "line",
+        type: "area",
         dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
     }]
 });

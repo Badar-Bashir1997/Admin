@@ -120,8 +120,6 @@ if(isset($_REQUEST['BtnSubmit']))
     {
        $dataPoints = array();
        $dataPoints1 = array();
-       $label1 = array();
-       $label2 = array();
         $start_Date=$_REQUEST['s_Date'];
         $end_date=$_REQUEST['e_date'];
         $s_date=new DateTime($_REQUEST['s_Date']);
@@ -132,7 +130,7 @@ if(isset($_REQUEST['BtnSubmit']))
         while($row = mysqli_fetch_array($result))
          {
         $flk_id=$row['flock_id'];
-        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id=' $flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id=' $flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
+        $Query = "SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(menure_sales.price),0)FROM menure_sales WHERE menure_sales.flock_id='$flk_id')+(SELECT IFNULL(SUM(layer_sales.price),0) FROM layer_sales WHERE layer_sales.flock_id='$flk_id')) as ttl FROM bags_sales WHERE bags_sales.flock_id=' $flk_id' ";
         $result1 = mysqli_query($conn,$Query);
         $row1 = mysqli_fetch_array($result1);
         $tl =$tl+$row1['ttl'];
@@ -142,29 +140,30 @@ if(isset($_REQUEST['BtnSubmit']))
         $ttl_e =$ttl_e+$row2['t_e'];
               }
               $p_l=$tl-$ttl_e;
-              $l=0;
                for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
               {
                  $st_date=$i->format('Y-m-d');
-               $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date')+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date')) as te FROM desiel WHERE desiel.d_date='$st_date'";
+               $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date'ORDER BY flock.start_date)+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date' ORDER BY medicine.m_date)+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date'ORDER BY misc.m_date)+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date'ORDER BY wood.w_date)) as te FROM desiel WHERE desiel.d_date='$st_date'ORDER BY desiel.d_date";
                $result3 = mysqli_query($conn,$Query2);
               $row3 = mysqli_fetch_array($result3);
               $r=$row3['te'];
 
-              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.Sale_Date='$st_date')+(SELECT IFNULL(SUM(layer_sales.price),0)FROM layer_sales WHERE layer_sales.s_date='$st_date')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date'";
+              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date' ORDER BY broiler_sales.sale_date)+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.Sale_Date='$st_date' ORDER BY egg_sales.Sale_Date)+(SELECT IFNULL(SUM(layer_sales.price),0)FROM layer_sales WHERE layer_sales.s_date='$st_date' ORDER BY layer_sales.s_date)+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' ORDER BY menure_sales.m_date)) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' ORDER BY bags_sales.b_date";
                $result4 = mysqli_query($conn,$Query3);
               $row4 = mysqli_fetch_array($result4);
               $ti=$row4['ti'];              
-
+              if($ti>0 && $r<=0){
+              array_push($dataPoints, array("y" =>$r, "label" =>$st_date));
+             }
               if($r>0){
                array_push($dataPoints, array("y" =>$r, "label" =>$st_date));
-               $label1[$l]=$i;
+             }
+             if($r>0 && $ti<=0){
+              array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
              }
              if($ti>0){
                array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
-               array_push($label2, array($st_date));
              }
-             $l++;
             }?>
 
             
@@ -331,7 +330,7 @@ if(isset($_REQUEST['BtnSubmit']))
       <!-- Main row -->
       <div class="row">
         <!-- Left col -->
-        <section class="content col-lg-7 connectedSortable">
+        <section class="content col-lg-12 connectedSortable">
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Repoting Graph</h3>
@@ -340,7 +339,7 @@ if(isset($_REQUEST['BtnSubmit']))
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <canvas id="lineChart"></canvas>
+          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
            
         </div>
         <!-- /.box-body -->
@@ -734,69 +733,35 @@ include("includes/control_sidebar.php");
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  <script>
-// window.onload = function () {
+window.onload = function () {
  
-// var chart = new CanvasJS.Chart("chartContainer", {
-//     title: {
-//         text: "Expenses and Income Graph"
-//     },
-//     axisY: {
-//         title: "Amount"
-//     },
-//     axisX: {
-//         title: "Date"
-//     },
-//     data: [{
-//         type: "line",
-//         dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-//     },
-//     {
-//         type: "line",
-//         dataPoints:<?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-//     }]
-// });
-// chart.render();
- 
-// }
-var i=0;
-var ctxL = document.getElementById("lineChart").getContext('2d');
-var myLineChart = new Chart(ctxL, {
-type: 'line',
-data: {
-labels: [<?php echo json_encode($label1[0]->format('d-m-y')); ?>,'1','2'],
-datasets: [{
-label: "Expenses",
-data: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>,
-backgroundColor: [
-'rgba(105, 0, 132, .2)',
-],
-borderColor: [
-'rgba(200, 99, 132, .7)',
-],
-borderWidth: 2
-},
-{
-label: "Income",
-data: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>,
-backgroundColor: [
-'rgba(0, 137, 132, .2)',
-],
-borderColor: [
-'rgba(0, 10, 130, .7)',
-],
-borderWidth: 2
-}
-]
-},
-options: {
-responsive: true
-}
+var chart = new CanvasJS.Chart("chartContainer", {
+    title: {
+        text: "Expenses and Income Graph"
+    },
+    axisY: {
+        title: "Amount"
+    },
+    axisX: {
+        title: "Date"
+    },
+    data: [{
+        type: "area",
+        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+    },
+    {
+        type: "area",
+        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+        
+    }]
 });
+chart.render();
+ 
+}
 </script>
 <!-- jQuery 2.2.3 -->
-
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>

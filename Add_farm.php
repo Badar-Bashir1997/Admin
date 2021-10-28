@@ -108,13 +108,13 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="Farm_Name" parsley-trigger="change" required
-                placeholder="Farm Name" class="form-control" id="FarmName" onchange="myChangeFunction(this)">
+                placeholder="Farm Name" class="form-control" id="FarmName" onkeyup="myChangeFunction(this)">
               </div>
               <!-- /.form-group -->
               <div class="form-group">
                 <label>Location</label>
                 <input type="text" name="Farm_Location" parsley-trigger="change" required
-                placeholder="Farm Location" class="form-control" id="FarmLocation" onchange="myChangeFunction(this)">
+                placeholder="Farm Location" class="form-control" id="FarmLocation" onchange="myChangeFunction2(this)">
               </div>
               <div class="form-group">
                 <label>Phone No</label>
@@ -131,9 +131,17 @@ include("includes/sidebar.php");
                 placeholder="Farm id" class="form-control" id="Farm_id" readonly="" >
               </div>
               <script type="text/javascript">
+                var v;
                 function myChangeFunction(input1) {
+                  document.getElementById('Farm_id').value ='';
                var input2 = document.getElementById('Farm_id');
-                input2.value =input2.value+"("+ input1.value+")";
+                input2.value =input2.value+input1.value;
+                v=input2.value
+                       }
+                       function myChangeFunction2(input1) {
+                        document.getElementById('Farm_id').value ='';
+               var input2 = document.getElementById('Farm_id');
+                input2.value =v+"("+ input1.value+")";
                        }
                 </script>
                <div class="form-group">

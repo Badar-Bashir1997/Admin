@@ -1,5 +1,33 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+ if(isset($_REQUEST['BtnSubmit']))
+ {
+  
+        $name=$_REQUEST['txtName'];
+        $model=$_REQUEST['txtModel'];
+        $reg=$_REQUEST['txtReg'];
+        $Query = "INSERT INTO vehicals(name,model,reg_no) 
+        values('$name','$model','$reg')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='Add_Vehical.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_Vehical.php?success';
+    </script>
+        <?php
+    }
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -7,7 +35,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Admin</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
 <link rel="stylesheet" href="plugins/datatables/style.css">
@@ -37,13 +65,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -61,22 +83,22 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Vehical</small>
+        <small>Vehicals</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Add</a></li>
-        <li class="active">Vehical</li>
+        <li class="active">Vehicals</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
+<form action="#" method="post" class="was-validated">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vehical</h3>
+          <h3 class="box-title">Add New Vehicals</h3>
 
           
         </div>
@@ -95,16 +117,16 @@ include("includes/sidebar.php");
             <div class="col-md-6">
               <div class="form-group">
                 <label>Model</label>
-                <input type="text" name="txtmodel" parsley-trigger="change" required
-                placeholder="Vehical Model" class="form-control" >
+                <input type="text" name="txtModel" parsley-trigger="change" required
+                placeholder="Enter Model" class="form-control"  >
               </div>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Registration No</label>
-                <input type="text" name="txtreg" parsley-trigger="change" required
-                placeholder="Vehical Registration Number" class="form-control" >
+                <label>Registration NO</label>
+                <input type="text" name="txtReg" parsley-trigger="change" required
+                placeholder="Enter Registration NO" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
@@ -120,44 +142,60 @@ include("includes/sidebar.php");
         
         
       </div>
+    </form>
       <!-- /.box -->
     </section>
-<section class="content">
+
+ 
+ <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Vehical Record</h3>
+              <h3 class="box-title">Vehicals Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
+              <table id="example"  class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
+                  <th>id</th>
                   <th>Name</th>
                   <th>Model</th>
-                  <th>Registration no</th>
-                   <th>Update/Delete</th>
+                  <th>Registration NO</th>
+                  <th>Update/Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>2021</td>
-                  <td>9999</td>
-                  <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-                  
-                </tr>
-                
+                <?php
+                    $query = "SELECT * FROM vehicals";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?>      
+                              <tr>
+                                  <td><?php echo $row['id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['model']; ?></td>
+                                  <td><?php echo $row['reg_no']; ?></td>
+                                  <td>
+                             
+                            <a href="#"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                  <a href="#" 
+                            onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                    </td>
+                                     </tr>
+                                       <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
                 </tbody>
-               
+                
               </table>
             </div>
             <!-- /.box-body -->
@@ -168,8 +206,6 @@ include("includes/sidebar.php");
       </div>
       <!-- /.row -->
     </section>
- 
-
  
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed

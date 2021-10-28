@@ -1,5 +1,6 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
  ?>
 <!DOCTYPE html>
 <html>
@@ -153,19 +154,28 @@ include("includes/sidebar.php");
               <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
+                 <th>id</th>
                   <th>Name</th>
                   <th>Phone</th>
                   <th>Email</th>
                   <th>Address</th>
-                   <th>Update/Delete</th>
+                  <th>Update/Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
+                                  <?php
+                    $query = "SELECT * FROM brokers";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?> 
+                                 <tr>
+                                <td><?php echo $row['id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['phone_no']; ?></td>
+                                  <td><?php echo $row['email']; ?></td>
+                                  <td><?php echo $row['Address']; ?></td>
                   <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -175,7 +185,14 @@ include("includes/sidebar.php");
                 </button>
             </td>
                 </tr>
-                
+                <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
                 </tbody>
                
               </table>
