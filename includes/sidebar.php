@@ -79,8 +79,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="grain.php"><i class="iconify" data-icon="cil:grain"></i>Grain</a></li>
-            <li><a href="#"><i class="fa fa-industry"></i>Purchase</a></li>
+            <li><a href="feed_mils.php"><i class="fa fa-industry"></i>View all</a></li>
+            <li><a href="#"><i class="fa fa-industry"></i>Purchase New</a></li>
           </ul>
         </li>
          <li class="treeview">
@@ -105,7 +105,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="iconify" data-icon="cil:grain"></i>Grain</a></li>
+            <li><a href="#"><i class="iconify" data-icon="cil:grain"></i>Feed</a></li>
             <li><a href="desiel.php"><i  class="iconify" data-icon="noto:fuel-pump"></i>Desiel</a></li>
             <li><a href="wood.php"><i class="iconify" data-icon="noto:wood"></i>Wood</a></li>
             <li><a href="medicine.php"><i class="fa fa-plus-square"></i>Medicine</a></li>

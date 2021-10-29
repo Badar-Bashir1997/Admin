@@ -15,8 +15,6 @@
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-
-
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');

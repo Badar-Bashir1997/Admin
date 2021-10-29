@@ -206,11 +206,11 @@ include("includes/sidebar.php");
               <h3 class="box-title">Employees Record</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body" style="overflow: scroll;">
               <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                  <th>Emp id</th>
+                  <th>Employee id</th>
                   <th>Farm</th>
                   <th>Name</th>
                   <th>Phone</th>

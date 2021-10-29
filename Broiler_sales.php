@@ -106,7 +106,7 @@ include("includes/sidebar.php");
             <div class="col-md-6">
               <div class="form-group">
                 <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" required="">
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" required>
                   <option></option>
                    <?php 
       
@@ -122,27 +122,27 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group" id="parent">
                 <label>Number of Birds</label>
-                 <input type="text" name="no_of_birds" placeholder="" parsley-trigger="change" required
-                 class="form-control" id="no_of_birds">
+                 <input type="Number" name="no_of_birds" placeholder="" parsley-trigger="change" required
+                 class="form-control" id="no_of_birds" onkeyup="onRegister();">
                 <script>
-                 var t;
-                    function flock(str) {
+                    function birds(str) {
                       xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
-                    t = this.responseText;  
-                    document.getElementById("no_of_Eggs").value=t;
+                  window.t = this.responseText;  
+                    document.getElementById("no_of_birds").placeholder="Maximum Number of Birds="+window.t;
                        }
                       };
-                   xhttp.open("GET", "flock_ajax.php?q="+str, true);
+                   xhttp.open("GET", "ttl_no_of_broiler.php?q="+str, true);
                    xhttp.send();
                       }
                       function onRegister()
                        {
-                         if(document.form.no_of_Eggs.value >t)
+                         var b = parseInt(window.t);
+                    if(document.form.no_of_birds.value>b)
                         {
-                         alert("Enter Valid Number of Eggs");
-                        document.form.no_of_Eggs.focus();
+                         alert("Enter Valid Number of Birds");
+                        document.form.no_of_birds.focus();
                            return (false);
                              }
              
@@ -154,9 +154,6 @@ include("includes/sidebar.php");
 
 
                       </script>
-                  
-                    
-              
               </div>
               <!-- /.form-group -->
             
@@ -173,7 +170,7 @@ include("includes/sidebar.php");
              <div class="col-md-6">
               <div class="form-group">
                 <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);"required>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="birds(this.value);"required>
                    <script>
                     function Farm_id(str) {
                       $('#Flock')
@@ -241,7 +238,7 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash">
+               <input type="radio" id="cash" name="Status" value="Cash" checked>
                 <label for="cash">Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" >
                 <label for="Cradit">Cradit</label><br> 

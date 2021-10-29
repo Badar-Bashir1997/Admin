@@ -289,22 +289,15 @@ include("includes/sidebar.php");
       <!-- Main row -->
       <div class="row">
         <!-- Left col -->
-        <section class="content col-lg-7 connectedSortable">
+        <section class="content col-lg-12 connectedSortable">
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Repoting Graph</h3>
-
-          
-        </div>
+          <h3 class="box-title">Repoting Graph</h3>        </div>
         <!-- /.box-header -->
         <div class="box-body">
           <div id="chartContainer" style="height: 370px; width: 100%;"></div>
            
         </div>
-        <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
     </section>

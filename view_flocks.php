@@ -61,8 +61,8 @@ include("includes/sidebar.php");
               <h3 class="box-title">Flocks Record</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <div class="box-body" style="overflow: scroll;">
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
             

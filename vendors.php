@@ -140,7 +140,7 @@ include("includes/sidebar.php");
               <h3 class="box-title">Vendors Record</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body" style="overflow: scroll;">
            
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>

@@ -216,24 +216,18 @@ if(isset($_REQUEST['BtnSubmit']))
           </div>
         </div>
         <!-- ./col -->
+        
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-yellow">
+          <div class="small-box bg-aqua">
             <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM flock";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-
-               ?>
-              <h3>xyz</h3>
-
-              <p>Totel Users</p>
+              <h3><?php echo $ttl_e; ?></h3>
+              <p>Totel Expenditure</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person"></i>
+              <i class="fa fa-money "></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="view_ttl_exp.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -256,15 +250,22 @@ if(isset($_REQUEST['BtnSubmit']))
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-aqua">
+          <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?php echo $ttl_e; ?></h3>
-              <p>Totel Expenditure</p>
+              <?php 
+                 $query=" SELECT count(id) as id FROM employees WHERE employees.status='Active'";
+                $result1 = mysqli_query($conn, $query);
+               $row = mysqli_fetch_array($result1);
+
+               ?>
+              <h3><?php echo $row['id']; ?></h3>
+
+              <p>Totel Employees</p>
             </div>
             <div class="icon">
-              <i class="iconify" data-icon="iconoir:farm"></i>
+              <i class="ion ion-person"></i>
             </div>
-            <a href="view_all_farm.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="Add_Employees.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -280,10 +281,10 @@ if(isset($_REQUEST['BtnSubmit']))
                ?>
               <h3><?php echo $row['f_id']; ?></h3>
 
-              <p>Number of Flocks</p>
+              <p>Total Users</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="ion ion-person"></i>
             </div>
             <a href="view_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -304,7 +305,7 @@ if(isset($_REQUEST['BtnSubmit']))
               <p>Totel Admin</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-person"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -368,7 +369,6 @@ if(isset($_REQUEST['BtnSubmit']))
               <!-- chat item -->
               <div class="item">
                 <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
-
                 <p class="message">
                   <a href="#" class="name">
                     <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>

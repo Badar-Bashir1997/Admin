@@ -11,10 +11,15 @@ if(isset($_REQUEST['BtnSubmit']))
         $Purchase_cost=$_REQUEST['Purchase_cost'];
         $Farm=$_REQUEST['Farm'];
         $Breed_type=$_REQUEST['breed'];
-        $sql = "SELECT flock_id FROM flock WHERE Farm_id='$Farm' AND start_date BETWEEN '$st_date' AND '$End_date' or (end_date BETWEEN '$st_date' AND '$End_date')";
+        $date1 = new DateTime($st_date);
+        $date2 = new DateTime($End_date);
+        $interval = $date2->diff($date1);
+        echo "difference " . $interval->days . " days ";
+        die();
+        $sql = "SELECT flock_id FROM flock WHERE Farm_id='$Farm' AND ((start_date BETWEEN '$st_date' AND '$End_date') OR (end_date BETWEEN '$st_date' AND '$End_date'))";
         $result = mysqli_query($conn,$sql);
         $row = mysqli_fetch_array($result);
-  if ($row['flock_id']==!'') {
+  if ($row && $row['flock_id']==!'') {
      ?>
         <script>alert('Flock is already in stock');
         window.location.href='Add_flocks.php?success';
@@ -23,8 +28,18 @@ if(isset($_REQUEST['BtnSubmit']))
 
   }
      else{
+        if($interval->days>=0)
+        {
+          ?>
+        <script type="text/javascript">alert('Pleas Enter Valid Date (Your Entered End Date is Before Start Date)');
+        window.location.href='Add_flocks.php?success';
+    </script>
+        <?php
         
-        $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type) 
+}
+else
+{
+  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type) 
         values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
@@ -45,6 +60,8 @@ if(isset($_REQUEST['BtnSubmit']))
         <?php
     }
 }}
+}
+
  ?>
  <!DOCTYPE html>
 <html>
