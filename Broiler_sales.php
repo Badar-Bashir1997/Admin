@@ -15,6 +15,23 @@
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
+        $sql = "SELECT flock.nob FROM flock WHERE flock.flock_id='$Flock'";
+          $result = mysqli_query($conn,$sql);
+          $row = mysqli_fetch_array($result);
+          $qry="SELECT IFNULL(SUM(broiler_sales.nob_sale),0)AS bs FROM broiler_sales WHERE broiler_sales.flock_id='$Flock'";
+          $result1 = mysqli_query($conn,$qry);
+          $row1 = mysqli_fetch_array($result1);
+          
+          $re=$row['nob']-$row1['bs'];
+          $sts="Soled";
+          $f_sts="Avalable";
+          $dt=date("y-m-d");
+          if($re==0){
+            $q="UPDATE farm SET farm.Status='$f_sts' WHERE farm.Farm_id='$Farm'";
+          mysqli_query($conn,$q);
+          $qr="UPDATE flock SET flock.Status='$sts', flock.closed_date='$dt' WHERE flock.flock_id='$Flock'";
+            mysqli_query($conn,$qr);
+          }
 
 
 ?>
@@ -32,7 +49,7 @@
     </script>
         <?php
     }
-}
+mysqli_close($conn);}
 ?>
 <!DOCTYPE html>
 <html>
@@ -177,28 +194,6 @@ include("includes/sidebar.php");
                      .find('option')
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
-                     // xhttp = new XMLHttpRequest();
-                    //xhttp.onreadystatechange = function() {
-                  //if (this.readyState == 4 && this.status == 200) {
-                //     $('#Flock')
-                //     .find('option')
-                //    .remove();
-                //    var l= this.responseText.length; 
-                //     var t= this.responseText;
-                //     var t=this;
-                //      for(var i=0; i<l; i++){
-                //     optionText = t[i].id;
-                //    optionValue = t[i].id;         
-                // $('#Flock').append(`<option value="${optionValue}">
-                //   ${optionText}
-                // </option>`);
-                //      }
-                       
-                //       };
-                //    xhttp.open("GET", "flock_id_ajax.php?q="+str,dataType: 'JSON', true);
-                //    xhttp.send();
-                
-                      //}
                       $.ajax({
               url: "flock_id_ajax.php ?q="+str,
         type: 'get',

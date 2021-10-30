@@ -10,15 +10,15 @@
         $f_id=$_REQUEST['Farm_id'];
         $b_type=$_REQUEST['breed_type'];
         $email=$_REQUEST['txt_email'];
-
-        $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email) values('$f_id','$name','$location','$b_type','$phone','$email')" ;
+        $status="Avalable";
+        $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email,Status) values('$f_id','$name','$location','$b_type','$phone','$email','$status')" ;
         $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
         ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_farm.php?success';
+            window.location.href='view_all_farm.php?success';
             </script>
         <?php
     }
@@ -101,9 +101,10 @@ include("includes/sidebar.php");
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+          <form action="#" method="post" name="form">
           <div class="row">
             <div class="col-md-6">
-                <form action="#" method="post" name="form">
+                
                  
               <div class="form-group">
                 <label>Name</label>
@@ -119,7 +120,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone No</label>
                 <input type="text" name="txt_phone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" id="phone">
+                placeholder="Phone Number" class="form-control" id="phone" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
               </div>
               <!-- /.form-group -->
             </div>

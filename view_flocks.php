@@ -72,8 +72,10 @@ include("includes/sidebar.php");
                   <th>Expected End Date</th>
                   <th>Number of Birds</th>
                   <th>Purchase Cost</th>
-                  <th>Farm Name</th>
-                  <th>Update/Delete</th>
+                  <th>Farm id</th>
+                  <th>Status</th>
+                  <th>Closed Date</th>
+                  <th>Actions</th>
             
         </tr>
     </thead>
@@ -93,6 +95,8 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['nob']; ?></td>
                                   <td><?php echo $row['Purchase_cost']; ?></td>
                                   <td><?php echo $row['Farm_id']; ?></td>
+                                  <td><?php echo $row['Status']; ?></td>
+                                  <td><?php echo $row['closed_date']; ?></td>
                                   <td>
                                    <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

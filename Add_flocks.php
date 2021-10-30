@@ -11,12 +11,11 @@ if(isset($_REQUEST['BtnSubmit']))
         $Purchase_cost=$_REQUEST['Purchase_cost'];
         $Farm=$_REQUEST['Farm'];
         $Breed_type=$_REQUEST['breed'];
+        $status="ongoing";
         $date1 = new DateTime($st_date);
         $date2 = new DateTime($End_date);
         $interval = $date2->diff($date1);
-        echo "difference " . $interval->days . " days ";
-        die();
-        $sql = "SELECT flock_id FROM flock WHERE Farm_id='$Farm' AND ((start_date BETWEEN '$st_date' AND '$End_date') OR (end_date BETWEEN '$st_date' AND '$End_date'))";
+        $sql = "SELECT flock_id FROM flock WHERE Farm_id='$Farm' AND Status='$status'";
         $result = mysqli_query($conn,$sql);
         $row = mysqli_fetch_array($result);
   if ($row && $row['flock_id']==!'') {
@@ -28,26 +27,28 @@ if(isset($_REQUEST['BtnSubmit']))
 
   }
      else{
-        if($interval->days>=0)
+      if($Breed_type=="Broiler"){
+ if($interval->days<=30  or $date2<=$date1 )
         {
-          ?>
-        <script type="text/javascript">alert('Pleas Enter Valid Date (Your Entered End Date is Before Start Date)');
+            ?>
+        <script type="text/javascript">alert('Invalid:- Pleas Enter Minimium 1 Months');
         window.location.href='Add_flocks.php?success';
     </script>
-        <?php
-        
+        <?php    
 }
 else
 {
-  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type) 
-        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type')" ;
+  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type,Status) 
+        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type','$status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
+        $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
+        mysqli_query($conn,$q);
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_flocks.php?success';
+            window.location.href='view_flocks.php?success';
             </script>
 <?php
     }
@@ -59,7 +60,44 @@ else
     </script>
         <?php
     }
-}}
+ 
+}
+      }
+      else{
+        if($interval->days<=185  or $date2<=$date1 )
+        {
+            ?>
+        <script type="text/javascript">alert('Invalid:- Pleas Enter Minimium 6 Months');
+        window.location.href='Add_flocks.php?success';
+    </script>
+        <?php    
+}
+else
+{
+  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type,Sratus) 
+        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type','$status')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+        $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
+        mysqli_query($conn,$q);
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='view_flocks.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_flocks.php?success';
+    </script>
+        <?php
+    }
+ 
+}}}
 }
 
  ?>
@@ -141,7 +179,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
                       
-                   $query = " SELECT * FROM farm ";
+                   $query = " SELECT * FROM farm WHERE Status='Avalable' ";
                    $result = mysqli_query($conn,$query);
                    
                      while($row = mysqli_fetch_array($result)){

@@ -67,10 +67,11 @@ include("includes/sidebar.php");
                   <th>Name</th>
                   <th>location</th>
                   <th>Bread Type</th>
+                  <th>Birds Capacity</th>
                   <th>Phone no</th>
                   <th>Email</th>
-                  <th>Update/Delete</th>
-           
+                  <th>Status</th>
+                  <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -86,12 +87,14 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['name']; ?></td>
                                   <td><?php echo $row['location']; ?></td>
                                   <td><?php echo $row['Breed_type']; ?></td>
+                                  <td><?php echo $row['bird_capacity']; ?></td>
                                   <td><?php echo $row['phone_no']; ?></td>
                                   <td><?php echo $row['email']; ?></td>
+                                  <td><?php echo $row['Status']; ?></td>
                                   <td>
                              
                             <a href="update_farm.php?f_id=<?php echo $row['f_id']; ?>"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                  <a href="delete_Farm.php?f_id=<?php echo $row['f_id']; ?>" 
+                                  <a href="delete_Farm.php?f_id=<?php echo $row['Farm_id']; ?>" 
                             onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                     </td>
                                      </tr>
