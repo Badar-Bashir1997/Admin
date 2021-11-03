@@ -1,5 +1,34 @@
 <?php 
  include("lib/session.php");
+ include("lib/DBConn.php");
+ if(isset($_REQUEST['BtnSubmit']))
+ {
+  
+        $name=$_REQUEST['txtName'];
+        $phone=$_REQUEST['txtPhone'];
+        $Email=$_REQUEST['txtEmail'];
+        $Address=$_REQUEST['txtAddress'];
+        $Query = "INSERT INTO vandors(name,phone_no,email,Address) 
+        values('$name','$phone','$Email','$Address')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='vandors.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='vandors.php?success';
+    </script>
+        <?php
+    }
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -7,7 +36,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Admin</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
 <link rel="stylesheet" href="plugins/datatables/style.css">
@@ -19,10 +48,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -39,12 +67,6 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -62,7 +84,7 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Vendors</small>
+        <small>Vandors</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -73,11 +95,11 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-
+<form action="#" method="post" class="was-validated">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vandore</h3>
+          <h3 class="box-title">Add New Vandors</h3>
 
           
         </div>
@@ -97,14 +119,14 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" >
+                placeholder="Phone Number" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92" >
               </div>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Email</label>
-                <input type="text" name="txtEmail" parsley-trigger="change" required
+                <input type="Email" name="txtEmail" parsley-trigger="change" required
                 placeholder="Email" class="form-control" >
               </div>
               <!-- /.form-group -->
@@ -128,54 +150,63 @@ include("includes/sidebar.php");
         
         
       </div>
+    </form>
       <!-- /.box -->
     </section>
 
  
-    <section class="content">
+ <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Vendors Record</h3>
+              <h3 class="box-title">Brokers Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
-           
-            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-        <tr>
+              <table id="example"  class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th>id</th>
                   <th>Name</th>
                   <th>Phone</th>
                   <th>Email</th>
                   <th>Address</th>
-                  <th>Phone no</th>
-                  <th>Email</th>
-            <th style="text-align:center;width:100px;">Add row <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-           <td>xyz</td>
-                  <td>xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-                  <td>xyz</td>
-                  <td> xyz</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-        </tr>
-        
-    </tbody>
-</table>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $query = "SELECT * FROM vandors";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?>      
+                              <tr>
+                                  <td><?php echo $row['v_id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['phone_no']; ?></td>
+                                  <td><?php echo $row['email']; ?></td>
+                                  <td><?php echo $row['Address']; ?></td>
+                                  <td>
+                             
+                            <a href="#"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                  <a href="#" 
+                            onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                    </td>
+                                     </tr>
+                                       <?php
+                                                 }
+                                                }
+                                            else
+                                              {
+                                                echo "No Result Found";
+                                              }
+                                                    ?>
+                </tbody>
+                
+              </table>
             </div>
             <!-- /.box-body -->
           </div>
@@ -191,8 +222,6 @@ include("includes/sidebar.php");
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-
-
     
   <?php
   include("includes/footer.php");
@@ -208,9 +237,7 @@ include("includes/control_sidebar.php");
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->

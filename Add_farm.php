@@ -10,8 +10,9 @@
         $f_id=$_REQUEST['Farm_id'];
         $b_type=$_REQUEST['breed_type'];
         $email=$_REQUEST['txt_email'];
-        $status="Avalable";
-        $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email,Status) values('$f_id','$name','$location','$b_type','$phone','$email','$status')" ;
+        $capacity=$_REQUEST['txt_capacity'];
+        $status="Available";
+        $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email,Status,bird_capacity) values('$f_id','$name','$location','$b_type','$phone','$email','$status','$capacity')" ;
         $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -121,6 +122,11 @@ include("includes/sidebar.php");
                 <label>Phone No</label>
                 <input type="text" name="txt_phone" parsley-trigger="change" required
                 placeholder="Phone Number" class="form-control" id="phone" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
+              </div>
+              <div class="form-group">
+                <label>Bird Capacity</label>
+                <input type="Number" name="txt_capacity" parsley-trigger="change" required
+                placeholder="Enter Maximum Bird Capacity" class="form-control" id="capacity" >
               </div>
               <!-- /.form-group -->
             </div>

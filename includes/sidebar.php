@@ -28,17 +28,20 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
+        
         <li class="treeview">
-          <a href="#"><i class="iconify" data-icon="iconoir:farm"></i> <span>Farms</span>
+          <a href="#">
+            <i class="iconify" data-icon="iconoir:farm"></i> <span>Farms</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-           <ul class="treeview-menu">
-            <li><a href="view_all_farm.php"><i class="iconify" data-icon="iconoir:farm"></i>View all</a></li>
+        <ul class="treeview-menu">
+          <li><a href="view_all_farm.php"><i class="iconify" data-icon="iconoir:farm"></i>View all</a></li>
             <li><a href="Add_farm.php"><i class="iconify" data-icon="iconoir:farm"></i>Add new</a></li>
-          </ul>
-        </li>
+          
+                </ul>
+                </li>
         <li class="treeview">
           <a href="#">
             <i class="iconify" data-icon="vs:chicken"></i> <span>Flocks</span>
@@ -93,6 +96,7 @@
           <ul class="treeview-menu">
             <li><a href="Egg_sales.php"><i class="iconify" data-icon="jam:eggs"></i>Eggs</a></li>
             <li><a href="Broiler_sales.php"><i class="iconify" data-icon="emojione-monotone:chicken"></i>Broiler Sales</a></li>
+            <li><a href="layer_sales.php"><i class="iconify" data-icon="emojione-monotone:chicken"></i>Layers Sales</a></li>
             <li><a href="manure.php"><i class="fa fa-money"></i>Manure</a></li>
             <li><a href="bags.php"><i class="fa fa-money"></i>Bags</a></li>
           </ul>
@@ -105,7 +109,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="iconify" data-icon="cil:grain"></i>Feed</a></li>
+            <li><a href="feed.php"><i class="iconify" data-icon="cil:grain"></i>Feed</a></li>
             <li><a href="desiel.php"><i  class="iconify" data-icon="noto:fuel-pump"></i>Desiel</a></li>
             <li><a href="wood.php"><i class="iconify" data-icon="noto:wood"></i>Wood</a></li>
             <li><a href="medicine.php"><i class="fa fa-plus-square"></i>Medicine</a></li>
@@ -113,7 +117,7 @@
           </ul>
         </li>
           <li >
-          <a href="vendors.php">
+          <a href="vandors.php">
             <i class="fa fa-group (alias)"></i> <span>Vandors</span>
           </a>
         </li>

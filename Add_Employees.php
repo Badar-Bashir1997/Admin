@@ -3,6 +3,10 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
  {
+         $fileinfo = PATHINFO($_FILES["image"]["name"]);
+      $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
+      move_uploaded_file($_FILES["image"]["tmp_name"],"upload/" . $newFilename);
+      $location = "upload/" . $newFilename;
         $Farm=$_REQUEST['Farm'];
         $name=$_REQUEST['txtName'];
         $phone=$_REQUEST['txtPhone'];
@@ -11,8 +15,8 @@
         $Date=$_REQUEST['txtDate'];
         $salary=$_REQUEST['txtSalary'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO employees(Farm_id,name,phone_no,email,address,join_date,salary,status) 
-        values('$Farm','$name','$phone','$Email','$Address','$Date','$salary','$Status')" ;
+        $Query = "INSERT INTO employees(Farm_id,name,phone_no,email,address,join_date,salary,status,image) 
+        values('$Farm','$name','$phone','$Email','$Address','$Date','$salary','$Status','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -98,7 +102,7 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-      <form action="#" method="post" class="was-validated">
+      <form action="#" method="post" class="was-validated" enctype="multipart/form-data">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -176,7 +180,16 @@ include("includes/sidebar.php");
                 <input type="Number" name="txtSalary" parsley-trigger="change" required
                 placeholder="Salary" class="form-control">
               </div>
+              
               <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -197,7 +210,6 @@ include("includes/sidebar.php");
       <!-- /.box -->
     </form>
     </section>
-
   <section class="content">
       <div class="row">
         <div class="col-xs-12">
@@ -219,7 +231,8 @@ include("includes/sidebar.php");
                   <th>Joining Date</th>
                   <th>Salary</th>
                   <th>Status</th>
-                  <th>Update/Delete</th>
+                  <th>image</th>
+                  <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -240,6 +253,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['join_date']; ?></td>
                                   <td><?php echo $row['salary']; ?></td>
                                   <td><?php echo $row['status']; ?></td>
+                                  <td><img src="<?php echo $row['image']; ?>" width = "50" height = "50"></td>
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

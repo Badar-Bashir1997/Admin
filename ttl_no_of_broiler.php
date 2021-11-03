@@ -2,7 +2,7 @@
 include("lib/DBConn.php");
 $q=$_REQUEST['q'];
 
-$sql = "SELECT flock.nob FROM flock WHERE  flock.Breed_type='Broiler' AND flock.flock_id='".$q."'";
+$sql = "SELECT flock.nob FROM flock WHERE  flock.Breed_type='Broiler' AND Status='ongoing' AND flock.flock_id='".$q."'";
 $result = mysqli_query($conn,$sql);
 $row = mysqli_fetch_array($result);
 $qry="SELECT IFNULL(SUM(broiler_sales.nob_sale),0)AS bs FROM broiler_sales WHERE broiler_sales.flock_id='".$q."'";

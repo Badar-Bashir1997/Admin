@@ -51,6 +51,7 @@ include("includes/sidebar.php");
         <li class="active">View All Records</li>
       </ol>
     </section>
+    <form action="#" method="post" name="form">
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
@@ -81,9 +82,13 @@ include("includes/sidebar.php");
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
                            {
+                            $f_id=$row['Farm_id'];
+                            $f_id1=$f_id."dlt";
+                            $f_id2=$f_id."edit";
+                            $f_id3=$f_id."view";
                             ?>      
                               <tr>
-                                  <td><?php echo $row['Farm_id']; ?></td> 
+                                  <td><?php echo $f_id; ?></td> 
                                   <td><?php echo $row['name']; ?></td>
                                   <td><?php echo $row['location']; ?></td>
                                   <td><?php echo $row['Breed_type']; ?></td>
@@ -92,10 +97,90 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['email']; ?></td>
                                   <td><?php echo $row['Status']; ?></td>
                                   <td>
-                             
-                            <a href="update_farm.php?f_id=<?php echo $row['f_id']; ?>"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                  <a href="delete_Farm.php?f_id=<?php echo $row['Farm_id']; ?>" 
-                            onClick="return confirm('Are you sure you want to delete')"; title="Delete"> <span class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                             <button type="submit" name="<?php echo $f_id2;?>" class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></button>
+                                   <?php 
+
+                                  if(isset($_REQUEST[$f_id2]))
+                                    {
+                                      
+                                    }
+                                   ?> 
+                                  <button type="submit" name="<?php echo $f_id1;?>" class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></button>
+                                  <?php 
+
+                                  if(isset($_REQUEST[$f_id1]))
+                                    {
+                                      $qury="SELECT farm.Status FROM farm WHERE farm.Farm_id='$f_id'";
+                                      $result1 = mysqli_query($conn,$qury);
+                                      $row1 = mysqli_fetch_array($result1);
+                                    if($row1['Status']=="Available"){
+
+                                      $c_date=date("y-m-d");
+                                      $qry="UPDATE farm SET farm.Status='Closed',farm.Closed_date='$c_date' WHERE farm.Farm_id='$f_id'";
+                                      $confirm_status = mysqli_query($conn,$qry);
+                                      if($confirm_status)
+                                       {
+                                        ?>
+                                        <script>
+                                            alert('Record has been Successfully updated in Database');
+                                            window.location.href='view_all_farm.php?success';
+                                            </script>
+                                        <?php
+                                    }
+                                    else
+                                    {
+                                        ?>
+                                        <script type="text/javascript">alert('not Working');
+                                        window.location.href='view_all_farm.php?success';
+                                    </script>
+                                        <?php
+                                    }
+                                    }
+                                    elseif ($row1['Status']=="Closed"){
+                                      ?>
+                                        <script>
+                                            alert('Farm is allready Deleted');
+                                            window.location.href='view_all_farm.php?success';
+                                            </script>
+                                        <?php
+                                    }
+                                    else{
+                                      ?>
+                                      <script>
+                                            alert('Farm Cannot delete Because Flock is ongoing');
+                                            window.location.href='view_all_farm.php?success';
+                                            </script>
+                                        
+                                        <?php
+                                    }
+                                  }
+                                   ?>
+                            <br>
+                            <button type="submit" name="<?php echo $f_id3;?>" class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true"></button>
+                            <?php 
+                                  if(isset($_REQUEST[$f_id3]))
+                                    {
+                                      $qry="UPDATE farm SET farm.Status='Closed' WHERE farm.Farm_id='$f_id'";
+                                      $confirm_status = mysqli_query($conn,$qry);
+                                      if($confirm_status)
+                                       {
+                                        ?>
+                                        <script>
+                                            alert('Record has been Successfully updated in Database');
+                                            window.location.href='view_all_farm.php?success';
+                                            </script>
+                                        <?php
+                                    }
+                                    else
+                                    {
+                                        ?>
+                                        <script type="text/javascript">alert('not Working');
+                                        window.location.href='view_all_farm.php?success';
+                                    </script>
+                                        <?php
+                                    }
+                                     }
+                                   ?>
                                     </td>
                                      </tr>
                                        <?php
@@ -111,25 +196,7 @@ include("includes/sidebar.php");
 </table>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Row information</h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 </div>
             <!-- /.box-body -->
@@ -140,7 +207,7 @@ include("includes/sidebar.php");
       </div>
       <!-- /.row -->
     </section>
-
+</form>
 </div>
 
 <?php

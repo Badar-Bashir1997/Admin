@@ -101,11 +101,11 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Broiler Sales</small>
+        <small>Layer Sales</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Broiler</a></li>
+        <li><a href="#">Layer</a></li>
         <li class="active">Sales</li>
       </ol>
     </section>
@@ -116,13 +116,13 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add Broiler Sales</h3>
+          <h3 class="box-title">Add Layer Sales</h3>
 
           
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <form action="#" method="post" name="form">
+            <form action method="post" name="form">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -131,7 +131,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Broiler' OR Breed_type='Both' AND Status='ongoing'";
+                   $query = " SELECT * FROM farm where Breed_type='Layer' OR Breed_type='Both'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
@@ -142,11 +142,14 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group" id="parent">
-                <label>Number of Birds</label>
+                <label id="response">Number of Birds</label>
                  <input type="Number" name="no_of_birds" placeholder="" parsley-trigger="change" required
                  class="form-control" id="no_of_birds" onkeyup="onRegister();">
+                 
+                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <script>
-                    function birds(str) {
+
+                     function birds(str) {
                       xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
@@ -154,7 +157,7 @@ include("includes/sidebar.php");
                     document.getElementById("no_of_birds").placeholder="Maximum Number of Birds="+window.t;
                        }
                       };
-                   xhttp.open("GET", "ttl_no_of_broiler.php?q="+str, true);
+                   xhttp.open("GET", "ttl_no_of_layer.php?q="+str, true);
                    xhttp.send();
                       }
                       function onRegister()
@@ -172,7 +175,6 @@ include("includes/sidebar.php");
                              return (true);
                                  }
                                }
-
 
                       </script>
               </div>
@@ -261,13 +263,12 @@ include("includes/sidebar.php");
       </div>
       <!-- /.box -->
     </section>
-
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Broiler Sales Record</h3>
+              <h3 class="box-title">Layer Sales Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
@@ -287,7 +288,7 @@ include("includes/sidebar.php");
                 </thead>
                 <tbody>
                   <?php
-                    $query = "SELECT * FROM broiler_sales ";
+                    $query = "SELECT * FROM layer_sales ";
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
@@ -298,7 +299,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
                                   <td><?php echo $row['nob_sale']; ?></td>
-                                  <td><?php echo $row['sale_date']; ?></td>
+                                  <td><?php echo $row['s_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
                                   
@@ -331,8 +332,6 @@ include("includes/sidebar.php");
       </div>
       <!-- /.row -->
     </section>
-
-  <div class="control-sidebar-bg"></div>
   <div class="control-sidebar-bg"></div>
 </div>
  <?php
@@ -374,6 +373,7 @@ include("includes/control_sidebar.php");
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
 <!-- Page script -->
 <script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>

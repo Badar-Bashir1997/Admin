@@ -3,14 +3,18 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
     {
+       $fileinfo = PATHINFO($_FILES["image"]["name"]);
+        $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
+        move_uploaded_file($_FILES["image"]["tmp_name"],"upload/" . $newFilename);
+        $location = "upload/" . $newFilename;
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];
         $qnty_of_dsl=$_REQUEST['qnty_of_dsl'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO desiel(Farm_id,flock_id,qnty_desiel,price,d_date,p_method) 
-        values('$Farm','$Flock','$qnty_of_dsl','$price','$e_Date','$Status')" ;
+        $Query = "INSERT INTO desiel(Farm_id,flock_id,qnty_desiel,price,d_date,p_method,image) 
+        values('$Farm','$Flock','$qnty_of_dsl','$price','$e_Date','$Status','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -93,7 +97,7 @@ include("includes/sidebar.php");
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <form action="#" method="post" name="form">
+            <form action="#" method="post" name="form" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -124,6 +128,12 @@ include("includes/sidebar.php");
                 <label>Price</label>
                 <input type="Number" name="price" parsley-trigger="change" required 
                 placeholder="Price" class="form-control" id="price">
+              </div>
+              <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
               </div>
               <!-- /.form-group -->
             </div>
@@ -198,11 +208,11 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash"checked>
+               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit" >
+                <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
                 <label for="Cradit">Cradit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank" >
+                <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br> 
               </div>
             </div>
@@ -211,6 +221,7 @@ include("includes/sidebar.php");
               <!-- /.form-group -->
             </div>
           </div>
+          <?php include("payment_options.php"); ?>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
            </form>

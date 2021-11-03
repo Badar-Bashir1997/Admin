@@ -198,11 +198,11 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash"checked>
+               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit" >
+                <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
                 <label for="Cradit">Cradit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank" >
+                <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();">
                 <label for="Bank">Bank</label><br> 
               </div>
             </div>
@@ -212,6 +212,7 @@ include("includes/sidebar.php");
             </div>
           </div>
           <!-- /.row -->
+          <?php include("payment_options.php"); ?>
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
