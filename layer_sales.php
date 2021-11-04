@@ -181,11 +181,7 @@ include("includes/sidebar.php");
               <!-- /.form-group -->
             
               <!-- /.form-group -->
-              <div class="form-group">
-                <label>Price</label>
-                <input type="Number" name="price" parsley-trigger="change" required 
-                placeholder="Price" class="form-control" id="price">
-              </div>
+              
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
@@ -230,8 +226,19 @@ include("includes/sidebar.php");
               </div>
               <!-- /.form-group -->
             </div>
-             <div class="col-md-6">
-              <div class="box">
+             
+          </div>
+          <div class="col-md-12">
+              <div style="margin: auto;width: 60%;" >
+          <div class="form-group">
+                <label>Price per Bird</label>
+                <input type="Number" name="price" parsley-trigger="change" required 
+                placeholder="Enter Price per Bird" class="form-control" id="price">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+              <div class="box" style="margin: auto;width: 60%;" >
             <div class="box-header">
               <h3 class="box-title">Payments Method</h3>
             </div>
@@ -239,21 +246,21 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash" checked>
-                <label for="cash">Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit" >
+               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
+                <label for="cash" >Cash</label><br>
+                <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
                 <label for="Cradit">Cradit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank" >
-                <label for="Bank">Bank</label><br> 
+                <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
+                <label for="Bank">Bank</label><br>  
               </div>
             </div>
             <!-- /.box-body -->
           </div>
               <!-- /.form-group -->
             </div>
-          </div>
+            <?php include("payment_options.php"); ?>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
         <!-- /.box-body -->

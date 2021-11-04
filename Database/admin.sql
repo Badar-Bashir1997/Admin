@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2021 at 01:01 PM
+-- Generation Time: Nov 04, 2021 at 01:18 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -30,15 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `Email` varchar(50) CHARACTER SET latin1 NOT NULL,
-  `Password` varchar(50) CHARACTER SET latin1 NOT NULL
+  `Password` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `Email`, `Password`) VALUES
-(1, 'admin@gmail.com', '123');
+INSERT INTO `admin` (`id`, `Email`, `Password`, `image`) VALUES
+(1, 'admin@gmail.com', '123', 'upload/IMG-20210120-WA0018_1635850049.jpg');
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,9 @@ CREATE TABLE `egg_production` (
 INSERT INTO `egg_production` (`id`, `Farm_id`, `flock_id`, `e_date`, `noe_p`) VALUES
 (13, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-27', 400),
 (14, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-30', 400),
-(15, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-12', 400);
+(15, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-12', 400),
+(16, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-03', 400),
+(17, 'badar(sahiwal)', 'Layer2(2021-11-03)', '2021-11-03', 400);
 
 -- --------------------------------------------------------
 
@@ -233,7 +236,9 @@ CREATE TABLE `farm` (
 
 INSERT INTO `farm` (`f_id`, `Farm_id`, `name`, `location`, `Breed_type`, `phone_no`, `email`, `Status`, `bird_capacity`, `Closed_date`) VALUES
 (586, 'xy(sahiwal)', 'xy', 'sahiwal', 'Broiler', '+923000000000', 'bdr@gmail.com', 'ongoing', 1000, '2021-11-02'),
-(587, 'Barket(barket markeet)', 'Barket', 'barket markeet', 'Layer', '+923000000000', 'bdr@gmail.com', 'ongoing', 1000, NULL);
+(587, 'Barket(barket markeet)', 'Barket', 'barket markeet', 'Layer', '+923000000000', 'bdr@gmail.com', 'ongoing', 1000, NULL),
+(588, 'badar(sahiwal)', 'badar', 'sahiwal', 'Layer', '+923000000000', 'bdr@gmail.com', 'ongoing', 2000, NULL),
+(589, 'mmm(lahore)', 'mmm', 'lahore', 'Both', '+923000000000', 'bdr@gmail.com', 'ongoing', 2000, NULL);
 
 -- --------------------------------------------------------
 
@@ -277,7 +282,9 @@ CREATE TABLE `flock` (
 INSERT INTO `flock` (`f_id`, `flock_id`, `Flock_name`, `start_date`, `end_date`, `nob`, `Purchase_cost`, `Farm_id`, `Breed_type`, `Status`, `closed_date`) VALUES
 (48, 'ahmad(2021-11-02)', 'ahmad', '2021-11-02', '2021-12-09', 666, 66666, 'xy(sahiwal)', 'Broiler', 'Soled', '2021-11-02'),
 (49, 'ahmad(2021-11-06)', 'ahmad', '2021-11-06', '2021-12-10', 666, 66666, 'xy(sahiwal)', 'Broiler', 'ongoing', NULL),
-(50, 'Layer(2021-11-02)', 'Layer', '2021-11-02', '2023-11-30', 666, 66666, 'Barket(barket markeet)', 'Layer', 'ongoing', NULL);
+(50, 'Layer(2021-11-02)', 'Layer', '2021-11-02', '2023-11-30', 666, 66666, 'Barket(barket markeet)', 'Layer', 'ongoing', NULL),
+(51, 'Layer2(2021-11-03)', 'Layer2', '2021-11-03', '2023-11-22', 666, 66666, 'badar(sahiwal)', 'Layer', 'ongoing', NULL),
+(52, 'hhh(2021-11-04)', 'hhh', '2021-11-04', '2021-12-11', 666, 66666, 'mmm(lahore)', 'Broiler', 'ongoing', NULL);
 
 -- --------------------------------------------------------
 
@@ -369,6 +376,24 @@ CREATE TABLE `remaning_eggs` (
 `flock_id` varchar(100)
 ,`re` decimal(33,0)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `full_name` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `u_name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `phone_no` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `email` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `Address` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL,
+  `join_date` date NOT NULL,
+  `salary` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -536,6 +561,12 @@ ALTER TABLE `misc`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `vandors`
 --
 ALTER TABLE `vandors`
@@ -591,7 +622,7 @@ ALTER TABLE `desiel`
 -- AUTO_INCREMENT for table `egg_production`
 --
 ALTER TABLE `egg_production`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `egg_sales`
@@ -615,7 +646,7 @@ ALTER TABLE `expences`
 -- AUTO_INCREMENT for table `farm`
 --
 ALTER TABLE `farm`
-  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=588;
+  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=590;
 
 --
 -- AUTO_INCREMENT for table `feed`
@@ -627,7 +658,7 @@ ALTER TABLE `feed`
 -- AUTO_INCREMENT for table `flock`
 --
 ALTER TABLE `flock`
-  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `layer_sales`
@@ -658,6 +689,12 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `misc`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `vandors`

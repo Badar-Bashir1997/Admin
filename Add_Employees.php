@@ -222,7 +222,7 @@ include("includes/sidebar.php");
               <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                  <th>Employee id</th>
+                  <th>id</th>
                   <th>Farm</th>
                   <th>Name</th>
                   <th>Phone</th>

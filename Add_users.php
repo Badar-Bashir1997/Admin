@@ -1,6 +1,41 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+ if(isset($_REQUEST['BtnSubmit']))
+ {
+         $fileinfo = PATHINFO($_FILES["image"]["name"]);
+      $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
+      move_uploaded_file($_FILES["image"]["tmp_name"],"upload/" . $newFilename);
+      $location = "upload/" . $newFilename;
+        $name=$_REQUEST['txtName'];
+        $name=$_REQUEST['txtUName'];
+        $phone=$_REQUEST['txtPhone'];
+        $Email=$_REQUEST['txtEmail'];
+        $Address=$_REQUEST['txtAddress'];
+        $Date=$_REQUEST['txtDate'];
+        $salary=$_REQUEST['txtSalary'];
+        $Status=$_REQUEST['Status'];
+        $Query = "INSERT INTO user(Farm_id,name,phone_no,email,address,join_date,salary,status,image) 
+        values('$Farm','$name','$phone','$Email','$Address','$Date','$salary','$Status','$location')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='Add_users.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='Add_users.php?success';
+    </script>
+        <?php
+    }
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -50,9 +85,6 @@
 <div class="wrapper">
  <?php
 include("includes/header.php");
- ?>
-  <!-- Left side column. contains the logo and sidebar -->
- <?php
 include("includes/sidebar.php");
  ?>
 
@@ -70,16 +102,12 @@ include("includes/sidebar.php");
         <li class="active">Users</li>
       </ol>
     </section>
-
-    <!-- Main content -->
     <section class="content">
 
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Add New Users</h3>
-
-          
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -87,9 +115,17 @@ include("includes/sidebar.php");
             <!-- /.col -->
             <div class="col-md-6">
               <div class="form-group">
-                <label>Name</label>
+                <label>Full Name</label>
                 <input type="text" name="txtName" parsley-trigger="change" required
                 placeholder="Full Name" class="form-control" >
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label> User Name</label>
+                <input type="text" name="txtUName" parsley-trigger="change" required
+                placeholder="user Name" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
@@ -104,7 +140,7 @@ include("includes/sidebar.php");
             <div class="col-md-6">
               <div class="form-group">
                 <label>Email</label>
-                <input type="text" name="txtEmail" parsley-trigger="change" required
+                <input type="Email" name="txtEmail" parsley-trigger="change" required
                 placeholder="Email" class="form-control" >
               </div>
               <!-- /.form-group -->
@@ -118,11 +154,35 @@ include("includes/sidebar.php");
               </div>
               <!-- /.form-group -->
             </div>
-            
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Joining Date</label>
+                <input type="date" name="txtDate" parsley-trigger="change" required
+                placeholder="Joining Date" class="form-control">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Salary</label>
+                <input type="Number" name="txtSalary" parsley-trigger="change" required
+                placeholder="Salary" class="form-control">
+              </div>
+              
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
+              </div>
+            </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Status</label><br>
-               <input type="radio" id="Active" name="Status" value="Active">
+               <input type="radio" id="Active" name="Status" value="Active" checked>
                 <label for="Active">Active</label><br>
                 <input type="radio" id="block" name="Status" value="Block" >
                 <label for="block">Block</label><br> 
@@ -134,10 +194,6 @@ include("includes/sidebar.php");
            <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
            
         </div>
-        <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
     </section>
@@ -176,16 +232,16 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['phone_no']; ?></td>
                                   <td><?php echo $row['email']; ?></td>
                                   <td><?php echo $row['Address']; ?></td>
-                  <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-                </tr>
-                <?php
+                                        <td>
+                                      <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
+                                          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                      </button>
+                                      <button type="button" class="btn btn-danger btn-xs dt-delete">
+                                          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                      </button>
+                                  </td>
+                                      </tr>
+                                      <?php
                                                  }
                                                 }
                                             else
@@ -205,12 +261,6 @@ include("includes/sidebar.php");
       </div>
       <!-- /.row -->
     </section>
- 
-
- 
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
     

@@ -104,9 +104,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Price</label>
+                <label>Price per Bag</label>
                 <input type="number" name="txtPrice" parsley-trigger="change" required
-                placeholder="Price" class="form-control" >
+                placeholder="Enter Price per Bag" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
@@ -119,8 +119,13 @@
               </div>
               <!-- /.form-group -->
             </div>
-            <div class="col-md-6">
-            <div class="box">
+           
+
+          </div>
+          <!-- /.row -->
+          
+          <div class="col-md-12">
+              <div class="box" style="margin: auto;width: 60%;" >
             <div class="box-header">
               <h3 class="box-title">Payments Method</h3>
             </div>
@@ -128,22 +133,21 @@
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash" checked onchange="change();" >
-                <label for="cash">Cash</label><br>
+               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
+                <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
                 <label for="Cradit">Cradit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
-                <label for="Bank">Bank</label><br> 
+                <label for="Bank">Bank</label><br>  
               </div>
             </div>
             <!-- /.box-body -->
           </div>
-        </div>
-        <?php include("payment_options.php"); ?>
-
-          </div>
+              <!-- /.form-group -->
+            </div>
+            <?php include("payment_options.php"); ?>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" >Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            
         </div>
         <!-- /.box-body -->

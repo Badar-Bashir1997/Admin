@@ -129,12 +129,7 @@ include("includes/sidebar.php");
                 <input type="Number" name="price" parsley-trigger="change" required 
                 placeholder="Price" class="form-control" id="price">
               </div>
-              <div class="form-group">
-              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
-              <div class="col-12">
-              <input type="file" name="image" class="form-control">
-              </div>
-              </div>
+              
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
@@ -199,8 +194,20 @@ include("includes/sidebar.php");
                 <input type="Date" name="d_Date" parsley-trigger="change" required
                  class="form-control" id="d_Date">
               </div>
-            
-              <div class="box">
+            <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
+              </div>
+
+              
+              <!-- /.form-group -->
+            </div>
+          </div>
+          
+          <div class="col-md-12">
+              <div class="box" style="margin: auto;width: 60%;" >
             <div class="box-header">
               <h3 class="box-title">Payments Method</h3>
             </div>
@@ -213,17 +220,16 @@ include("includes/sidebar.php");
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
                 <label for="Cradit">Cradit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
-                <label for="Bank">Bank</label><br> 
+                <label for="Bank">Bank</label><br>  
               </div>
             </div>
             <!-- /.box-body -->
           </div>
               <!-- /.form-group -->
             </div>
-          </div>
-          <?php include("payment_options.php"); ?>
+            <?php include("payment_options.php"); ?>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary"  onclick="return onRegister();">Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
       </div>

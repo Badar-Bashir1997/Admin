@@ -11,7 +11,7 @@
               <div class="form-group">
                 <label>Amount</label>
                 <input type="Number" name="txtamount" parsley-trigger="change" 
-                placeholder="Enter Amount given to seller" class="form-control">
+                placeholder="Enter Amount given " class="form-control">
               </div>
               <!-- /.form-group -->
             </div>
@@ -45,7 +45,6 @@
                   }
                 }
               </script>
-              <!-- /.form-group -->
             </div>
             </div>
             <div id="bb">

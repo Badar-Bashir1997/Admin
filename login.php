@@ -15,6 +15,7 @@
 				$mem = mysqli_fetch_object($result);
         		$_SESSION['SESS_ID'] = $mem->id;
 				$_SESSION['SESS_Name'] = $mem->Email;
+				$_SESSION['SESS_img'] = $mem->image;
 				header("Location: index.php");
 				exit();
 				//echo "Success";

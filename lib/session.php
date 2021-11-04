@@ -11,4 +11,10 @@
 		header("Location: login.php");
 		exit;
 	}
+	if (!isset($_SESSION['SESS_img']))
+	{
+		
+		header("Location: login.php");
+		exit;
+	}
 ?>

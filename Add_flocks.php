@@ -177,157 +177,9 @@ include("includes/sidebar.php");
                 placeholder="Flock Name" class="form-control" id="FlockName"  onkeyup="myChangeFunction(this)">
               </div>
               <div class="form-group">
-                <label>Select Farm</label>
+                <label >Select Farm</label>
                 <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button>
-                <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Add New Farm</h4>
-                    </div>
-                    <div class="modal-body">
-                     <section class="content">
-
-                      <!-- SELECT2 EXAMPLE -->
-                      <div class="box box-default">
-                        
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                         
-                          <div class="row">
-                            <div class="col-md-6">
-                                
-                                 
-                              <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="FarmName" parsley-trigger="change" 
-                                placeholder="Farm Name" class="form-control" id="FarmName" onkeyup="myChangeFunction4(this)">
-                              </div>
-                              <!-- /.form-group -->
-                              <div class="form-group">
-                                <label>Location</label>
-                                <input type="text" name="Location" parsley-trigger="change" 
-                                placeholder="Farm Location" class="form-control" id="Location" onchange="myChangeFunction5(this)">
-                              </div>
-                              <div class="form-group">
-                                <label>Phone No</label>
-                                <input type="text" name="txtphone" parsley-trigger="change" 
-                                placeholder="Phone Number" class="form-control" id="txtphone" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
-                              </div>
-                              <div class="form-group">
-                                <label>Bird Capacity</label>
-                                <input type="Number" name="txt_capacity" parsley-trigger="change" 
-                                placeholder="Enter Maximum Bird Capacity" class="form-control" id="capacity" >
-                              </div>
-                              <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                <label>Farm Id</label>
-                                <input type="text" name="Farmid" parsley-trigger="change" 
-                                placeholder="Farm id" class="form-control" id="Farmid" readonly="" >
-                              </div>
-                              <script type="text/javascript">
-                                var v;
-                                function myChangeFunction4(input1) {
-                                  document.getElementById('Farmid').value ='';
-                               var input2 = document.getElementById('Farmid');
-                                input2.value =input2.value+input1.value;
-                                v=input2.value
-                                       }
-                                       function myChangeFunction5(input1) {
-                                        document.getElementById('Farmid').value ='';
-                               var input2 = document.getElementById('Farmid');
-                                input2.value =v+"("+ input1.value+")";
-                                       }
-                                </script>
-                               <div class="form-group">
-                                <label>Breed Type</label>
-                                <select class="form-control select2" style="width: 100%;" name="breedtype" id="breedtype">
-                                  <option >Broiler</option>
-                                  <option >Layer</option>
-                                  <option>Both</option>
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" name="txt_email" parsley-trigger="change" 
-                                placeholder="Contact Email" class="form-control" id="txt_email">
-                              </div>
-                              <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                          </div>
-                      
-                          <!-- /.row -->
-                          <button type="button" onclick="return onClck();" id="add_data" class="btn btn-primary " value="Add">Add</button>
-                          
-                        </div>
-                      </div>
-                       <?php 
-                        if(isset($_POST['fname'])){
-                            $fname=$_POST['fname'];
-                            $Location=$_POST['Location'];
-                            $txtPhone=$_POST['txtPhone'];
-                            $capacity=$_POST['capacity'];
-                            $Farmid=$_POST['Farmid'];
-                            $breedtype=$_POST['breedtype'];
-                            $txt_email=$_POST['txt_email'];
-                            $status="Available";
-                             $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email,Status,bird_capacity) values('$Farmid','$fname','$Location','$breedtype','$txtPhone','txt_email','$status','$capacity')" ;
-                                    $confirm_status = mysqli_query($conn,$Query);
-                                   if($confirm_status)
-                                   {
-                                    
-                                    echo $Farmid;
-                                    exit;
-                                }
-                                else
-                                {
-                                    
-                                }
-                                    }       
-                                     ?> 
-                  
-                      <!-- /.box -->
-                      <script> 
-                         function onClck() {
-                            
-                             var fname = $('#FarmName').val();
-                             var Location = $('#Location').val();
-                             var txtphone = $('#txtphone').val();
-                             var capacity = $('#capacity').val();
-                             var Farmid = $('#Farmid').val();
-                             var breedtype = $('#breedtype').val();
-                             var txt_email = $('#txt_email').val();
-
-                             $.ajax({
-                              type: 'post',
-                              data: {fname: fname,Location: Location: txtphone: txtphone,capacity: capacity,Farmid: Farmid,breedtype: breedtype,txt_email: txt_email},
-                              success: function(response){
-                               optionValue=response;
-                               optionText=response;
-                               $('#Farm').append(`<option  value="${optionValue}" selected>
-                                 ${optionText}
-                                </option>`);
-                               $("#myModal").hide();
-                              }
-                             });
-                            }
-                          
-                        </script> 
-                           </section>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                  
-                </div>
-                </div>
+                <?php include("farm_popup.php"); ?>
                 <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" >
                   <option></option>
                    <?php 
@@ -448,7 +300,6 @@ include("includes/sidebar.php");
                        </div>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
-           
         </div>
       </div>
       </form>
@@ -458,10 +309,6 @@ include("includes/sidebar.php");
 </div>
  <?php
   include("includes/footer.php");
-  ?>
-
-  <!-- Control Sidebar -->
-   <?php
 include("includes/control_sidebar.php");
   ?>
 <!-- ./wrapper -->
