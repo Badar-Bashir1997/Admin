@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2021 at 01:18 PM
+-- Generation Time: Nov 08, 2021 at 02:52 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -57,6 +57,13 @@ CREATE TABLE `bags_sales` (
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `bags_sales`
+--
+
+INSERT INTO `bags_sales` (`id`, `Farm_id`, `flock_id`, `qnty_of_bags`, `price`, `b_date`, `p_method`) VALUES
+(4, 'xy(sahiwal)', 'ahmad(2021-11-06)', 100, 20, '2021-11-08', 'Cash');
+
 -- --------------------------------------------------------
 
 --
@@ -66,6 +73,7 @@ CREATE TABLE `bags_sales` (
 CREATE TABLE `broiler_sales` (
   `id` int(11) NOT NULL,
   `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `v_id` int(11) NOT NULL,
   `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `nob_sale` int(11) NOT NULL,
   `sale_date` date NOT NULL,
@@ -77,8 +85,8 @@ CREATE TABLE `broiler_sales` (
 -- Dumping data for table `broiler_sales`
 --
 
-INSERT INTO `broiler_sales` (`id`, `Farm_id`, `flock_id`, `nob_sale`, `sale_date`, `p_method`, `price`) VALUES
-(13, 'xy(sahiwal)', 'ahmad(2021-11-02)', 666, '2021-11-18', 'Cash', 80000);
+INSERT INTO `broiler_sales` (`id`, `Farm_id`, `v_id`, `flock_id`, `nob_sale`, `sale_date`, `p_method`, `price`) VALUES
+(15, 'xy(sahiwal)', 3, 'ahmad(2021-11-06)', 50, '2021-11-08', 'Bank', 350);
 
 -- --------------------------------------------------------
 
@@ -104,19 +112,62 @@ INSERT INTO `brokers` (`id`, `name`, `phone_no`, `email`, `Address`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `brokers_payment`
+--
+
+CREATE TABLE `brokers_payment` (
+  `id` int(11) NOT NULL,
+  `b_id` int(11) NOT NULL,
+  `p_id` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `payment_option` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `balance` int(11) NOT NULL,
+  `remaning` int(11) NOT NULL,
+  `amount` double DEFAULT NULL,
+  `card_no` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `Bank_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `Account_no` varchar(50) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `brokers_payment`
+--
+
+INSERT INTO `brokers_payment` (`id`, `b_id`, `p_id`, `payment_option`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES
+(6, 1, '6feed', 'Cash', 'ccc', 0, 0, 22000, '', '', ''),
+(7, 1, '7feed', 'Cash', 'ccc', 0, 0, 18000, '', '', ''),
+(8, 1, '8feed', 'Cash', 'ccc', 0, 0, 20000, '', '', ''),
+(9, 1, '13desiel', 'Cash', 'ccc', 0, 0, 6000, '', '', ''),
+(11, 1, '3wood', 'Cash', 'ccc', 0, 0, 6000, '', '', ''),
+(12, 1, '2medicine', 'Cash', 'ccc', 0, 0, 16000, '', '', ''),
+(13, 1, '3medicine', 'Cash', 'ccc', 0, 0, 1600, '', '', ''),
+(14, 1, '2misc', 'Cash', 'ccc', 0, 0, 1600, '', '', ''),
+(15, 1, '3misc', 'Cash', 'ccc', 0, 0, 1600, '', '', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `desiel`
 --
 
 CREATE TABLE `desiel` (
   `id` int(11) NOT NULL,
-  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `qnty_desiel` double NOT NULL,
+  `remaining` int(11) NOT NULL,
   `price` double NOT NULL,
   `d_date` date NOT NULL,
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `desiel`
+--
+
+INSERT INTO `desiel` (`id`, `qnty_desiel`, `remaining`, `price`, `d_date`, `p_method`, `image`) VALUES
+(13, 40, 40, 150, '2021-11-08', 'Cash', 'upload/1nf_1636363616.png'),
+(14, 45, 40, 150, '2021-11-08', 'Cash', 'upload/1nf_1636363616.png'),
+(15, 45, 0, 150, '2021-11-08', 'Cash', 'upload/1nf_1636363616.png');
 
 -- --------------------------------------------------------
 
@@ -151,6 +202,7 @@ INSERT INTO `egg_production` (`id`, `Farm_id`, `flock_id`, `e_date`, `noe_p`) VA
 
 CREATE TABLE `egg_sales` (
   `id` int(11) NOT NULL,
+  `v_id` int(11) NOT NULL,
   `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `Sale_Date` date NOT NULL,
@@ -163,8 +215,8 @@ CREATE TABLE `egg_sales` (
 -- Dumping data for table `egg_sales`
 --
 
-INSERT INTO `egg_sales` (`id`, `Farm_id`, `flock_id`, `Sale_Date`, `noe`, `payment_method`, `price`) VALUES
-(34, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-18', 400, 'Cash', 8000);
+INSERT INTO `egg_sales` (`id`, `v_id`, `Farm_id`, `flock_id`, `Sale_Date`, `noe`, `payment_method`, `price`) VALUES
+(21, 3, 'Barket(barket markeet)', 'Layer(2021-11-02)', '2021-11-08', 400, 'Bank', 20);
 
 -- --------------------------------------------------------
 
@@ -192,7 +244,8 @@ CREATE TABLE `employees` (
 INSERT INTO `employees` (`id`, `Farm_id`, `name`, `phone_no`, `email`, `address`, `join_date`, `salary`, `status`, `image`) VALUES
 (7, 'badar(sahiwal)', 'bmw', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-11-01', 12000, 'Active', 'upload/_1635749083.'),
 (8, 'Barket(barket markeet, lahore)', 'ccc', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-11-01', 12000, 'Active', 'upload/a_1635749427.png'),
-(9, 'bb(lahore)', 'ccc', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-11-02', 2222, 'Active', 'upload/IMG-20210120-WA0018_1635850049.jpg');
+(9, 'bb(lahore)', 'ccc', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-11-02', 2222, 'Active', 'upload/IMG-20210120-WA0018_1635850049.jpg'),
+(10, 'xy(sahiwal)', 'bmw', '+923486332584', 'bdr@gmail.com', 'ccc', '2021-11-08', 20000, 'Active', 'upload/not normalize_1636360048.png');
 
 -- --------------------------------------------------------
 
@@ -202,9 +255,8 @@ INSERT INTO `employees` (`id`, `Farm_id`, `name`, `phone_no`, `email`, `address`
 
 CREATE TABLE `expences` (
   `id` int(11) NOT NULL,
-  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `Farm_id` varchar(150) CHARACTER SET latin1 NOT NULL,
   `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `payment_method` varchar(100) CHARACTER SET latin1 NOT NULL,
   `e_date` date NOT NULL,
   `e_name` varchar(100) CHARACTER SET latin1 NOT NULL,
   `e_qnty` int(11) NOT NULL,
@@ -238,7 +290,7 @@ INSERT INTO `farm` (`f_id`, `Farm_id`, `name`, `location`, `Breed_type`, `phone_
 (586, 'xy(sahiwal)', 'xy', 'sahiwal', 'Broiler', '+923000000000', 'bdr@gmail.com', 'ongoing', 1000, '2021-11-02'),
 (587, 'Barket(barket markeet)', 'Barket', 'barket markeet', 'Layer', '+923000000000', 'bdr@gmail.com', 'ongoing', 1000, NULL),
 (588, 'badar(sahiwal)', 'badar', 'sahiwal', 'Layer', '+923000000000', 'bdr@gmail.com', 'ongoing', 2000, NULL),
-(589, 'mmm(lahore)', 'mmm', 'lahore', 'Both', '+923000000000', 'bdr@gmail.com', 'ongoing', 2000, NULL);
+(589, 'mmm(lahore)', 'mmm', 'lahore', 'Both', '+923000000000', 'bdr@gmail.com', 'Closed', 2000, NULL);
 
 -- --------------------------------------------------------
 
@@ -252,8 +304,18 @@ CREATE TABLE `feed` (
   `qnty` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL,
-  `f_date` date NOT NULL
+  `f_date` date NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `feed`
+--
+
+INSERT INTO `feed` (`feed_id`, `name`, `qnty`, `price`, `p_method`, `f_date`, `image`) VALUES
+(6, 'ccc', 40, 550, 'Cash', '2021-11-08', 'upload/_1636360629.'),
+(7, 'ccc', 30, 600, 'Cash', '2021-11-08', 'upload/normalize_1636360755.png'),
+(8, 'ccc', 40, 500, 'Cash', '2021-11-08', 'upload/not normalize_1636360854.png');
 
 -- --------------------------------------------------------
 
@@ -295,12 +357,21 @@ INSERT INTO `flock` (`f_id`, `flock_id`, `Flock_name`, `start_date`, `end_date`,
 CREATE TABLE `layer_sales` (
   `id` int(11) NOT NULL,
   `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `v_id` int(11) NOT NULL,
   `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `nob_sale` int(11) NOT NULL,
   `s_date` date NOT NULL,
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `layer_sales`
+--
+
+INSERT INTO `layer_sales` (`id`, `Farm_id`, `v_id`, `flock_id`, `nob_sale`, `s_date`, `p_method`, `price`) VALUES
+(3, 'Barket(barket markeet)', 3, 'Layer(2021-11-02)', 50, '2021-11-08', 'Cash', 300),
+(4, 'Barket(barket markeet)', 3, 'Layer(2021-11-02)', 50, '2021-11-08', 'Cash', 300);
 
 -- --------------------------------------------------------
 
@@ -318,6 +389,13 @@ CREATE TABLE `manure_sales` (
   `p_method` varchar(50) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `manure_sales`
+--
+
+INSERT INTO `manure_sales` (`id`, `Farm_id`, `flock_id`, `qnty_of_manure`, `price`, `m_date`, `p_method`) VALUES
+(8, 'xy(sahiwal)', 'ahmad(2021-11-06)', 20, 200, '2021-11-08', 'Cash');
+
 -- --------------------------------------------------------
 
 --
@@ -326,13 +404,21 @@ CREATE TABLE `manure_sales` (
 
 CREATE TABLE `medicine` (
   `id` int(11) NOT NULL,
-  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `medicine_name` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `qnty` int(11) NOT NULL,
   `price` double NOT NULL,
   `m_date` date NOT NULL,
-  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `medicine`
+--
+
+INSERT INTO `medicine` (`id`, `medicine_name`, `qnty`, `price`, `m_date`, `payment_method`, `image`) VALUES
+(2, 'xyz', 0, 400, '2021-11-08', 'Cash', 'upload/_1636365891.'),
+(3, 'xyz', 0, 40, '2021-11-08', 'Cash', 'upload/normalize_1636366039.png');
 
 -- --------------------------------------------------------
 
@@ -358,13 +444,22 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `misc` (
   `id` int(11) NOT NULL,
-  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `b_id` varchar(50) CHARACTER SET latin1 NOT NULL,
   `name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `qnty` int(11) NOT NULL,
   `price` double NOT NULL,
   `m_date` date NOT NULL,
-  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `misc`
+--
+
+INSERT INTO `misc` (`id`, `b_id`, `name`, `qnty`, `price`, `m_date`, `payment_method`, `image`) VALUES
+(2, '1', 'ccc', 40, 40, '2021-11-08', 'Cash', 'upload/_1636368640.'),
+(3, '1', 'ccc', 40, 40, '2021-11-08', 'Cash', 'upload/normalize_1636368771.png');
 
 -- --------------------------------------------------------
 
@@ -414,7 +509,37 @@ CREATE TABLE `vandors` (
 --
 
 INSERT INTO `vandors` (`v_id`, `name`, `phone_no`, `email`, `Address`) VALUES
-(1, 'xyz', '+923486332584', 'bdr@gmail.com', 'ccc');
+(3, 'bdr', '03486332584', 'bdr@gmail.com', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vandors_payment`
+--
+
+CREATE TABLE `vandors_payment` (
+  `id` int(11) NOT NULL,
+  `v_id` int(11) NOT NULL,
+  `s_id` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `payment_option` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `balance` int(11) NOT NULL,
+  `remaning` int(11) NOT NULL,
+  `amount` double DEFAULT NULL,
+  `card_no` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `Bank_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `Account_no` varchar(50) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vandors_payment`
+--
+
+INSERT INTO `vandors_payment` (`id`, `v_id`, `s_id`, `payment_option`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES
+(18, 3, '21egg', 'Bank', 'bdr', 0, 0, 8000, '', 'ubl', '55555'),
+(20, 3, '15Broiler', 'Bank', 'bdr', 0, 0, 17500, '', 'ubl', '555555'),
+(22, 3, '0Layer', 'Cradit', 'bdr', 0, 0, 15000, '3333', '', ''),
+(23, 3, '4Layer', 'Cash', 'bdr', 0, 0, 15000, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -437,13 +562,20 @@ CREATE TABLE `vehicals` (
 
 CREATE TABLE `wood` (
   `id` int(11) NOT NULL,
-  `Farm_id` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `flock_id` varchar(100) CHARACTER SET latin1 NOT NULL,
   `qnty_wood` double NOT NULL,
   `price` double NOT NULL,
   `w_date` date NOT NULL,
-  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL
+  `payment_method` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `image` varchar(150) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `wood`
+--
+
+INSERT INTO `wood` (`id`, `qnty_wood`, `price`, `w_date`, `payment_method`, `image`) VALUES
+(2, 10, 600, '2021-11-08', 'Cash', 'upload/2nf_1636364567.png'),
+(3, 10, 600, '2021-11-08', 'Cash', 'upload/2nf_1636364592.png');
 
 -- --------------------------------------------------------
 
@@ -483,6 +615,13 @@ ALTER TABLE `brokers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `brokers_payment`
+--
+ALTER TABLE `brokers_payment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `v_id` (`b_id`);
+
+--
 -- Indexes for table `desiel`
 --
 ALTER TABLE `desiel`
@@ -498,7 +637,8 @@ ALTER TABLE `egg_production`
 -- Indexes for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `v_id` (`v_id`);
 
 --
 -- Indexes for table `employees`
@@ -573,6 +713,13 @@ ALTER TABLE `vandors`
   ADD PRIMARY KEY (`v_id`);
 
 --
+-- Indexes for table `vandors_payment`
+--
+ALTER TABLE `vandors_payment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `v_id` (`v_id`);
+
+--
 -- Indexes for table `vehicals`
 --
 ALTER TABLE `vehicals`
@@ -598,13 +745,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `bags_sales`
 --
 ALTER TABLE `bags_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `broiler_sales`
 --
 ALTER TABLE `broiler_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `brokers`
@@ -613,10 +760,16 @@ ALTER TABLE `brokers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `brokers_payment`
+--
+ALTER TABLE `brokers_payment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `desiel`
 --
 ALTER TABLE `desiel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `egg_production`
@@ -628,13 +781,13 @@ ALTER TABLE `egg_production`
 -- AUTO_INCREMENT for table `egg_sales`
 --
 ALTER TABLE `egg_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `expences`
@@ -652,7 +805,7 @@ ALTER TABLE `farm`
 -- AUTO_INCREMENT for table `feed`
 --
 ALTER TABLE `feed`
-  MODIFY `feed_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `feed_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `flock`
@@ -664,19 +817,19 @@ ALTER TABLE `flock`
 -- AUTO_INCREMENT for table `layer_sales`
 --
 ALTER TABLE `layer_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `manure_sales`
 --
 ALTER TABLE `manure_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `medicine`
 --
 ALTER TABLE `medicine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -688,7 +841,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `misc`
 --
 ALTER TABLE `misc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -700,7 +853,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vandors`
 --
 ALTER TABLE `vandors`
-  MODIFY `v_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `v_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `vandors_payment`
+--
+ALTER TABLE `vandors_payment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `vehicals`
@@ -712,7 +871,17 @@ ALTER TABLE `vehicals`
 -- AUTO_INCREMENT for table `wood`
 --
 ALTER TABLE `wood`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `vandors_payment`
+--
+ALTER TABLE `vandors_payment`
+  ADD CONSTRAINT `vandors_payment_ibfk_1` FOREIGN KEY (`v_id`) REFERENCES `vandors` (`v_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

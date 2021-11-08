@@ -2,25 +2,22 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
-
     {
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];
-        $qnty_of_bags=$_REQUEST['qnty_of_bags'];
+        $medicine=$_REQUEST['medicine'];
         $price=$_REQUEST['price'];
-        $e_Date=$_REQUEST['e_Date'];
+        $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO bags_sales(Farm_id,flock_id,qnty_of_bags,price,b_date,p_method) 
-        values('$Farm','$Flock','$qnty_of_bags','$price','$e_Date','$Status')" ;
+        $Query = "INSERT INTO medicine(Farm_id,flock_id,medicine_name,price,m_date,payment_method) 
+        values('$Farm','$Flock','$medicine','$price','$e_Date','$Status')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-
-
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='bags.php?success';
+            window.location.href='medicine.php?success';
             </script>
 <?php
     }
@@ -28,7 +25,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='bags.php?success';
+        window.location.href='medicine.php?success';
     </script>
         <?php
     }
@@ -40,10 +37,6 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Admin</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
-<link rel="stylesheet" href="plugins/datatables/style.css">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -73,23 +66,20 @@
  <?php
 include("includes/header.php");
  ?>
-  <!-- Left side column. contains the logo and sidebar -->
  <?php
 include("includes/sidebar.php");
  ?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add
-        <small>Bags Sales</small>
+        Medicine
+        <small>Expenses</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Bags</a></li>
-        <li class="active">Sales</li>
+        <li><a href="#">Medicine</a></li>
+        <li class="active">Expenses</li>
       </ol>
     </section>
 
@@ -99,18 +89,16 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add Bags Sales</h3>
-
-          
+          <h3 class="box-title">Medicine Expenses</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <form action="#" method="post" name="form">
           <div class="row">
             <div class="col-md-6">
-               <div class="form-group">
+              <div class="form-group">
                 <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);"required>
                   <option></option>
                    <?php 
       
@@ -125,14 +113,14 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group">
-                <label>Quentity of Bags</label>
-               <input type="text" name="qnty_of_bags" parsley-trigger="change" required
-                placeholder="Quentity of Bags" class="form-control" id="qnty_of_bags">
+                <label>Medicine Name</label>
+               <input type="text" name="medicine" parsley-trigger="change" required
+                placeholder="Medicine Name" class="form-control" id="medicine">
               </div>
               <!-- /.form-group -->
             
               <!-- /.form-group -->
-              
+             
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
@@ -140,7 +128,7 @@ include("includes/sidebar.php");
              <div class="col-md-6">
               <div class="form-group">
                 <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);"required>
                    <script>
                     function Farm_id(str) {
                       $('#Flock')
@@ -179,6 +167,7 @@ include("includes/sidebar.php");
                 var id = response[i].id;
                 optionText = response[i].id;
                 optionValue = response[i].id;
+
                 $('#Flock').append(`<option value="${optionValue}">
                  ${optionText}
                 </option>`);
@@ -192,13 +181,12 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group">
-                <label>Date</label>
-                <input type="Date" name="e_Date" parsley-trigger="change" required
-                 class="form-control" id="e_Date">
+                <label>Expense Date</label>
+                <input type="Date" name="d_Date" parsley-trigger="change" required
+                 class="form-control" id="d_Date">
               </div>
-              <!-- /.form-group -->
             
-           
+             
               <!-- /.form-group -->
             </div>
           </div>
@@ -206,130 +194,30 @@ include("includes/sidebar.php");
           <div class="col-md-12">
               <div style="margin: auto;width: 60%;" >
           <div class="form-group">
-                <label>Price per Bag</label>
+                <label>Price</label>
                 <input type="Number" name="price" parsley-trigger="change" required 
-                placeholder="Enter Price per Bag" class="form-control" id="price">
+                placeholder="Enter Price" class="form-control" id="price">
               </div>
             </div>
           </div>
-          <div class="col-md-12">
-              <div class="box" style="margin: auto;width: 60%;" >
-            <div class="box-header">
-              <h3 class="box-title">Payments Method</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-            <div class="form-group">
-                
-               <input type="radio" id="cash" name="Status" value="Cash"checked >
-                <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit"  >
-                <label for="Cradit">Cradit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank"  >
-                <label for="Bank">Bank</label><br>  
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-              <!-- /.form-group -->
-            </div>
-            
-          <!-- /.row -->
+          
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
-        <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
-    </section>
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Bags Sales Record</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" style="overflow: scroll;">
-              <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
-                <tr>
-                  
-                  <th>Farm</th>
-                  <th>Flock</th>
-                  <th>Quantity</th>
-                  <th>Sales Dates</th>
-                  <th>Payment Method</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-                  
-                </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $query = "SELECT * FROM bags_sales ";
-                    $result = mysqli_query($conn,$query);
-                      if ($result->num_rows > 0) {            
-                        while($row = mysqli_fetch_array($result))
-                           {
-                            ?> 
-                <tr>          <?php $p=$row['price']*$row['qnty_of_bags']; ?>
-                                  
-                                  <td><?php echo $row['Farm_id']; ?></td> 
-                                  <td><?php echo $row['flock_id']; ?></td>
-                                  <td><?php echo $row['qnty_of_bags']; ?></td>
-                                  <td><?php echo $row['b_date']; ?></td>
-                                  <td><?php echo $row['p_method']; ?></td>
-                                  <td><?php echo $p; ?></td>
-                                  
-                   <td>
-                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-danger btn-xs dt-delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </td>
-                </tr>
-                <?php
-                                                 }
-                                                }
-                                            
-                                                    ?>
-                </tbody>
-                
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
     </section>
   <div class="control-sidebar-bg"></div>
 </div>
  <?php
   include("includes/footer.php");
   ?>
-
-  <!-- Control Sidebar -->
    <?php
 include("includes/control_sidebar.php");
   ?>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
@@ -353,25 +241,13 @@ include("includes/control_sidebar.php");
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
-<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script  src="plugins/datatables/script.js"></script>
 <script> 
     function onRegister()
           {
-            if(document.form.qnty_of_bags.value == "")
+            if(document.form.qnty_of_dsl.value == "")
             {
-            alert("Enter Quentity of Bags");
-            document.form.qnty_of_bags.focus();
+            alert("Enter Quentity of Desiel");
+            document.form.qnty_of_dsl.focus();
             return (false);
             }
              

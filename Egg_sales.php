@@ -5,15 +5,54 @@
 
     {
         $Farm=$_REQUEST['Farm'];
-        $Flock=$_REQUEST['Flock'];
+        $Flock_id=$_REQUEST['Flock'];
         $no_of_Eggs=$_REQUEST['no_of_Eggs'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO egg_sales(Farm_id,flock_id,Sale_Date,noe,payment_method,price) 
-        values('$Farm','$Flock','$e_Date','$no_of_Eggs','$Status','$price')" ;
+        if($Status=='Cash'){
+        $name=$_REQUEST['name'];
+        $amount=$_REQUEST['txtamount'];
+        $remaning=$_REQUEST['txtremaning'];
+        $balance=$_REQUEST['txtbalance'];
+        $card="";
+        $Bank="";
+        $account="";}
+        if($Status=='Cradit'){
+          $name=$_REQUEST['txtchname'];
+        $amount=$_REQUEST['txtcamount'];
+         $card=$_REQUEST['txtcnum'];
+         $remaning=$_REQUEST['txtremaning1'];
+        $balance=$_REQUEST['txtbalance1'];
+        $Bank="";
+        $account="";
+        }
+        if ($Status=='Bank') {
+            $name=$_REQUEST['txtbahname'];
+        $amount=$_REQUEST['txtbamount'];
+         $card="";
+        $Bank=$_REQUEST['txtbname'];
+        $account=$_REQUEST['txtbanum'];
+        $remaning=$_REQUEST['txtremaning2'];
+        $balance=$_REQUEST['txtbalance2'];
+        }
+        $q="SELECT vandors.v_id FROM vandors WHERE name='$name'";
+        $result= mysqli_query($conn,$q);
+        $row = mysqli_fetch_array($result);
+        $v_id=$row['v_id'];
+
+         $Query = "INSERT INTO egg_sales(Farm_id,v_id,flock_id,Sale_Date,noe,payment_method,price) 
+        values('$Farm','$v_id','$Flock_id','$e_Date','$no_of_Eggs','$Status','$price')" ;
+        
  $confirm_status = mysqli_query($conn,$Query);
-       if($confirm_status)
+ $qr="SELECT LAST_INSERT_ID()AS id";
+ $result1 = mysqli_query($conn,$qr);
+$row1=mysqli_fetch_array($result1);
+$s_id=$row1['id']."egg";
+ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
+       $confirm_status1 = mysqli_query($conn,$qry);
+       
+       if($confirm_status && $confirm_status1)
        {
 ?>
         <script>
@@ -215,8 +254,9 @@ include("includes/sidebar.php");
           <div class="form-group">
                 <label>Price per Egg</label>
                 <input type="Number" name="price" parsley-trigger="change" required 
-                placeholder="Enter Price per Egg" class="form-control" id="price">
+                placeholder="Enter Price per Egg" class="form-control" id="price" onchange="totalp(this.value)">
               </div>
+              
             </div>
           </div>
           <div class="col-md-12">
@@ -240,7 +280,7 @@ include("includes/sidebar.php");
           </div>
               <!-- /.form-group -->
             </div>
-            <?php include("payment_options.php"); ?>
+            <?php include("vendors_payment_option.php"); ?>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
@@ -383,4 +423,15 @@ include("includes/control_sidebar.php");
     $(".select2").select2();
   });
 </script>
+<script type="text/javascript">
+                function totalp(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('no_of_Eggs').value)
+                  var ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+              </script>
 </html>

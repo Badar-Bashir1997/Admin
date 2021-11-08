@@ -222,11 +222,11 @@ include("includes/sidebar.php");
             <div class="box-body">
             <div class="form-group">
                 
-               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
+               <input type="radio" id="cash" name="Status" value="Cash"checked >
                 <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
+                <input type="radio" id="Cradit" name="Status" value="Cradit"  >
                 <label for="Cradit">Cradit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
+                <input type="radio" id="Bank" name="Status" value="Bank"  >
                 <label for="Bank">Bank</label><br>  
               </div>
             </div>
@@ -234,7 +234,7 @@ include("includes/sidebar.php");
           </div>
               <!-- /.form-group -->
             </div>
-            <?php include("payment_options.php"); ?>
+            
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
@@ -277,14 +277,14 @@ include("includes/sidebar.php");
                         while($row = mysqli_fetch_array($result))
                            {
                             ?> 
-                <tr>
+                <tr>            <?php $p=$row['price']*$row['qnty_of_manure']; ?>
                                   
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
                                   <td><?php echo $row['qnty_of_manure']; ?></td>
                                   <td><?php echo $row['m_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
-                                  <td><?php echo $row['price']; ?></td>
+                                  <td><?php echo $p; ?></td>
                                   
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">

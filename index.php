@@ -2,36 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  ?>
- <!-- <?php
- 
-$dataPoints = array(
-    // array("y" => 40, "label" => "25/09/2021"),
-    // array("y" => 15, "label" => "26/09/2021"),
-    // array("y" => 25, "label" => "27/09/2021"),
-    // array("y" => 5, "label" => "28/09/2021"),
-    // array("y" => 10, "label" => "29/09/2021"),
-    // array("y" => 0, "label" => "30/09/2021"),
-    // array("y" => 20, "label" => "01/10/2021")
-);
-$dataPoints1 = array(
-    // array("y" => 50, "label" => "25/09/2021"),
-    // array("y" => 35, "label" => "26/09/2021"),
-    // array("y" => 20, "label" => "27/09/2021"),
-    // array("y" => 15, "label" => "28/09/2022"),
-    // array("y" => 12, "label" => "29/09/2022"),
-    // array("y" => 0, "label" => "30/09/2022"),
-    // array("y" => 20, "label" => "01/10/2022")
-);
-$dataPoints2 = array(
-    // array("y" => 100, "label" => "25/09/2021"),
-    // array("y" => 35, "label" => "26/09/2021"),
-    // array("y" => 70, "label" => "27/09/2021"),
-    // array("y" => 15, "label" => "28/09/2022"),
-    // array("y" => 60, "label" => "29/09/2022"),
-    // array("y" => 10, "label" => "30/09/2022"),
-    // array("y" => 90, "label" => "01/10/2022")
-);
-?> -->
 <!DOCTYPE html>
 <html>
 <head>

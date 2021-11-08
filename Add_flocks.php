@@ -179,7 +179,9 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label >Select Farm</label>
                 <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button>
-                <?php include("farm_popup.php"); ?>
+                <?php 
+                include("farm_popup.php"); 
+                ?>
                 <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" >
                   <option></option>
                    <?php 
@@ -193,7 +195,6 @@ include("includes/sidebar.php");
                   <option value="<?php echo $name ?>"><?php echo $name ?></option>
                   <?php   
                     }
-
                      ?> 
                      
                 </select>
@@ -297,7 +298,7 @@ include("includes/sidebar.php");
             </div>
             <!-- /.col -->
             <!-- /.col -->
-                       </div>
+            </div>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
         </div>

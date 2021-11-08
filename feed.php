@@ -1,7 +1,81 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
- ?>
+  if(isset($_REQUEST['BtnSubmit']))
+
+    {
+        $fileinfo = PATHINFO($_FILES["image"]["name"]);
+      $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
+      move_uploaded_file($_FILES["image"]["tmp_name"],"upload/" . $newFilename);
+      $location = "upload/" . $newFilename;
+        $F_name=$_REQUEST['txtName'];
+        $qnty_feed=$_REQUEST['txtqnty'];
+        $price=$_REQUEST['txtPrice'];
+        
+        $p_Date=$_REQUEST['txtDate'];
+        $Status=$_REQUEST['Status'];
+        if($Status=='Cash'){
+        $name=$_REQUEST['name'];
+        $amount=$_REQUEST['txtamount'];
+        $remaning=$_REQUEST['txtremaning'];
+        $balance=$_REQUEST['txtbalance'];
+        $card="";
+        $Bank="";
+        $account="";}
+        if($Status=='Cradit'){
+          $name=$_REQUEST['txtchname'];
+        $amount=$_REQUEST['txtcamount'];
+         $card=$_REQUEST['txtcnum'];
+         $remaning=$_REQUEST['txtremaning1'];
+        $balance=$_REQUEST['txtbalance1'];
+        $Bank="";
+        $account="";
+        }
+        if ($Status=='Bank') {
+            $name=$_REQUEST['txtbahname'];
+        $amount=$_REQUEST['txtbamount'];
+         $card="";
+        $Bank=$_REQUEST['txtbname'];
+        $account=$_REQUEST['txtbanum'];
+        $remaning=$_REQUEST['txtremaning2'];
+        $balance=$_REQUEST['txtbalance2'];
+        }
+        $q="SELECT brokers.id FROM brokers WHERE brokers.name='$name'";
+        $result= mysqli_query($conn,$q);
+        $row = mysqli_fetch_array($result);
+        $b_id=$row['id'];
+
+        $Query = "INSERT INTO feed(name,qnty,price,p_method,f_date,image) 
+        values('$F_name','$qnty_feed','$price','$Status','$p_Date','$location')" ;
+ $confirm_status = mysqli_query($conn,$Query);
+
+ $qr="SELECT LAST_INSERT_ID()AS id";
+ $result1 = mysqli_query($conn,$qr);
+$row1=mysqli_fetch_array($result1);
+$p_id=$row1['id']."feed";
+
+ $qry="INSERT INTO `brokers_payment` ( `payment_option`,`p_id`,`b_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$p_id','$b_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
+       $confirm_status1 = mysqli_query($conn,$qry);
+       if($confirm_status && $confirm_status1)
+       {
+        ?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='feed.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='feed.php?success';
+    </script>
+        <?php
+    }
+mysqli_close($conn);}
+?>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,12 +114,6 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -74,13 +142,11 @@
 
     <!-- Main content -->
     <section class="content">
-
+<form action="#" method="post" name="form" class="was-validated" enctype="multipart/form-data">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Feed</h3>
-
-          
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -97,7 +163,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Quantity</label>
-                <input type="Number" name="txtqnty" parsley-trigger="change" required
+                <input type="Number" name="txtqnty" parsley-trigger="change" required id="txtqnty" 
                 placeholder="Quantity of feed bags" class="form-control" >
               </div>
               <!-- /.form-group -->
@@ -106,21 +172,27 @@
               <div class="form-group">
                 <label>Price per Bag</label>
                 <input type="number" name="txtPrice" parsley-trigger="change" required
-                placeholder="Enter Price per Bag" class="form-control" >
+                placeholder="Enter Price per Bag" class="form-control" onchange="totalp(this.value)" >
               </div>
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
              <div class="col-md-6">
               <div class="form-group">
-                <label>Date</label>
+                <label>Purchase Date</label>
                 <input type="date" name="txtDate" parsley-trigger="change" required
                 placeholder="" class="form-control">
               </div>
               <!-- /.form-group -->
             </div>
-           
-
+           <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
+              </div>
+            </div>
           </div>
           <!-- /.row -->
           
@@ -147,7 +219,7 @@
             </div>
             <?php include("payment_options.php"); ?>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  >Submit</button>
            
         </div>
         <!-- /.box-body -->
@@ -156,6 +228,7 @@
         
       </div>
       <!-- /.box -->
+      </form>
     </section>
             
  
@@ -164,7 +237,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Bags Sales Record</h3>
+              <h3 class="box-title">Feed Purchase Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
@@ -172,19 +245,20 @@
                 <thead>
                 <tr>
                   
-                  <th>Farm</th>
-                  <th>Flock</th>
+                  <th>id</th>
+                  <th>Name</th>
                   <th>Quantity</th>
-                  <th>Sales Dates</th>
+                  <th>Purchase Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Image</th>
                   <th>Actions</th>
                   
                 </tr>
                 </thead>
                 <tbody>
                   <?php
-                    $query = "SELECT * FROM bags_sales ";
+                    $query = "SELECT * FROM feed ";
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
@@ -192,12 +266,13 @@
                             ?> 
                 <tr>
                                   
-                                  <td><?php echo $row['Farm_id']; ?></td> 
-                                  <td><?php echo $row['flock_id']; ?></td>
-                                  <td><?php echo $row['qnty_of_bags']; ?></td>
-                                  <td><?php echo $row['b_date']; ?></td>
+                                  <td><?php echo $row['feed_id']; ?></td> 
+                                  <td><?php echo $row['name']; ?></td>
+                                  <td><?php echo $row['qnty']; ?></td>
+                                  <td><?php echo $row['f_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
+                                  <td><img src="<?php echo $row['image']; ?>" width = "50" height = "50"></td>
                                   
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
@@ -285,5 +360,23 @@ include("includes/control_sidebar.php");
 <script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script  src="plugins/datatables/script.js"></script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
+<script type="text/javascript">
+                function totalp(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('txtqnty').value)
+                  var ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+              </script>
+</html>
 </body>
 </html>
