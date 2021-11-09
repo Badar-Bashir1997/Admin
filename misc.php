@@ -42,8 +42,8 @@
         $result= mysqli_query($conn,$q);
         $row = mysqli_fetch_array($result);
         $b_id=$row['id'];
-        $Query = "INSERT INTO misc(b_id,name,qnty,price,m_date,payment_method,image) 
-        values('$b_id','$name','$qnty','$price','$e_Date','$Status','$location')" ;
+        $Query = "INSERT INTO misc(b_id,name,qnty,remaining,price,m_date,payment_method,image) 
+        values('$b_id','$name','$qnty','$qnty','$price','$e_Date','$Status','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
   $qr="SELECT LAST_INSERT_ID()AS id";
  $result1 = mysqli_query($conn,$qr);

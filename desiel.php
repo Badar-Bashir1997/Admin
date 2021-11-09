@@ -43,8 +43,8 @@
         $b_id=$row['id'];
 
 
-        $Query = "INSERT INTO desiel(qnty_desiel,price,d_date,p_method,image) 
-        values('$qnty_of_dsl','$price','$e_Date','$Status','$location')" ;
+        $Query = "INSERT INTO desiel(qnty_desiel,remaining,price,d_date,p_method,image) 
+        values('$qnty_of_dsl','$qnty_of_dsl','$price','$e_Date','$Status','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
  $qr="SELECT LAST_INSERT_ID()AS id";
  $result1 = mysqli_query($conn,$qr);

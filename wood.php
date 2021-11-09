@@ -42,8 +42,8 @@
         $row = mysqli_fetch_array($result);
         $b_id=$row['id'];
 
-        $Query = "INSERT INTO wood(qnty_wood,price,w_date,payment_method,image) 
-        values('$qnty_of_wood','$price','$e_Date','$Status','$location')" ;
+        $Query = "INSERT INTO wood(qnty_wood,remaining,price,w_date,payment_method,image) 
+        values('$qnty_of_wood','$qnty_of_wood','$price','$e_Date','$Status','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
 
  $qr="SELECT LAST_INSERT_ID()AS id";

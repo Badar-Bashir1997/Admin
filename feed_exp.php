@@ -1,6 +1,70 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+ if(isset($_REQUEST['BtnSubmit']))
+    {
+      
+      $Price=0;
+      $Farm=$_REQUEST['Farm'];
+        $Flock=$_REQUEST['Flock'];
+        $e_Date=$_REQUEST['txtDate'];
+        $Qty=$qnty_of_feed=$_REQUEST['txtqnty'];
+        $f_name=$_REQUEST['txtName'];
+        $q1="SELECT feed.feed_id,feed.remaining,feed.price FROM feed WHERE feed.remaining>0 ORDER BY `feed`.`feed_id` ASC";
+        $result1 = mysqli_query($conn,$q1);
+
+        while($row1=mysqli_fetch_array($result1))
+        {
+          $used=0;
+          $d_id=$row1['feed_id'];
+          $d_q=$row1['remaining'];
+          $p=$row1['price'];
+          if($GLOBALS['Qty']<=0)
+          {
+            
+          }
+          elseif($GLOBALS['Qty']>=$d_q)
+          {
+            $remaning_qnty=$GLOBALS['Qty'];
+            $GLOBALS['Qty']=$GLOBALS['Qty']-$d_q;
+            $used=$remaning_qnty-$GLOBALS['Qty'];
+            $GLOBALS['Price']=$GLOBALS['Price']+$used*$p;
+            $qry2="UPDATE feed SET feed.remaining=0 WHERE feed.feed_id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+          elseif($GLOBALS['Qty']<$d_q && $GLOBALS['Qty']>0 )
+          {
+
+            $GLOBALS['Price']=$GLOBALS['Price']+$GLOBALS['Qty']*$p;
+            $Qnty=$d_q-$GLOBALS['Qty'];
+            $GLOBALS['Qty']=0;
+            $qry2="UPDATE feed SET feed.remaining='$Qnty' WHERE feed.feed_id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+        }
+        $tp=$GLOBALS['Price'];
+        $Query = "INSERT INTO expences(Farm_id,flock_id,e_name,sub_type,e_qnty,price,e_date) 
+        values('$Farm','$Flock','Feed','$f_name','$qnty_of_feed','$tp','$e_Date')" ;
+        
+ $confirm_status = mysqli_query($conn,$Query);
+       if($confirm_status)
+       {
+?>
+        <script>
+            alert('Record has been Successfully Inserted in Database');
+            window.location.href='feed_exp.php?success';
+            </script>
+<?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='feed_exp.php?success';
+    </script>
+        <?php
+    }
+}
  ?>
 <!DOCTYPE html>
 <html>
@@ -74,7 +138,7 @@
 
     <!-- Main content -->
     <section class="content">
-
+<form action="#" method="post" name="form" enctype="multipart/form-data">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -85,10 +149,73 @@
           <div class="row">
             <!-- /.col -->
             <div class="col-md-6">
+            <div class="form-group">
+                <label>Select Farm</label>
+                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);"required>
+                  <option></option>
+                   <?php 
+      
+                   $query = " SELECT * FROM farm";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result)){
+                     $f_id= $row['Farm_id'];
+                     ?>
+                  <option><?php echo $f_id ?></option>
+                  <?php   }
+                   ?> 
+                </select>
+              </div></div>
+              <div class="col-md-6">
               <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="txtName" parsley-trigger="change" required
-                placeholder="Full Name" class="form-control" >
+                <label>Select Flock</label>
+                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);"required>
+                   <script>
+                    function Farm_id(str) {
+                      $('#Flock')
+                     .find('option')
+                   .remove();
+                   $('#Flock').append(`<option value=""></option>`);                     
+                    $.ajax({
+                              url: "flock_id_ajax.php ?q="+str,
+                        type: 'get',
+                        dataType: 'JSON',
+                        success: function(response){
+                            var len = response.length;
+                            for(var i=0; i<len; i++){
+                                var id = response[i].id;
+                                optionText = response[i].id;
+                                optionValue = response[i].id;
+
+                                $('#Flock').append(`<option value="${optionValue}">
+                                 ${optionText}
+                                </option>`);
+                            }
+
+                        }
+                    });
+                                    }
+                     
+                      </script>
+                </select>
+              </div></div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Feed Name</label>
+                
+                 <select class="form-control select2" style="width: 100%;" name="txtName" id="txtName" data-placeholder="Select Feed Name" onchange="Feed_q(this.value);" required >
+                  <option></option>
+                   <?php 
+      
+                   $query = " SELECT name FROM feed WHERE feed.remaining>0 GROUP BY feed.name ";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result))
+                     {
+                     $f_name= $row['name'];
+                     ?>
+                  <option><?php echo $f_name ?></option>
+                  <?php   }
+                   ?> 
+                </select>
               </div>
               <!-- /.form-group -->
             </div>
@@ -96,26 +223,53 @@
               <div class="form-group">
                 <label>Quantity</label>
                 <input type="Number" name="txtqnty" parsley-trigger="change" required
-                placeholder="Quantity of feed bags" class="form-control" >
+                 class="form-control" id="txtqnty" placeholder="" >
+                <script>
+                    function Feed_q(str) {                   
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) 
+                  {
+                    window.t = this.responseText; 
+                    document.getElementById('txtqnty').placeholder="Maximum Number of Bags="+window.t;
+                  }
+                       
+                      };
+                   xhttp.open("GET", "feed_qnty.php?q="+str, true);
+                   xhttp.send();
+                
+                      }
+                       function onRegister()
+                       {
+                         var b = parseInt(window.t);
+                    if(document.form.txtqnty.value>b)
+                        {
+                         alert("Enter Valid Number of Bags \r\n You Enter Greater Value than Maximum");
+                        document.form.txtqnty.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
+                                    
+                  </script>
               </div>
               <!-- /.form-group -->
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Price per Bag</label>
-                <input type="number" name="txtPrice" parsley-trigger="change" required
-                placeholder="Enter Price per Bag" class="form-control" >
-              </div>
-              <!-- /.form-group -->
-            </div>
+            
             <!-- /.col -->
-             <div class="col-md-6">
+             <div class="col-md-12">
+              <div style="margin: auto;width: 60%;">
               <div class="form-group">
                 <label>Expense Date</label>
                 <input type="date" name="txtDate" parsley-trigger="change" required
                 placeholder="" class="form-control">
               </div>
               <!-- /.form-group -->
+            </div>
             </div>
            
 
@@ -132,6 +286,7 @@
         
       </div>
       <!-- /.box -->
+    </form>
     </section>
             
  
@@ -140,7 +295,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Bags Sales Record</h3>
+              <h3 class="box-title">Feed Expences Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
@@ -150,9 +305,9 @@
                   
                   <th>Farm</th>
                   <th>Flock</th>
+                  <th>Feed Name</th>
                   <th>Quantity</th>
-                  <th>Sales Dates</th>
-                  <th>Payment Method</th>
+                  <th>Date</th>
                   <th>Price</th>
                   <th>Actions</th>
                   
@@ -160,19 +315,19 @@
                 </thead>
                 <tbody>
                   <?php
-                    $query = "SELECT * FROM bags_sales ";
+                    $query = "SELECT * FROM expences WHERE e_name='Feed' ";
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
                            {
                             ?> 
-                <tr>
+                                  <tr>
                                   
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
-                                  <td><?php echo $row['qnty_of_bags']; ?></td>
-                                  <td><?php echo $row['b_date']; ?></td>
-                                  <td><?php echo $row['p_method']; ?></td>
+                                  <td><?php echo $row['sub_type']; ?></td>
+                                  <td><?php echo $row['e_date']; ?></td>
+                                  <td><?php echo $row['e_qnty']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
                                   
                    <td>
@@ -261,5 +416,10 @@ include("includes/control_sidebar.php");
 <script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script  src="plugins/datatables/script.js"></script>
+<script>
+  $(function () {
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

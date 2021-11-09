@@ -1,6 +1,9 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+ if(isset($_GET['id'])){
+            $id = $_GET['id'];
+    }
 if(isset($_REQUEST['BtnSubmit']))
  {
   $f_id=$_REQUEST['Flock_id'];
@@ -169,26 +172,28 @@ include("includes/sidebar.php");
         <!-- /.box-header -->
 
         <div class="box-body">
+            <?php
+                                        
+                  $Query = "SELECT flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,Farm_id,Breed_type FROM flock WHERE flock_id = '".$id."'";
+                  $result = mysqli_query($conn, $Query);
+                  $row = mysqli_fetch_array($result);
+                  
+              ?>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Flock Name</label>
                 <input type="text" name="Flock_Name" parsley-trigger="change" required
-                placeholder="Flock Name" class="form-control" id="FlockName"  onkeyup="myChangeFunction(this)">
+                placeholder="Flock Name" class="form-control" id="FlockName"  onkeyup="myChangeFunction(this)" value="<?php echo $row['Flock_name']; ?>">
               </div>
               <div class="form-group">
                 <label >Select Farm</label>
-                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button>
-                <!-- <?php 
-                // include("farm_popup.php"); 
-                ?> -->
                 <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" >
-                  <option></option>
+                  <option><?php echo $row['Farm_id'];?></option>
                    <?php 
                       
                    $query = " SELECT * FROM farm WHERE Status='Available' ";
                    $result = mysqli_query($conn,$query);
-                   
                      while($row = mysqli_fetch_array($result)){
                      $name= $row['Farm_id'];
                       ?>
@@ -196,7 +201,6 @@ include("includes/sidebar.php");
                   <?php   
                     }
                      ?> 
-                     
                 </select>
               </div>
              <div class="form-group">
@@ -204,13 +208,13 @@ include("includes/sidebar.php");
                <div class="input-group date">
                   <div class="input-group-addon">
                   </div>
-                  <input type="date" name="st_date" class="form-control pull-right" onchange="myChangeFunction2(this)">
+                  <input type="date" name="st_date" class="form-control pull-right" onchange="myChangeFunction2(this)" value="<?php echo $row['start_date'];?>">
                 </div>
               </div>           
                 <div class="form-group">
                 <label>Number Of Birds</label>
                 <input type="text" name="no_of_birds" parsley-trigger="change" required
-                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds">
+                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds" value="<?php echo $row['nob'];?>">
               </div>
                </div>
 
@@ -218,7 +222,7 @@ include("includes/sidebar.php");
                 <div class="form-group">
                 <label>Flock Id</label>
                 <input type="text" name="Flock_id" parsley-trigger="change" required
-                placeholder="Flock id" class="form-control" id="Flock_id" readonly>
+                placeholder="Flock id" class="form-control" id="Flock_id" readonly value="<?php echo $row['flock_id']; ?>">
               </div>
               <script >
                 var v1;
@@ -237,6 +241,9 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >
+                    <option >
+                    <?php echo $row['Breed_type'];?>
+                </option>
                 <script>
                     function Farm_id(str) {
                       xhttp = new XMLHttpRequest();
@@ -286,14 +293,14 @@ include("includes/sidebar.php");
                   <div class="input-group-addon">
                     
                   </div>
-                  <input type="date" name="end_date" class="form-control pull-right" >
+                  <input type="date" name="end_date" class="form-control pull-right" value="<?php echo $row['end_date'];?>">
                 </div>
               </div>
               <!-- /.form-group -->
               <div class="form-group">
                 <label>Purchase Cost</label>
                 <input type="text" name="Purchase_cost" parsley-trigger="change" required
-                placeholder="Purchase Cost" class="form-control" id="PurchaseCost">
+                placeholder="Purchase Cost" class="form-control" id="PurchaseCost" value="<?php echo $row['Purchase_cost'];?>">
               </div>
             </div>
             </div>

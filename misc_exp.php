@@ -3,21 +3,54 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
     {
+      $Price=0;
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];
-        $name=$_REQUEST['name'];
-        $price=$_REQUEST['price'];
+        $name=$_REQUEST['txtName'];
         $e_Date=$_REQUEST['d_Date'];
-        $Status=$_REQUEST['Status'];
-        $Query = "INSERT INTO misc(Farm_id,flock_id,name,price,m_date,payment_method) 
-        values('$Farm','$Flock','$name','$price','$e_Date','$Status')" ;
+        $Qty=$qnty_of_misc=$_REQUEST['txtqnty'];
+         $q1="SELECT misc.id,misc.remaining,misc.price FROM misc WHERE misc.remaining>0 ORDER BY id ASC";
+        $result1 = mysqli_query($conn,$q1);
+
+        while($row1=mysqli_fetch_array($result1))
+        {
+          $used=0;
+          $d_id=$row1['id'];
+          $d_q=$row1['remaining'];
+          $p=$row1['price'];
+          if($GLOBALS['Qty']<=0)
+          {
+            
+          }
+          elseif($GLOBALS['Qty']>=$d_q)
+          {
+            $remaning_qnty=$GLOBALS['Qty'];
+            $GLOBALS['Qty']=$GLOBALS['Qty']-$d_q;
+            $used=$remaning_qnty-$GLOBALS['Qty'];
+            $GLOBALS['Price']=$GLOBALS['Price']+$used*$p;
+            $qry2="UPDATE misc SET misc.remaining=0 WHERE misc.id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+          elseif($GLOBALS['Qty']<$d_q && $GLOBALS['Qty']>0 )
+          {
+
+            $GLOBALS['Price']=$GLOBALS['Price']+$GLOBALS['Qty']*$p;
+            $Qnty=$d_q-$GLOBALS['Qty'];
+            $GLOBALS['Qty']=0;
+            $qry2="UPDATE misc SET misc.remaining='$Qnty' WHERE misc.id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+        }
+        $tp=$GLOBALS['Price'];
+        $Query = "INSERT INTO expences(Farm_id,flock_id,e_name,sub_type,e_qnty,price,e_date) 
+        values('$Farm','$Flock','Misc','$name','$qnty_of_misc','$tp','$e_Date')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='misc.php?success';
+            window.location.href='misc_exp.php?success';
             </script>
 <?php
     }
@@ -25,7 +58,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='misc.php?success';
+        window.location.href='misc_exp.php?success';
     </script>
         <?php
     }
@@ -39,6 +72,10 @@
   <title>Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
+<link rel="stylesheet" href="plugins/datatables/style.css">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -113,15 +150,23 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group">
-                <label>Name</label>
-               <input type="text" name="name" parsley-trigger="change" required
-                placeholder="Expenditure Name" class="form-control" id="name">
+                <label>Misc Name</label>
+                
+                 <select class="form-control select2" style="width: 100%;" name="txtName" id="txtName" data-placeholder="Select Misc" onchange="Misc_q(this.value);" required >
+                  <option></option>
+                   <?php 
+      
+                   $query = "SELECT name FROM misc WHERE misc.remaining>0 GROUP BY misc.name ";
+                    $result = mysqli_query($conn,$query);
+                     while($row = mysqli_fetch_array($result))
+                     {
+                     $m_name= $row['name'];
+                     ?>
+                  <option><?php echo $m_name ?></option>
+                  <?php   }
+                   ?> 
+                </select>
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-             
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->
@@ -160,17 +205,49 @@ include("includes/sidebar.php");
                 </select>
               </div>
               <div class="form-group">
-                <label>Date</label>
-                <input type="Date" name="d_Date" parsley-trigger="change" required
-                 class="form-control" id="d_Date">
+                <label>Quantity</label>
+                <input type="Number" name="txtqnty" parsley-trigger="change" required
+                 class="form-control" id="txtqnty" placeholder="" >
+                <script>
+                    function Misc_q(str) {                   
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) 
+                  {
+                    window.t = this.responseText; 
+                    document.getElementById('txtqnty').placeholder="Maximum Number Quantity="+window.t;
+                  }
+                       
+                      };
+                   xhttp.open("GET", "misc_qnty.php?q="+str, true);
+                   xhttp.send();
+                
+                      }
+                       function onRegister()
+                       {
+                         var b = parseInt(window.t);
+                    if(document.form.txtqnty.value>b)
+                        {
+                         alert("Enter Valid Number of packets \r\n You Enter Greater Value than Maximum");
+                        document.form.txtqnty.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
+                                    
+                  </script>
               </div>
           </div>
           <div class="col-md-12">
               <div style="margin: auto;width: 60%;" >
           <div class="form-group">
-                <label>Price </label>
-                <input type="Number" name="price" parsley-trigger="change" required 
-                placeholder="Enter Price" class="form-control" id="price">
+                <label>Date</label>
+                <input type="Date" name="d_Date" parsley-trigger="change" required
+                 class="form-control" id="d_Date">
               </div>
             </div>
           </div>
@@ -180,6 +257,73 @@ include("includes/sidebar.php");
         </div>
       </div>
       <!-- /.box -->
+    </section>
+
+     <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Medicine Expences Record</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="overflow: scroll;">
+              <table id="example"class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  
+                  <th>Farm</th>
+                  <th>Flock</th>
+                  <th>Misc Name</th>
+                  <th>Quantity</th>
+                  <th>Date</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                  
+                </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $query = "SELECT * FROM expences WHERE e_name='Misc' ";
+                    $result = mysqli_query($conn,$query);
+                      if ($result->num_rows > 0) {            
+                        while($row = mysqli_fetch_array($result))
+                           {
+                            ?> 
+                                  <tr>
+                                  
+                                  <td><?php echo $row['Farm_id']; ?></td> 
+                                  <td><?php echo $row['flock_id']; ?></td>
+                                  <td><?php echo $row['sub_type']; ?></td>
+                                  <td><?php echo $row['e_date']; ?></td>
+                                  <td><?php echo $row['e_qnty']; ?></td>
+                                  <td><?php echo $row['price']; ?></td>
+                                  
+                   <td>
+                <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-danger btn-xs dt-delete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </td>
+                </tr>
+                <?php
+                                                 }
+                                                }
+                                            
+                                                    ?>
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
     </section>
   <div class="control-sidebar-bg"></div>
 </div>
@@ -214,23 +358,20 @@ include("includes/control_sidebar.php");
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'></script>
+<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js'></script>
+<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script  src="plugins/datatables/script.js"></script>
 <!-- Page script -->
-<script> 
-    function onRegister()
-          {
-            if(document.form.qnty_of_dsl.value == "")
-            {
-            alert("Enter Quentity of Desiel");
-            document.form.qnty_of_dsl.focus();
-            return (false);
-            }
-             
-            else
-            {
-                return (true);
-            }
-          }
-          </script> 
+
           <script>
   $(function () {
     //Initialize Select2 Elements

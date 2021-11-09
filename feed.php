@@ -45,8 +45,8 @@
         $row = mysqli_fetch_array($result);
         $b_id=$row['id'];
 
-        $Query = "INSERT INTO feed(name,qnty,price,p_method,f_date,image) 
-        values('$F_name','$qnty_feed','$price','$Status','$p_Date','$location')" ;
+        $Query = "INSERT INTO feed(name,qnty,remaining,price,p_method,f_date,image) 
+        values('$F_name','$qnty_feed','$qnty_feed','$price','$Status','$p_Date','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
 
  $qr="SELECT LAST_INSERT_ID()AS id";

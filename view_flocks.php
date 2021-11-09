@@ -34,12 +34,9 @@
 <?php
 include("includes/header.php");
  ?>
-  <!-- Left side column. contains the logo and sidebar -->
  <?php
 include("includes/sidebar.php");
  ?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -65,14 +62,13 @@ include("includes/sidebar.php");
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
-            
+                  <th>Farm id</th>
                   <th>Flock id</th>
                   <th>Flock Name</th>
-                  <th>start Date</th>
+                  <th>Start Date</th>
                   <th>Expected End Date</th>
                   <th>Number of Birds</th>
                   <th>Purchase Cost</th>
-                  <th>Farm id</th>
                   <th>Status</th>
                   <th>Closed Date</th>
                   <th>Actions</th>
@@ -86,34 +82,90 @@ include("includes/sidebar.php");
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
                            {
-                            ?>      
+                            $f_id=$row['flock_id'];
+                            $f_id1=$f_id."dlt";
+                            $f_id2=$f_id."edit";
+                            $f_id3=$f_id."view";
+                            ?>     
                               <tr>
+                                <td><?php echo $row['Farm_id']; ?></td>
                                   <td><?php echo $row['flock_id']; ?></td> 
                                   <td><?php echo $row['Flock_name']; ?></td> 
                                   <td><?php echo $row['start_date']; ?></td>
                                   <td><?php echo $row['end_date']; ?></td>
                                   <td><?php echo $row['nob']; ?></td>
                                   <td><?php echo $row['Purchase_cost']; ?></td>
-                                  <td><?php echo $row['Farm_id']; ?></td>
                                   <td><?php echo $row['Status']; ?></td>
                                   <td><?php echo $row['closed_date']; ?></td>
                                   <td>
-                                   <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                  </button>
-                                    <button type="button" class="btn btn-danger btn-xs dt-delete">
-                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    </button>
-                                    </td>
-                                     </tr>
-                                       <?php
-                                                 }
-                                                }
-                                            else
-                                              {
-                                                echo "No Result Found";
-                                              }
-                                                    ?>
+                                    <a href="#"><button type="button" name="<?php echo $f_id2;?>" class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></button></a>
+                                                    <button type="submit" name="<?php echo $f_id1;?>" class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></button>
+                                                    <?php 
+
+                                                    if(isset($_REQUEST[$f_id1]))
+                                                      {
+                                                        $qury="SELECT farm.Status FROM farm WHERE farm.Farm_id='$f_id'";
+                                                        $result1 = mysqli_query($conn,$qury);
+                                                        $row1 = mysqli_fetch_array($result1);
+                                                      if($row1['Status']=="Available"){
+                                                        $c_date=date("y-m-d");
+                                                        $qry="UPDATE farm SET farm.Status='Closed',farm.Closed_date='$c_date' WHERE farm.Farm_id='$f_id'";
+                                                        $confirm_status = mysqli_query($conn,$qry);
+                                                        if($confirm_status)
+                                                         {
+                                                          ?>
+                                                          <script>
+                                                              alert('Record has been Successfully updated in Database');
+                                                              window.location.href='view_all_farm.php?success';
+                                                              </script>
+                                                          <?php
+                                                      }
+                                                      else
+                                                      {
+                                                          ?>
+                                                          <script type="text/javascript">alert('not Working');
+                                                          window.location.href='view_all_farm.php?success';
+                                                      </script>
+                                                          <?php
+                                                      }
+                                                      }
+                                                      elseif ($row1['Status']=="Closed"){
+                                                        ?>
+                                                          <script>
+                                                              alert('Farm is allready Deleted');
+                                                              window.location.href='view_all_farm.php?success';
+                                                              </script>
+                                                          <?php
+                                                      }
+                                                      else{
+                                                        ?>
+                                                        <script>
+                                                              alert('Farm Cannot delete Because Flock is ongoing');
+                                                              window.location.href='view_all_farm.php?success';
+                                                              </script>
+                                                          
+                                                          <?php
+                                                      }
+                                                    }
+                                                     ?>
+                                              <br>
+                                              <button type="submit" name="<?php echo $f_id3;?>" class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true"></button>
+                                              <?php 
+                                                    if(isset($_REQUEST[$f_id3]))
+                                                      {
+                                                        
+                                                       }
+                                                     ?>
+                                                      </td>
+                                                       </tr>
+                                                         <?php
+                                                                   }
+                                                                  }
+                                                              else
+                                                                {
+                                                                  echo "No Result Found";
+                                                                }
+                                                                      ?>
     </tbody>
 </table>
 
