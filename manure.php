@@ -2,7 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
-
     {
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];
@@ -127,13 +126,25 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Quentity of Menure in Kg</label>
                <input type="text" name="qnty_of_menure" parsley-trigger="change" required
-                placeholder="Quentity of Menure in Kg" class="form-control" id="qnty_of_menure">
+                 class="form-control" id="qnty_of_menure">
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
+               <script>
+                    function flock(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                  window.t = this.responseText;  
+                    document.getElementById("qnty_of_menure").placeholder="Maximum Quantity of Manure="+window.t;
+                       }
+                      };
+                   xhttp.open("GET", "manure_remaining.php?q="+str, true);
+                   xhttp.send();
+                      }
+                      
+
+
+                      </script>
               
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->

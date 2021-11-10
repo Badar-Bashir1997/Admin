@@ -2,56 +2,7 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  ?>
-  <?php 
-   $tl=0;
-   $tle=0;
-   $te=0;
-   $p_l=0;
-if(isset($_REQUEST['BtnSubmit']))
-    {
-       $dataPoints = array();
-       $dataPoints1 = array();
-        $start_Date=$_REQUEST['s_Date'];
-        $end_date=$_REQUEST['e_date'];
-        $s_date=new DateTime($_REQUEST['s_Date']);
-         $e_date=new DateTime($_REQUEST['e_date']);
-        $qry="SELECT flock_id FROM flock WHERE start_date>='$start_Date' AND end_date<='$end_date' AND Breed_type='Broiler' ";
-               for($i = $s_date; $i <= $e_date; $i->modify('+1 day'))
-              {  $result = mysqli_query($conn,$qry);
-                 while($row=mysqli_fetch_array($result))
-              {
-                $flk_id1=$row['flock_id'];
-                 $st_date=$i->format('Y-m-d');
-               $Query2="SELECT (IFNULL(SUM(desiel.price),0) + (SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock WHERE flock.start_date='$st_date' AND flock.flock_id='$flk_id1' )+(SELECT IFNULL(SUM(medicine.price),0)FROM medicine WHERE medicine.m_date='$st_date' AND medicine.flock_id='$flk_id1')+(SELECT IFNULL(SUM(misc.price),0)FROM misc WHERE misc.m_date='$st_date' AND misc.flock_id='$flk_id1')+(SELECT IFNULL(SUM(wood.price),0) FROM wood WHERE wood.w_date='$st_date' AND wood.flock_id='$flk_id1')) as te FROM desiel WHERE desiel.d_date='$st_date' AND desiel.flock_id='$flk_id1'";
-               $result3 = mysqli_query($conn,$Query2);
-              $row3 = mysqli_fetch_array($result3);
-              $tle=$row3['te'];
-              $te=$te+$tle;
-              $Query3="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.sale_date='$st_date' AND broiler_sales.flock_id='$flk_id1')+(SELECT IFNULL(SUM(menure_sales.price),0) FROM menure_sales WHERE menure_sales.m_date='$st_date' AND menure_sales.flock_id='$flk_id1')) as ti FROM bags_sales WHERE bags_sales.b_date='$st_date' AND bags_sales.flock_id='$flk_id1'";
-               $result4 = mysqli_query($conn,$Query3);
-              $row4 = mysqli_fetch_array($result4);
-              $ti=$row4['ti'];              
-              $tl=$tl+$ti;
-              if($ti>0 && $tle<=0){
-              array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
-             }
-              if($tle>0){
-               array_push($dataPoints, array("y" =>$tle, "label" =>$st_date));
-             }
-             if($tle>0 && $ti<=0){
-              array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
-             }
-             if($ti>0){
-               array_push($dataPoints1, array("y" =>$ti, "label" =>$st_date));
-             }
-            }
-             }
-              $p_l=$ti-$te;
-             
-             }
-           
-            ?>
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -87,18 +38,13 @@ if(isset($_REQUEST['BtnSubmit']))
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
- <?php
+   </div>
+  <?php
 include("includes/header.php");
- ?>
-  <!-- Left side column. contains the logo and sidebar -->
- <?php
 include("includes/sidebar.php");
  ?>
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Dashboard
@@ -110,619 +56,101 @@ include("includes/sidebar.php");
          <li class="active">Broiler</li>
       </ol>
     </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="box-body">
-    <form action="#" method="post" name="form">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Start Date</label>
-                <input type="Date" name="s_Date" parsley-trigger="change" required
-                 class="form-control" id="s_Date">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>End Date</label>
-                <input type="Date" name="e_date" parsley-trigger="change" required
-                 class="form-control" id="e_date">
-          </div>
-        </div>
-      </div>
-      <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
-    </form>
-  </div>
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM farm Where Breed_type='Broiler' OR Breed_type='Both'";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-               ?>
-              <h3><?php echo $row['f_id']; ?></h3>
-              <p>Number of Farms</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-industry"></i>
-            </div>
-            <a href="view_broiler_farms.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM flock Where Breed_type='Broiler'";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-
-               ?>
-              <h3><?php echo $row['f_id']; ?></h3>
-
-              <p>Number of Flocks</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="view_broiler_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3><?php echo $te; ?></h3>
-
-              <p>Totel Expenditure</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-ios-cart-outline"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3><?php echo $p_l ?></h3>
-
-              <p>Profit/Loss</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM farm";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-               ?>
-              <h3><?php echo $row['f_id']; ?></h3>
-              <p>Number of Farms</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-industry"></i>
-            </div>
-            <a href="view_all_farm.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <?php 
-                 $query=" SELECT count(f_id) as f_id FROM flock";
-                $result1 = mysqli_query($conn, $query);
-               $row = mysqli_fetch_array($result1);
-
-               ?>
-              <h3><?php echo $row['f_id']; ?></h3>
-
-              <p>Number of Flocks</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="view_flocks.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>Xyz</h3>
-
-              <p>Xyz</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3><?php echo $tl; ?></h3>
-
-              <p>Totel Income</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-      <!-- Main row -->
-      <div class="row">
-        <!-- Left col -->
-        <section class="content col-lg-12 connectedSortable">
-      <div class="box box-default">
+    <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Repoting Graph</h3>
+      <section class="content" style="">
+     <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">ongoing Flocks</a></li>
+              <li><a href="#tab_2" data-toggle="tab">Sold</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                <?php 
+                 $query=" SELECT flock_id,Status FROM flock Where Breed_type='Broiler'AND Status='ongoing' ";
+                $result1 = mysqli_query($conn, $query);
+               
+               while($row = mysqli_fetch_array($result1))
+               {
+                $id=$row['flock_id'];
+               ?>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
 
-          
+          <div class="small-box bg-green">
+            <img class="contacts-list-img" src="upload/broiler.png" alt="User Image">
+            <div class="inner">
+              
+              <h4>Ongoing</h4>
+              <p><?php echo $id; ?></p>
+            </div>
+            <div class="icon">
+            </div>
+            <a href="flock_detail.php?id=<?php echo $id; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-           
+        <?php 
+        } ?>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+
+                <?php 
+                 $query=" SELECT flock_id,Status FROM flock Where Breed_type='Broiler'AND Status='Sold' OR Breed_type='Both' ";
+                $result1 = mysqli_query($conn, $query);
+               
+               while($row = mysqli_fetch_array($result1))
+               {
+               ?>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+
+          <div class="small-box bg-yellow">
+            <img class="contacts-list-img" src="upload/broiler.png" alt="User Image">
+            <div class="inner">
+              
+              <h4>Sold</h4>
+              <p><?php echo $row['flock_id']; ?></p>
+            </div>
+            <div class="icon">
+            </div>
+            <a href="flock_detail.php?id=<?php echo $id; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
         </div>
-        <!-- /.box-body -->
-
+        <?php 
+        } ?>
+              </div>
+              <!-- /.tab-pane -->
+              
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- nav-tabs-custom -->
         
-        
-      </div>
-      <!-- /.box -->
-    </section>
-        <section class="col-lg-7 connectedSortable">
-          
-          <!-- Chat box -->
-          <div class="box box-success">
-            <div class="box-header">
-              <i class="fa fa-comments-o"></i>
-
-              <h3 class="box-title">Chat</h3>
-
-              <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                <div class="btn-group" data-toggle="btn-toggle">
-                  <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
-                  </button>
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                </div>
-              </div>
-            </div>
-            <div class="box-body chat" id="chat-box">
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                    Mike Doe
-                  </a>
-                  I would like to meet you to discuss the latest news about
-                  the arrival of the new theme. They say it is going to be one the
-                  best themes on the market
-                </p>
-                <div class="attachment">
-                  <h4>Attachments:</h4>
-
-                  <p class="filename">
-                    Theme-thumbnail-image.jpg
-                  </p>
-
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                  </div>
-                </div>
-                <!-- /.attachment -->
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                    Alexander Pierce
-                  </a>
-                  I would like to meet you to discuss the latest news about
-                  the arrival of the new theme. They say it is going to be one the
-                  best themes on the market
-                </p>
-              </div>
-              <!-- /.item -->
-              <!-- chat item -->
-              <div class="item">
-                <img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
-
-                <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                    Susan Doe
-                  </a>
-                  I would like to meet you to discuss the latest news about
-                  the arrival of the new theme. They say it is going to be one the
-                  best themes on the market
-                </p>
-              </div>
-              <!-- /.item -->
-            </div>
-            <!-- /.chat -->
-            <div class="box-footer">
-              <div class="input-group">
-                <input class="form-control" placeholder="Type message...">
-
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.box (chat box) -->
-
-          <!-- TO DO List -->
-          <div class="box box-primary">
-            <div class="box-header">
-              <i class="ion ion-clipboard"></i>
-
-              <h3 class="box-title">To Do List</h3>
-
-              <div class="box-tools pull-right">
-                <ul class="pagination pagination-sm inline">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <ul class="todo-list">
-                <li>
-                  <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <!-- checkbox -->
-                  <input type="checkbox" value="">
-                  <!-- todo text -->
-                  <span class="text">Design a nice theme</span>
-                  <!-- Emphasis label -->
-                  <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                  <!-- General tools such as edit or delete-->
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Make the theme responsive</span>
-                  <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Let theme shine like a star</span>
-                  <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Let theme shine like a star</span>
-                  <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Check your messages and notifications</span>
-                  <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Let theme shine like a star</span>
-                  <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix no-border">
-              <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-            </div>
-          </div>
-          <!-- /.box -->
-
-          <!-- quick email widget -->
-          <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-envelope"></i>
-
-              <h3 class="box-title">Quick Email</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <div class="box-body">
-              <form action="#" method="post">
-                <div class="form-group">
-                  <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject">
-                </div>
-                <div>
-                  <textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
-                <i class="fa fa-arrow-circle-right"></i></button>
-            </div>
-          </div>
-
-        </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-
-         
-          <!-- /.box -->
-
-          <!-- solid sales graph -->
-          <div class="box box-solid bg-teal-gradient">
-            <div class="box-header">
-              <i class="fa fa-th"></i>
-
-              <h3 class="box-title">Sales Graph</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body border-radius-none">
-              <div class="chart" id="line-chart" style="height: 250px;"></div>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer no-border">
-              <div class="row">
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-                  <div class="knob-label">Mail-Orders</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-                  <div class="knob-label">Online</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center">
-                  <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-                  <div class="knob-label">In-Store</div>
-                </div>
-                <!-- ./col -->
-              </div>
-              <!-- /.row -->
-            </div>
-            <!-- /.box-footer -->
-          </div>
-          <!-- /.box -->
-
-          <!-- Calendar -->
-          <div class="box box-solid bg-green-gradient">
-            <div class="box-header">
-              <i class="fa fa-calendar"></i>
-
-              <h3 class="box-title">Calendar</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <!-- button with a dropdown -->
-                <div class="btn-group">
-                  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-bars"></i></button>
-                  <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="#">Add new event</a></li>
-                    <li><a href="#">Clear events</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">View calendar</a></li>
-                  </ul>
-                </div>
-                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-                </button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <!--The calendar -->
-              <div id="calendar" style="width: 100%"></div>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer text-black">
-              <div class="row">
-                <div class="col-sm-6">
-                  <!-- Progress bars -->
-                  <div class="clearfix">
-                    <span class="pull-left">Task #1</span>
-                    <small class="pull-right">90%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-                  </div>
-
-                  <div class="clearfix">
-                    <span class="pull-left">Task #2</span>
-                    <small class="pull-right">70%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-                  </div>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-6">
-                  <div class="clearfix">
-                    <span class="pull-left">Task #3</span>
-                    <small class="pull-right">60%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-                  </div>
-
-                  <div class="clearfix">
-                    <span class="pull-left">Task #4</span>
-                    <small class="pull-right">40%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-                  </div>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-            </div>
-          </div>
-          <!-- /.box -->
-
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+      <!-- Small boxes (Stat box) -->
+      
+      </section>
+    </div></div>
+      
+    </div>
   <?php
 include("includes/footer.php");
-  ?>
-
-  <!-- Control Sidebar -->
-   <?php
 include("includes/control_sidebar.php");
   ?>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-</div>
+
 <!-- ./wrapper -->
-<script>
-window.onload = function () {
- 
-var chart = new CanvasJS.Chart("chartContainer", {
-    title: {
-        text: "Expenses and Income Graph"
-    },
-    axisY: {
-        title: "Amount"
-    },
-    axisX: {
-        title: "Date"
-    },
-    data: [{
-        type: "area",
-        dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-    },
-    {
-        type: "area",
-        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-    }]
-});
-chart.render();
- 
-}
-</script>
+
 <!-- jQuery 2.2.3 -->
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->

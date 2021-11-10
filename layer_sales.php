@@ -61,7 +61,7 @@ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `b
           $row1 = mysqli_fetch_array($result1);
           
           $re=$row['nob']-$row1['bs'];
-          $sts="Soled";
+          $sts="Sold";
           $f_sts="Available";
           $dt=date("y-m-d");
           if($re==0){
@@ -169,7 +169,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Layer' OR Breed_type='Both'";
+                   $query = " SELECT Farm_id FROM flock where Breed_type='Layer'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];

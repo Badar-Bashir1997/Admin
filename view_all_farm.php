@@ -64,7 +64,7 @@ include("includes/sidebar.php");
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                                  <th>Farm_id</th>
+                                  <th>Farm ID</th>
                                   <th>Name</th>
                                   <th>Location</th>
                                   <th>Bread Type</th>
@@ -98,7 +98,7 @@ include("includes/sidebar.php");
                                                     <td><?php echo $row['Status']; ?></td>
                                                     <td>
                                                
-                                                <a href="update_farm.php?id=<?php echo $row['Farm_id']; ?>"><button type="button" name="<?php echo $f_id2;?>" class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></button></a>
+                                                <a class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true" href="update_farm.php?id=<?php echo $f_id; ?>"></a>
                                                      
                                                     <button type="submit" name="<?php echo $f_id1;?>" class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></button>
                                                     <?php 
@@ -151,7 +151,8 @@ include("includes/sidebar.php");
                                                     }
                                                      ?>
                                               <br>
-                                              <button type="submit" name="<?php echo $f_id3;?>" class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true"></button>
+                                              <a class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true" href="#"></a>
+                                              
                                               <?php 
                                                     if(isset($_REQUEST[$f_id3]))
                                                       {

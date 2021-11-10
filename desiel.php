@@ -7,7 +7,7 @@
         $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
         move_uploaded_file($_FILES["image"]["tmp_name"],"upload/" . $newFilename);
         $location = "upload/" . $newFilename;
-        $qnty_of_dsl=$_REQUEST['qnty_of_dsl'];
+        $remain=$qnty_of_dsl=$_REQUEST['qnty_of_dsl'];
         $price=$_REQUEST['price'];
         $e_Date=$_REQUEST['d_Date'];
         $Status=$_REQUEST['Status'];
@@ -44,12 +44,12 @@
 
 
         $Query = "INSERT INTO desiel(qnty_desiel,remaining,price,d_date,p_method,image) 
-        values('$qnty_of_dsl','$qnty_of_dsl','$price','$e_Date','$Status','$location')" ;
- $confirm_status = mysqli_query($conn,$Query);
- $qr="SELECT LAST_INSERT_ID()AS id";
- $result1 = mysqli_query($conn,$qr);
-$row1=mysqli_fetch_array($result1);
-$p_id=$row1['id']."desiel";
+        values('$qnty_of_dsl','$remain','$price','$e_Date','$Status','$location')";
+         $confirm_status = mysqli_query($conn,$Query);
+         $qr="SELECT LAST_INSERT_ID()AS id";
+         $result1 = mysqli_query($conn,$qr);
+        $row1=mysqli_fetch_array($result1);
+        $p_id=$row1['id']."desiel";
 
         $qry="INSERT INTO `brokers_payment` ( `payment_option`,`p_id`,`b_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$p_id','$b_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);

@@ -61,18 +61,13 @@
                    </a>
                      </li>
                
-                 <li class="treeview">
-          <a href="#">
+                 <li>
+          <a href="Layer.php">
             <i class="iconify" data-icon="vs:chicken"></i> <span>Layer</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+           </i>
             </span>
           </a>
-        <ul class="treeview-menu">
-          <li><a href="Layer.php"><i class="iconify" data-icon="vs:chicken"></i>View All Detail</a></li>
-            <li><a href="egg_production.php"><i class="iconify" data-icon="vs:chicken"></i>Egg Production</a></li>
-          
-                </ul>
+        
                 </li>
                <li class="treeview">
               <a href="#">
@@ -82,8 +77,21 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="feed_mils.php"><i class="fa fa-industry"></i>View all</a></li>
+            <li><a href="#"><i class="fa fa-industry"></i>View all</a></li>
             <li><a href="#"><i class="fa fa-industry"></i>Purchase New</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i  class="iconify" data-icon="vs:chicken"></i> <span>Production</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="egg_production.php"><i class="iconify" data-icon="vs:chicken"></i>Egg Production</a></li>
+            <li><a href="manure_production.php"><i class="iconify" data-icon="emojione-monotone:chicken"></i>Manure Production</a></li>
+            
           </ul>
         </li>
          <li class="treeview">
@@ -116,32 +124,6 @@
             <li><a href="misc.php"><i class="iconify" data-icon="codicon:symbol-misc"></i>Misc</a></li>
           </ul>
         </li>
-          <li >
-          <a href="vandors.php">
-            <i class="fa fa-group (alias)"></i> <span>Vendors</span>
-          </a>
-        </li>
-        <li >
-          <a href="payment.php">
-            <i class="fa  fa-money"></i> <span>Payments</span>
-          </a>
-        </li>
-        <li >
-          <a href="brokers.php">
-            <i class="fa fa-group (alias)"></i> <span>Brokers</span>
-          </a>
-        </li>
-        <li >
-          <a href="Add_Vehical.php">
-            <i class=" fa   fa-truck"></i> <span>Vehicles</span>
-          </a>
-        </li>
-       <li >
-          <a href="Add_Employees.php">
-            <i class="iconify" data-icon="clarity:employee-group-solid"></i> <span>Employees</span>
-          </a>
-        </li>
-        <li><a href="Add_users.php"><i class="fa fa-users "></i> <span>Users</span></a></li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-money"></i> <span>Expenses</span>
@@ -157,7 +139,40 @@
             <li><a href="misc_exp.php"><i class="iconify" data-icon="codicon:symbol-misc"></i>Misc</a></li>
           </ul>
         </li>
+          <li >
+          <a href="vandors.php">
+            <i class="fa fa-group (alias)"></i> <span>Vendors</span>
+          </a>
+        </li>
+        
+        <li >
+          <a href="brokers.php">
+            <i class="fa fa-group (alias)"></i> <span>Brokers</span>
+          </a>
+        </li>
+        <li >
+          <a href="Add_Vehical.php">
+            <i class=" fa   fa-truck"></i> <span>Vehicles</span>
+          </a>
+        </li>
+        <li >
+          <a href="payment.php">
+            <i class="fa  fa-money"></i> <span>Payments</span>
+          </a>
+        </li>
         <li><a href="repoting.php"><i class="fa fa-line-chart "></i> <span>Reporting</span></a></li>
+        <li >
+          <a href="Add_Employees.php">
+            <i class="iconify" data-icon="clarity:employee-group-solid"></i> <span>Employees</span>
+          </a>
+        </li>
+        <li><a href="Add_users.php"><i class="fa fa-users "></i> <span>Users</span></a></li>
+        <li >
+          
+          <a href="settings.php">
+            <i class="fa fa-gears" ></i> <span>Settings</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

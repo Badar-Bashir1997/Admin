@@ -2,7 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
-
     {
         $Farm=$_REQUEST['Farm'];
         $Flock_id=$_REQUEST['Flock'];
@@ -51,6 +50,7 @@ $row1=mysqli_fetch_array($result1);
 $s_id=$row1['id']."egg";
  $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);
+
        
        if($confirm_status && $confirm_status1)
        {

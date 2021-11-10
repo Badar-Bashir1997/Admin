@@ -2,7 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
-
     {
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];

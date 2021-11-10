@@ -178,7 +178,7 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group">
                 <label >Select Farm</label>
-                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button>
+                <!-- <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button> -->
                 <!-- <?php 
                 // include("farm_popup.php"); 
                 ?> -->
@@ -257,7 +257,6 @@ include("includes/sidebar.php");
                    $('#breed').append(`<option value="${optionValue}">
                   ${optionText}
                 </option>`);
-
                    }
                    else{
                     optionText = t;

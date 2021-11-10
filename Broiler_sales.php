@@ -62,7 +62,7 @@ $s_id=$row1['id']."Broiler";
           $row1 = mysqli_fetch_array($result1);
           
           $re=$row['nob']-$row1['bs'];
-          $sts="Soled";
+          $sts="Sold";
           $f_sts="Available";
           $dt=date("y-m-d");
           if($re==0){
