@@ -50,8 +50,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='desiel_exp.php?success';
+            alert('Desiel Record has been Successfully Inserted');
+            window.location.href='desiel_exp.php';
             </script>
 <?php
     }
@@ -59,7 +59,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='desiel_exp.php?success';
+        window.location.href='desiel_exp.php';
     </script>
         <?php
     }
@@ -111,12 +111,12 @@ include("includes/sidebar.php");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Desiel
+        Diesel
         <small>Expenses</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Desiel</a></li>
+        <li><a href="#">Diesel</a></li>
         <li class="active">Expenses</li>
       </ol>
     </section>
@@ -127,7 +127,7 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Desiel Expenses</h3>
+          <h3 class="box-title">Diesel Expenses</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -154,10 +154,10 @@ include("includes/sidebar.php");
                 $q="SELECT IFNULL(SUM(desiel.remaining),0)AS Q FROM desiel";
                 $result1 = mysqli_query($conn,$q);
                 $row1 = mysqli_fetch_array($result1);
-                $ttl_dsl="Total Desiel=".$row1['Q'];
+                $ttl_dsl="Total Diesel=".$row1['Q'];
                  ?>
               <div class="form-group">
-                <label>Desiel Quentity</label>
+                <label>Diesel Quantity</label>
                <input type="text" name="qnty_of_dsl" parsley-trigger="change" required
                  class="form-control" id="qnty_of_dsl" placeholder="<?php echo $ttl_dsl; ?>">
                 
@@ -202,7 +202,7 @@ include("includes/sidebar.php");
                 
                       //}
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){

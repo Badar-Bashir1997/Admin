@@ -57,8 +57,8 @@ $p_id=$row1['id']."wood";
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='wood.php?success';
+            alert('Wood Record has been Successfully Added');
+            window.location.href='wood.php';
             </script>
 <?php
     }
@@ -66,7 +66,7 @@ $p_id=$row1['id']."wood";
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='wood.php?success';
+        window.location.href='wood.php';
     </script>
         <?php
     }
@@ -139,9 +139,9 @@ include("includes/sidebar.php");
             <div class="col-md-6">
              
               <div class="form-group">
-                <label>Wood Quentity</label>
-               <input type="text" name="qnty_of_wood" parsley-trigger="change" required
-                placeholder="Wood Bags" class="form-control" id="qnty_of_wood">
+                <label>Wood Quantity</label>
+               <input type="Number" name="qnty_of_wood" parsley-trigger="change" required
+                placeholder="Wood Bags" class="form-control" id="qnty_of_wood" onkeyup="totalp1(this.value)">
               </div>
               <div class="form-group">
                 <label>Price </label>
@@ -185,7 +185,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -329,7 +329,25 @@ include("includes/control_sidebar.php");
 
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('qnty_of_wood').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;

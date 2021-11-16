@@ -15,14 +15,26 @@
         $email=$_REQUEST['txt_email'];
         $capacity=$_REQUEST['txt_capacity'];
         $status="Available";
-        $Query = "UPDATE farm SET Farm_id='$f_id',name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',email='$email',bird_capacity='$capacity' WHERE Farm_id='".$id."'" ;
+        $q="SELECT flock.Farm_id,flock.nob FROM flock WHERE flock.Status='ongoing' AND flock.Farm_id='".$id."'";
+        $result1=mysqli_query($conn,$q);
+        $row1=mysqli_fetch_array($result1);
+        $frmID="";
+           $nobQ=0;
+        if($row1 && $row1['Farm_id']==!''){
+           $frmID=$row1['Farm_id'];
+           $nobQ=$row1['nob'];
+          }
+         
+        if($frmID==$id && $nobQ>$capacity)
+        {
+          $Query = "UPDATE farm SET Farm_id='$f_id',name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',email='$email' WHERE Farm_id='".$id."'" ;
         $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
         ?>
         <script>
-            alert('Record has been Successfully Updated in Database');
-            window.location.href='view_all_farm.php?success';
+            alert('Capacity not changed Because Flock Is Goingon \r\n Farm Successfully Updated');
+            window.location.href='view_all_farm.php';
             </script>
         <?php
     }
@@ -30,11 +42,34 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_farm.php?success';
+        window.location.href='view_all_farm.php';
     </script>
         <?php
     }
-}
+        }
+        else
+        {
+        $Query = "UPDATE farm SET Farm_id='$f_id',name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',email='$email',bird_capacity='$capacity' WHERE Farm_id='".$id."'" ;
+        $confirm_status = mysqli_query($conn,$Query);
+        
+       if($confirm_status)
+       {
+        ?>
+        <script>
+            alert('Farm Successfully Updated');
+            window.location.href='view_all_farm.php';
+            </script>
+        <?php
+    }
+    else
+    {
+        ?>
+        <script type="text/javascript">alert('not Working');
+        window.location.href='view_all_farm.php';
+    </script>
+        <?php
+    }
+}}
 
 
  ?>
@@ -164,7 +199,8 @@ include("includes/sidebar.php");
                 </script>
                <div class="form-group">
                 <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;" name="breed_type" value="<?php echo $row['Breed_type'];  ?>">
+                <select class="form-control select2" style="width: 100%;" name="breed_type" >
+                  <option><?php echo $row['Breed_type'];  ?></option>
                   <option>Broiler</option>
                   <option>Layer</option>
                   <option>Both</option>

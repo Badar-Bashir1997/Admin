@@ -46,7 +46,7 @@
 <section>
 	<br><br><br><br><br>
 	<div class="container col-md-5" >
-	<div class="card ">
+	<div class="card " style="padding: 30px;">
 <form role="form" method="post">
 	 <center>
 		<h4 class="header-title m-t-0">Admin Login Area</h4><br>

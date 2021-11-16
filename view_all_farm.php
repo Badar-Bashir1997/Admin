@@ -46,9 +46,9 @@ include("includes/sidebar.php");
         <small>Records</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">View All Records</li>
+        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="javascript:void(0)" class="active">Farms</a></li>
+       
       </ol>
     </section>
     <form action="#" method="post" name="form">
@@ -118,7 +118,7 @@ include("includes/sidebar.php");
                                                           ?>
                                                           <script>
                                                               alert('Record has been Successfully updated in Database');
-                                                              window.location.href='view_all_farm.php?success';
+                                                              window.location.href='view_all_farm.php';
                                                               </script>
                                                           <?php
                                                       }
@@ -126,7 +126,7 @@ include("includes/sidebar.php");
                                                       {
                                                           ?>
                                                           <script type="text/javascript">alert('not Working');
-                                                          window.location.href='view_all_farm.php?success';
+                                                          window.location.href='view_all_farm.php';
                                                       </script>
                                                           <?php
                                                       }
@@ -135,7 +135,7 @@ include("includes/sidebar.php");
                                                         ?>
                                                           <script>
                                                               alert('Farm is allready Deleted');
-                                                              window.location.href='view_all_farm.php?success';
+                                                              window.location.href='view_all_farm.php';
                                                               </script>
                                                           <?php
                                                       }
@@ -143,7 +143,7 @@ include("includes/sidebar.php");
                                                         ?>
                                                         <script>
                                                               alert('Farm Cannot delete Because Flock is ongoing');
-                                                              window.location.href='view_all_farm.php?success';
+                                                              window.location.href='view_all_farm.php';
                                                               </script>
                                                           
                                                           <?php
@@ -151,7 +151,7 @@ include("includes/sidebar.php");
                                                     }
                                                      ?>
                                               <br>
-                                              <a class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true" href="#"></a>
+                                              <!-- <a class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true" href="#"></a> -->
                                               
                                               <?php 
                                                     if(isset($_REQUEST[$f_id3]))

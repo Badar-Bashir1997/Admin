@@ -100,7 +100,7 @@ include("includes/sidebar.php");
                 $result1 = mysqli_query($conn, $query);
                
                while($row = mysqli_fetch_array($result1))
-               {
+               {$id=$row['flock_id'];
                ?>
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -110,7 +110,7 @@ include("includes/sidebar.php");
             <div class="inner">
               
               <h4>Sold</h4>
-              <p><?php echo $row['flock_id']; ?></p>
+              <p><?php echo $id ?></p>
             </div>
             <div class="icon">
             </div>

@@ -15,8 +15,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='brokers.php?success';
+            alert('Broker Successfully Added');
+            window.location.href='brokers.php';
             </script>
 <?php
     }
@@ -24,7 +24,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='brokers.php?success';
+        window.location.href='brokers.php';
     </script>
         <?php
     }

@@ -47,15 +47,16 @@
                               <script type="text/javascript">
                                 var v;
                                 function myChangeFunction4(input1) {
-                                  document.getElementById('Farmid').value ='';
-                               var input2 = document.getElementById('Farmid');
-                                input2.value =input2.value+input1.value;
-                                v=input2.value
+                                var v2 = document.getElementById('FarmLocation').value;
+                               document.getElementById('Farm_id').value ='';
+                               var input2=document.getElementById('Farm_id');
+                                input2.value =input1.value+"("+v2+")";
                                        }
                                        function myChangeFunction5(input1) {
-                                        document.getElementById('Farmid').value ='';
-                               var input2 = document.getElementById('Farmid');
-                                input2.value =v+"("+ input1.value+")";
+                                        var v = document.getElementById('FarmName').value;
+                                      document.getElementById('Farm_id').value ='';
+                                      var input2=document.getElementById('Farm_id');
+                                      input2.value =v+"("+ input1.value+")";
                                        }
                                 </script>
                                <div class="form-group">
@@ -78,7 +79,7 @@
                       </div>
                       <script> 
                          function clk() {
-                            var fname = document.getElementById('#FarmName').val();
+                            var fname = document.getElementById('#FarmName').value;
                              var Location = $('#Location').val();
                              var txtphone = $('#txtphone').val();
                              var capacity = $('#capacity').val();

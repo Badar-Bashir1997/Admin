@@ -2,7 +2,6 @@
  include("lib/session.php");
  include("lib/DBConn.php");
   if(isset($_REQUEST['BtnSubmit']))
-
     {
         $name=$_REQUEST['Farm_Name'];
         $location=$_REQUEST['Farm_Location'];
@@ -18,16 +17,16 @@
        {
         ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='view_all_farm.php?success';
+            alert('Farm has been Successfully Inserted');
+            window.location.href='view_all_farm.php';
             </script>
         <?php
-    }
+      }
     else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_farm.php?success';
+        window.location.href='Add_farm.php';
     </script>
         <?php
     }
@@ -84,9 +83,9 @@ include("includes/sidebar.php");
         <small>Farm</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">Add New Farms</li>
+        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="javascript:void(0)"class="active" >Farms</a></li>
+        
       </ol>
     </section>
 
@@ -121,7 +120,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone No</label>
                 <input type="text" name="txt_phone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" id="phone" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
+                placeholder="+923XXXXXXXXX" class="form-control" id="phone" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" >
               </div>
               <div class="form-group">
                 <label>Bird Capacity</label>
@@ -138,17 +137,18 @@ include("includes/sidebar.php");
                 placeholder="Farm id" class="form-control" id="Farm_id" readonly="" >
               </div>
               <script type="text/javascript">
-                var v;
+                
                 function myChangeFunction(input1) {
-                  document.getElementById('Farm_id').value ='';
-               var input2 = document.getElementById('Farm_id');
-                input2.value =input2.value+input1.value;
-                v=input2.value
+               var v2 = document.getElementById('FarmLocation').value;
+               document.getElementById('Farm_id').value ='';
+               var input2=document.getElementById('Farm_id');
+                input2.value =input1.value+"("+v2+")";
                        }
                        function myChangeFunction2(input1) {
+                        var v = document.getElementById('FarmName').value;
                         document.getElementById('Farm_id').value ='';
-               var input2 = document.getElementById('Farm_id');
-                input2.value =v+"("+ input1.value+")";
+                        var input2=document.getElementById('Farm_id');
+                        input2.value =v+"("+ input1.value+")";
                        }
                 </script>
                <div class="form-group">

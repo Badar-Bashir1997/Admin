@@ -7,8 +7,9 @@ if(isset($_REQUEST['BtnSubmit']))
         $f_name=$_REQUEST['Flock_Name'];
         $st_date=$_REQUEST['st_date'];
         $End_date=$_REQUEST['end_date'];
-        $no_of_birds=$_REQUEST['no_of_birds'];
+        $remaining=$no_of_birds=$_REQUEST['no_of_birds'];
         $Purchase_cost=$_REQUEST['Purchase_cost'];
+        $t_p=$no_of_birds*$Purchase_cost;
         $Farm=$_REQUEST['Farm'];
         $Breed_type=$_REQUEST['breed'];
         $status="ongoing";
@@ -21,34 +22,39 @@ if(isset($_REQUEST['BtnSubmit']))
   if ($row && $row['flock_id']==!'') {
      ?>
         <script>alert('Flock is already in stock');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php
 
   }
      else{
       if($Breed_type=="Broiler"){
- if($interval->days<=30  or $date2<=$date1 )
+ if($interval->days<30  or $date2<=$date1 )
         {
             ?>
         <script type="text/javascript">alert('Invalid:- Pleas Enter Minimium 1 Months');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php    
 }
 else
 {
-  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type,Status) 
-        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type','$status')" ;
+  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,remaining,Purchase_cost,farm_id,Breed_type,Status) 
+        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$remaining','$Purchase_cost','$Farm','$Breed_type','$status')" ;
  $confirm_status = mysqli_query($conn,$Query);
-       if($confirm_status)
+ 
+ $Query1 = "INSERT INTO expences(Farm_id,flock_id,e_name,sub_type,e_qnty,price,e_date) 
+        values('$Farm','$f_id','Flock','No','$no_of_birds','$t_p','$st_date')" ;
+        
+ $confirm_status1 = mysqli_query($conn,$Query1);
+       if($confirm_status&& $confirm_status1)
        {
         $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
         mysqli_query($conn,$q);
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='view_flocks.php?success';
+            alert('Flock has been Successfully Inserted');
+            window.location.href='view_flocks.php';
             </script>
 <?php
     }
@@ -56,7 +62,7 @@ else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php
     }
@@ -68,23 +74,27 @@ else
         {
             ?>
         <script type="text/javascript">alert('Invalid:- Pleas Enter Minimium 6 Months');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php    
 }
 else
 {
-  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,Purchase_cost,farm_id,Breed_type,Status) 
-        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$Purchase_cost','$Farm','$Breed_type','$status')" ;
+  $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,remaining,Purchase_cost,farm_id,Breed_type,Status) 
+        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$remaining','$Purchase_cost','$Farm','$Breed_type','$status')" ;
  $confirm_status = mysqli_query($conn,$Query);
-       if($confirm_status)
+       $Query1 = "INSERT INTO expences(Farm_id,flock_id,e_name,sub_type,e_qnty,price,e_date) 
+        values('$Farm','$f_id','Flock','No','$no_of_birds','$t_p','$st_date')" ;
+        
+ $confirm_status1 = mysqli_query($conn,$Query1);
+       if($confirm_status&& $confirm_status1)
        {
         $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
         mysqli_query($conn,$q);
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='view_flocks.php?success';
+            alert('Flock has been Successfully Inserted');
+            window.location.href='view_flocks.php';
             </script>
 <?php
     }
@@ -92,7 +102,7 @@ else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php
     }
@@ -132,7 +142,7 @@ else
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="stl.css">
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -150,9 +160,9 @@ include("includes/sidebar.php");
         <small>Flocks</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Farms</a></li>
-        <li class="active">Flocks</li>
+        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="javascript:void(0)"class="active">Farms</a></li>
+        
       </ol>
     </section>
 
@@ -195,25 +205,77 @@ include("includes/sidebar.php");
                   <option value="<?php echo $name ?>"><?php echo $name ?></option>
                   <?php   
                     }
-                     ?> 
-                     
+                     ?>
                 </select>
               </div>
              <div class="form-group">
                 <label>Start Date</label>
-               <div class="input-group date">
+                <div class="input-group date">
                   <div class="input-group-addon">
                   </div>
-                  <input type="date" name="st_date" class="form-control pull-right" onchange="myChangeFunction2(this)">
+                  <input type="Date" class="form-control pull-right" id="st_date" name="st_date" onchange="myChangeFunction2(this)">
+                  <!-- <script>
+                       function date_chk(dt){
+                        if(document.getElementById('breed').value=='')
+                        {
+
+                            $('#breed').addClass("highlght").focus();
+                        }
+                         if(document.getElementById('breed').value=='Broiler')
+                        {
+                       if(document.getElementById('end_date').value!='')
+                       {
+                            var st_dt=new Date(dt);
+                        var ed_dt=new Date(document.getElementById('end_date').value);
+                        const diffTime = Math.abs(st_dt - ed_dt);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        if(ed_dt<=st_dt && diffDays<30)
+                        {
+                            document.getElementById('end_date').value=''
+                            document.getElementById('st_date').value=''
+                            alert('Invalid:- Pleas Enter Minimium 1 Months');
+                        }
+                        if(document.getElementById('breed').value=='')
+                        {
+
+                        }
+                       } 
+                        }
+                       
+                      }
+                  </script> -->
                 </div>
+               
               </div>           
                 <div class="form-group">
                 <label>Number Of Birds</label>
-                <input type="text" name="no_of_birds" parsley-trigger="change" required
-                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds">
+                <input type="Number" name="no_of_birds" parsley-trigger="change" required
+                placeholder="Number Of Birds" class="form-control" id="NumberOfBirds" onkeyup="bird_capacity(this.value)">
               </div>
                </div>
+               <script type="text/javascript">
+                  function bird_capacity(birds)
+                  {
+                    var str=document.getElementById('Farm').value;
+                      $.ajax({
+                     url: "bird_capacity.php?q="+str,
+                    type: 'get',
+                    dataType: 'JSON',
+                    success: function(response){
+                            var capacity = parseInt(response);
+                            var b=parseInt(birds);
 
+                            if(b>capacity)
+                            {
+                                document.getElementById('NumberOfBirds').value="";
+                                alert('You Entered More Birds Than Capacity');
+                            }
+                        }
+
+                    });
+                    }
+                  
+               </script>
             <div class="col-md-6">
                 <div class="form-group">
                 <label>Flock Id</label>
@@ -221,22 +283,25 @@ include("includes/sidebar.php");
                 placeholder="Flock id" class="form-control" id="Flock_id" readonly>
               </div>
               <script >
-                var v1;
-                function myChangeFunction(input11) {
+                function myChangeFunction(input1) {
+                    var v = document.getElementById('st_date').value;
                   document.getElementById('Flock_id').value ='';
-               var input21 = document.getElementById('Flock_id');
-                input21.value =input21.value+input11.value;
-                v1=input21.value
+               var input2 = document.getElementById('Flock_id');
+                input2.value =input1.value+"("+v+")";
                        }
-                       function myChangeFunction2(input11) {
+                       function myChangeFunction2(input1) {
+                        var v = document.getElementById('FlockName').value;
                         document.getElementById('Flock_id').value ='';
-               var input21 = document.getElementById('Flock_id');
-                input21.value =v1+"("+ input11.value+")";
+               var input2 = document.getElementById('Flock_id');
+                input2.value =v+"("+input1.value+")";
                        }
+
+                      
                 </script>
               <div class="form-group">
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >
+
                 <script>
                     function Farm_id(str) {
                       xhttp = new XMLHttpRequest();
@@ -247,6 +312,7 @@ include("includes/sidebar.php");
                     $('#breed')
                     .find('option')
                    .remove();
+                   $('#breed').append(`<option></option>`);
                     optionText = "Broiler";
                    optionValue = "Broiler";
                    $('#breed').append(`<option value="${optionValue}">
@@ -265,7 +331,7 @@ include("includes/sidebar.php");
                    $('#breed')
                     .find('option')
                    .remove();
-                         
+                         $('#breed').append(`<option></option>`);
                 $('#breed').append(`<option value="${optionValue}">
                   ${optionText}
                 </option>`);}
@@ -283,15 +349,43 @@ include("includes/sidebar.php");
                 <label>Expeted End Date</label>
                 <div class="input-group date">
                   <div class="input-group-addon">
-                    
                   </div>
-                  <input type="date" name="end_date" class="form-control pull-right" >
+                  <input type="Date" class="form-control pull-right" id="end_date" name="end_date" >
                 </div>
+                <!-- <script>
+                       function date_chk1(dt){
+                        if(document.getElementById('breed').value=='')
+                        {
+                            $('#breed').addClass("highlght").focus();
+                        }
+                         if(document.getElementById('breed').value=='Broiler')
+                        {
+                       if(document.getElementById('st_date').value!='')
+                       {
+                            var ed_dt=new Date(dt);
+                        var st_dt=new Date(document.getElementById('st_date').value);
+                        const diffTime = Math.abs(st_dt - ed_dt);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        if(ed_dt<=st_dt && diffDays<30)
+                        {
+                            document.getElementById('end_date').value=''
+                            document.getElementById('st_date').value=''
+                            alert('Invalid:- Pleas Enter Minimium 1 Months');
+                        }
+                        if(document.getElementById('breed').value=='')
+                        {
+
+                        }
+                       } 
+                        }
+                       
+                      }
+                  </script> -->
               </div>
               <!-- /.form-group -->
               <div class="form-group">
-                <label>Purchase Cost</label>
-                <input type="text" name="Purchase_cost" parsley-trigger="change" required
+                <label>Price Per Bird</label>
+                <input type="Number" name="Purchase_cost" parsley-trigger="change" required
                 placeholder="Purchase Cost" class="form-control" id="PurchaseCost">
               </div>
             </div>
@@ -345,6 +439,7 @@ include("includes/control_sidebar.php");
   $(function () {
     $(".select2").select2();
   });
+  
 </script>
 </body>
 </html>

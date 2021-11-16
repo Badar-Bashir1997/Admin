@@ -51,7 +51,7 @@ else
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='view_flocks.php?success';
+            window.location.href='view_flocks.php';
             </script>
 <?php
     }
@@ -59,7 +59,7 @@ else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_flocks.php?success';
+        window.location.href='Add_flocks.php';
     </script>
         <?php
     }
@@ -279,7 +279,7 @@ include("includes/sidebar.php");
                 </option>`);}
                        }
                       };
-                   xhttp.open("GET", "ajax_file.php?q="+str, true);
+                   xhttp.open("GET", "ajax_file.php?q="+str,true);
                    xhttp.send();
                       }
                      

@@ -60,8 +60,8 @@ $p_id=$row1['id']."feed";
        {
         ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='feed.php?success';
+            alert('Feed Record has been Successfully Inserted ');
+            window.location.href='feed.php';
             </script>
 <?php
     }
@@ -69,7 +69,7 @@ $p_id=$row1['id']."feed";
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='feed.php?success';
+        window.location.href='feed.php';
     </script>
         <?php
     }
@@ -164,14 +164,14 @@ mysqli_close($conn);}
               <div class="form-group">
                 <label>Quantity</label>
                 <input type="Number" name="txtqnty" parsley-trigger="change" required id="txtqnty" 
-                placeholder="Quantity of feed bags" class="form-control" >
+                placeholder="Quantity of feed bags" class="form-control" onkeyup="totalp1(this.value)" >
               </div>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Price per Bag</label>
-                <input type="number" name="txtPrice" parsley-trigger="change" required
+                <input type="number" name="txtPrice" parsley-trigger="change" required id="price" 
                 placeholder="Enter Price per Bag" class="form-control" onchange="totalp(this.value)" >
               </div>
               <!-- /.form-group -->
@@ -208,7 +208,7 @@ mysqli_close($conn);}
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -222,10 +222,6 @@ mysqli_close($conn);}
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  >Submit</button>
            
         </div>
-        <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
       </form>
@@ -245,9 +241,10 @@ mysqli_close($conn);}
                 <thead>
                 <tr>
                   
-                  <th>id</th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Quantity</th>
+                  <th>Remaining</th>
                   <th>Purchase Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
@@ -269,6 +266,7 @@ mysqli_close($conn);}
                                   <td><?php echo $row['feed_id']; ?></td> 
                                   <td><?php echo $row['name']; ?></td>
                                   <td><?php echo $row['qnty']; ?></td>
+                                  <td><?php echo $row['remaining']; ?></td>
                                   <td><?php echo $row['f_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
@@ -368,15 +366,31 @@ include("includes/control_sidebar.php");
 </script>
 <script type="text/javascript">
                 function totalp(nm){
-
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('txtqnty').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;
                 }
-              </script>
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }              </script>
 </html>
 </body>
 </html>

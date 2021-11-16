@@ -7,9 +7,9 @@ if(isset($_REQUEST['BtnSubmit']))
         $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];
         $e_Date=$_REQUEST['e_Date'];
-        $no_of_Eggs=$_REQUEST['no_of_Eggs'];
-        $Query = "INSERT INTO egg_production(Farm_id,flock_id,e_date,noe_p) 
-        values('$Farm','$Flock','$e_Date','$no_of_Eggs')" ;
+        $remain=$no_of_Eggs=$_REQUEST['no_of_Eggs'];
+        $Query = "INSERT INTO egg_production(Farm_id,flock_id,e_date,noe_p,remaining) 
+        values('$Farm','$Flock','$e_Date','$no_of_Eggs','$remain')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -17,8 +17,8 @@ if(isset($_REQUEST['BtnSubmit']))
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='egg_production.php?success';
+            alert('Egg Production Successfully Added');
+            window.location.href='egg_production.php';
             </script>
 <?php
     }
@@ -26,7 +26,7 @@ if(isset($_REQUEST['BtnSubmit']))
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='egg_production.php?success';
+        window.location.href='egg_production.php';
     </script>
         <?php
     }
@@ -121,7 +121,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Layer' OR Breed_type='Both'";
+                   $query = " SELECT Farm_id FROM flock where Breed_type='Layer' ";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
@@ -173,7 +173,7 @@ include("includes/sidebar.php");
                 
                       //}
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){
@@ -201,7 +201,7 @@ include("includes/sidebar.php");
              <div class="col-md-6">
               <div class="form-group">
                 <label>Number Of Eggs Laid</label>
-                <input type="text" name="no_of_Eggs" parsley-trigger="change" required
+                <input type="Number" name="no_of_Eggs" parsley-trigger="change" required
                 placeholder="Number Of Eggs Laid" class="form-control" id="NumberOfBirds">
               </div>
               <!-- /.form-group -->

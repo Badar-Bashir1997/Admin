@@ -51,8 +51,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='feed_exp.php?success';
+            alert('Feed Expenses has been Successfully Inserted');
+            window.location.href='feed_exp.php';
             </script>
 <?php
     }
@@ -60,7 +60,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='feed_exp.php?success';
+        window.location.href='feed_exp.php';
     </script>
         <?php
     }
@@ -176,7 +176,7 @@
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);                     
                     $.ajax({
-                              url: "flock_id_ajax.php ?q="+str,
+                              url: "flock_id_ajax.php?q="+str,
                         type: 'get',
                         dataType: 'JSON',
                         success: function(response){

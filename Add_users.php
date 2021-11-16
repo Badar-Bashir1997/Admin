@@ -22,8 +22,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_users.php?success';
+            alert('User has been Successfully Inserted');
+            window.location.href='Add_users.php';
             </script>
 <?php
     }
@@ -31,7 +31,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_users.php?success';
+        window.location.href='Add_users.php';
     </script>
         <?php
     }

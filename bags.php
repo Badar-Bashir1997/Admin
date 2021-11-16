@@ -18,8 +18,8 @@
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='bags.php?success';
+            alert('Bag Sales has been Successfully Inserted');
+            window.location.href='bags.php';
             </script>
 <?php
     }
@@ -27,7 +27,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='bags.php?success';
+        window.location.href='bags.php';
     </script>
         <?php
     }
@@ -99,8 +99,6 @@ include("includes/sidebar.php");
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Add Bags Sales</h3>
-
-          
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -123,16 +121,46 @@ include("includes/sidebar.php");
                    ?> 
                 </select>
               </div>
+              <?php 
+              $sql = "SELECT IFNULL(SUM(qnty),0) AS fd, IFNULL(SUM(remaining),0) AS re  FROM feed ";
+                $result=mysqli_query($conn,$sql);
+                $row=mysqli_fetch_array($result);
+                if($row && $row['fd']!=''){
+                    $r=$row['fd']-$row['re'];
+                    
+                }
+                else
+                {
+                    $r=0;
+                  }
+                 ?>
+                 
               <div class="form-group">
                 <label>Quentity of Bags</label>
-               <input type="text" name="qnty_of_bags" parsley-trigger="change" required
-                placeholder="Quentity of Bags" class="form-control" id="qnty_of_bags">
+               <input type="Number" name="qnty_of_bags" parsley-trigger="change" required
+                 class="form-control" id="qnty_of_bags" onkeyup="onRegister11();">
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-              
-              <!-- /.form-group -->
+
+                    <script type="text/javascript">
+                   function onRegister11()
+                       {
+                        var t="<?php echo $r ?>";
+                         var b = parseInt(t);
+                    if(document.form.qnty_of_bags.value>b)
+                        {
+                          document.getElementById('qnty_of_bags').value="";
+                         alert("Enter Valid Quantity");
+                        document.form.qnty_of_bags.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
+                 </script>
+                 
             </div>
             <!-- /.col -->
             <!-- /.col -->
@@ -142,6 +170,7 @@ include("includes/sidebar.php");
                 <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
                    <script>
                     function Farm_id(str) {
+                      document.getElementById("qnty_of_bags").placeholder="Maximum Quantity of Bags="+<?php echo $r;?>;
                       $('#Flock')
                      .find('option')
                    .remove();
@@ -169,7 +198,7 @@ include("includes/sidebar.php");
                 
                       //}
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){
@@ -223,7 +252,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked >
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit"  >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank"  >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -234,7 +263,7 @@ include("includes/sidebar.php");
             </div>
             
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  >Submit</button>
            </form>
         </div>
         <!-- /.box-body -->
@@ -263,6 +292,7 @@ include("includes/sidebar.php");
                   <th>Sales Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Total</th>
                   <th>Actions</th>
                   
                 </tr>
@@ -282,6 +312,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['qnty_of_bags']; ?></td>
                                   <td><?php echo $row['b_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
+                                  <td><?php echo $row['price']; ?></td>
                                   <td><?php echo $p; ?></td>
                                   
                    <td>
@@ -364,22 +395,8 @@ include("includes/control_sidebar.php");
 <script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script  src="plugins/datatables/script.js"></script>
-<script> 
-    function onRegister()
-          {
-            if(document.form.qnty_of_bags.value == "")
-            {
-            alert("Enter Quentity of Bags");
-            document.form.qnty_of_bags.focus();
-            return (false);
-            }
-             
-            else
-            {
-                return (true);
-            }
-          }
-          </script> 
+
+    
           <script>
   $(function () {
     //Initialize Select2 Elements

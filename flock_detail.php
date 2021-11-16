@@ -74,7 +74,7 @@ include("includes/sidebar.php");
             <span class="info-box-icon bg-aqua"><img class="ion" src="upload/broiler.png" alt="User Image"></span>
             <?php 
 
-            $q="SELECT (IFNULL(SUM(expences.price),0)+(SELECT IFNULL(SUM(flock.Purchase_cost),0) FROM flock))AS EXP FROM expences WHERE expences.flock_id='".$id."'";
+            $q="SELECT IFNULL(SUM(expences.price),0) AS EXP FROM expences WHERE expences.flock_id='".$id."'";
             $result=mysqli_query($conn, $q);
             $row= mysqli_fetch_array($result);
             $exp=$row['EXP'];
@@ -93,11 +93,11 @@ include("includes/sidebar.php");
             <span class="info-box-icon bg-red"><img class="ion" src="upload/broiler.png" alt="User Image"></span>
             <?php 
 
-            $q="SELECT (IFNULL(SUM(bags_sales.price),0) + (SELECT IFNULL(SUM(broiler_sales.price),0) FROM broiler_sales WHERE broiler_sales.flock_id='$id')+(SELECT IFNULL(SUM(egg_sales.price),0)FROM egg_sales WHERE egg_sales.flock_id='$id')+(SELECT IFNULL(SUM(layer_sales.price),0)FROM layer_sales WHERE layer_sales.flock_id='$id')+(SELECT IFNULL(SUM(manure_sales.price),0) FROM manure_sales WHERE manure_sales.flock_id='$id')) as ti FROM bags_sales WHERE bags_sales.flock_id='$id'";
+            $q="SELECT IFNULL(SUM(sales.price),0) AS ti FROM sales WHERE sales.flock_id='".$id."'";
             $result=mysqli_query($conn, $q);
             $row= mysqli_fetch_array($result);
             $ti=$row['ti'];
-            $p_l=$exp-$ti;
+            
              ?>
             <div class="info-box-content">
               <span class="info-box-text">Total Income</span>
@@ -120,13 +120,16 @@ include("includes/sidebar.php");
               <span class="info-box-text">Profit Loss</span>
               <?php
               if($exp>$ti)
-              {?>
+              {
+                $p_l=$exp-$ti;
+                ?>
                 <span class="info-box-number">Loss</span> 
                <span class="info-box-number"><?php echo $p_l ?></span> 
                <?php  
               } 
               else
               {
+                $p_l=$ti-$exp;
                 ?>
                 <span class="info-box-number">Profit</span>
                 <span class="info-box-number"><?php echo $p_l ?></span>
@@ -163,12 +166,12 @@ include("includes/sidebar.php");
               
                 <div class="col-md-6">
                   <p class="text-center">
-                    <strong>Ecpences</strong>
+                    <strong>Expenses</strong>
                   </p>
 
                   <div class="box-body">
           <div class="progress-group">
-                    <span class="progress-text">Add Products to Cart</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>160</b>/200</span>
 
                     <div class="progress sm">
@@ -185,7 +188,7 @@ include("includes/sidebar.php");
                     </div>
                   </div>
                   <div class="progress-group">
-                    <span class="progress-text">Visit Premium Page</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>480</b>/800</span>
 
                     <div class="progress sm">
@@ -194,7 +197,7 @@ include("includes/sidebar.php");
                   </div>
                   <!-- /.progress-group -->
                   <div class="progress-group">
-                    <span class="progress-text">Send Inquiries</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>250</b>/500</span>
 
                     <div class="progress sm">
@@ -212,7 +215,7 @@ include("includes/sidebar.php");
                   </p>
 
                   <div class="progress-group">
-                    <span class="progress-text">Add Products to Cart</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>160</b>/200</span>
 
                     <div class="progress sm">
@@ -230,7 +233,7 @@ include("includes/sidebar.php");
                   </div>
                   <!-- /.progress-group -->
                   <div class="progress-group">
-                    <span class="progress-text">Visit Premium Page</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>480</b>/800</span>
 
                     <div class="progress sm">
@@ -239,7 +242,7 @@ include("includes/sidebar.php");
                   </div>
                   <!-- /.progress-group -->
                   <div class="progress-group">
-                    <span class="progress-text">Send Inquiries</span>
+                    <span class="progress-text">xyz</span>
                     <span class="progress-number"><b>250</b>/500</span>
 
                     <div class="progress sm">
@@ -267,7 +270,7 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Expences</h3>
+              <h3 class="box-title">Expenses</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
@@ -355,12 +358,12 @@ include("includes/sidebar.php");
                                   <th>Name</th>
                                   <th>Quantity</th>
                                   <th>Price</th>
-                                  <th>Expense Date</th>
+                                  <th>Sale Date</th>
                                   </tr>
                                   </thead>
                                   <tbody>
                                     <?php
-                                      $query = "SELECT * FROM expences WHERE flock_id='".$id."'";
+                                      $query = "SELECT * FROM sales WHERE flock_id='".$id."'";
                                       $result = mysqli_query($conn,$query);
                                         if ($result->num_rows > 0) {            
                                           while($row = mysqli_fetch_array($result))
@@ -370,10 +373,10 @@ include("includes/sidebar.php");
                                                 <tr>
                                                     <td><?php echo $row['Farm_id']; ?></td> 
                                                     <td><?php echo $row['flock_id']; ?></td>
-                                                    <td><?php echo $row['e_name']; ?></td>
-                                                    <td><?php echo $row['e_qnty']; ?></td>
+                                                    <td><?php echo $row['sale_name']; ?></td>
+                                                    <td><?php echo $row['s_qnty']; ?></td>
                                                     <td><?php echo $row['price']; ?></td>
-                                                    <td><?php echo $row['e_date']; ?></td>
+                                                    <td><?php echo $row['s_date']; ?></td>
                                                     
                                                        </tr>
                                                          <?php

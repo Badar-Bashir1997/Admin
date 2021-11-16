@@ -8,6 +8,7 @@
         $Flock=$_REQUEST['Flock'];
         $no_of_birds=$_REQUEST['no_of_birds'];
         $price=$_REQUEST['price'];
+        $t_p=$price*$no_of_birds;
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
         if($Status=='Cash'){
@@ -49,22 +50,26 @@
  $result1 = mysqli_query($conn,$qr);
 $row1=mysqli_fetch_array($result1);
 $s_id=$row1['id']."Broiler";
-
  $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);
-       if($confirm_status && $confirm_status1)
+       $Query1 = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,s_date) 
+        values('$Farm','$Flock','Broiler','$no_of_birds','$t_p','$e_Date')" ;
+        
+ $confirm_status2 = mysqli_query($conn,$Query1);
+
+       if($confirm_status && $confirm_status1 && $confirm_status2)
+      
        {
-        $sql = "SELECT flock.nob FROM flock WHERE flock.flock_id='$Flock'";
+        $sql = "SELECT flock.remaining FROM flock WHERE flock.flock_id='$Flock'";
           $result = mysqli_query($conn,$sql);
           $row = mysqli_fetch_array($result);
-          $qry="SELECT IFNULL(SUM(broiler_sales.nob_sale),0)AS bs FROM broiler_sales WHERE broiler_sales.flock_id='$Flock'";
-          $result1 = mysqli_query($conn,$qry);
-          $row1 = mysqli_fetch_array($result1);
           
-          $re=$row['nob']-$row1['bs'];
+          $re=$row['remaining']-$no_of_birds;
           $sts="Sold";
           $f_sts="Available";
           $dt=date("y-m-d");
+          $qr1="UPDATE flock SET flock.remaining='$re' WHERE flock.flock_id='$Flock'";
+            mysqli_query($conn,$qr1);
           if($re==0){
             $q="UPDATE farm SET farm.Status='$f_sts' WHERE farm.Farm_id='$Farm'";
           mysqli_query($conn,$q);
@@ -75,8 +80,8 @@ $s_id=$row1['id']."Broiler";
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='Broiler_sales.php?success';
+            alert('Broiler Sale Successfull');
+            window.location.href='Broiler_sales.php';
             </script>
 <?php
     }
@@ -84,7 +89,7 @@ $s_id=$row1['id']."Broiler";
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Broiler_sales.php?success';
+        window.location.href='Broiler_sales.php';
     </script>
         <?php
     }
@@ -170,7 +175,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Broiler' OR Breed_type='Both' AND Status='ongoing'";
+                   $query = " SELECT Farm_id FROM flock where Breed_type='Broiler' AND Status='ongoing'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
@@ -183,7 +188,7 @@ include("includes/sidebar.php");
               <div class="form-group" id="parent">
                 <label>Number of Birds</label>
                  <input type="Number" name="no_of_birds" placeholder="" parsley-trigger="change" required
-                 class="form-control" id="no_of_birds" onkeyup="onRegister();">
+                 class="form-control" id="no_of_birds" onkeyup="onRegister();totalp1(this.value)">
                 <script>
                     function birds(str) {
                       xhttp = new XMLHttpRequest();
@@ -200,7 +205,7 @@ include("includes/sidebar.php");
                        {
                          var b = parseInt(window.t);
                     if(document.form.no_of_birds.value>b)
-                        {
+                        {document.getElementById('no_of_birds').value="";
                          alert("Enter Valid Number of Birds");
                         document.form.no_of_birds.focus();
                            return (false);
@@ -215,11 +220,6 @@ include("includes/sidebar.php");
 
                       </script>
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-              
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->
@@ -234,7 +234,7 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){
@@ -286,7 +286,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -327,6 +327,7 @@ include("includes/sidebar.php");
                   <th>Sales Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Total</th>
                   <th>Actions</th>
                   
                 </tr>
@@ -337,7 +338,7 @@ include("includes/sidebar.php");
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
-                           {
+                           {$total=$row['price']*$row['nob_sale'];
                             ?> 
                 <tr>
                                   
@@ -347,6 +348,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['sale_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
+                                  <td><?php echo $total; ?></td>
                                   
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
@@ -445,7 +447,25 @@ include("includes/control_sidebar.php");
 
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('no_of_birds').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;

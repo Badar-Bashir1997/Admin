@@ -18,8 +18,8 @@ if(isset($_REQUEST['BtnSubmit']))
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='Add_b_flocks.php?success';
+           alert('Broiler Record has been Successfully Inserted in Database');
+            window.location.href='Add_b_flocks.php';
             </script>
 <?php
     }
@@ -27,7 +27,7 @@ if(isset($_REQUEST['BtnSubmit']))
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Add_b_flocks.php?success';
+        window.location.href='Add_b_flocks.php';
     </script>
         <?php
     }
@@ -159,14 +159,14 @@ include("includes/sidebar.php");
                   
                    <?php 
       
-      $query = " SELECT * FROM farm where Breed_type='Broiler'";
-      $result = mysqli_query($conn,$query);
-      while($row = mysqli_fetch_array($result)){
-        $name= $row['name'];
-        ?>
-                  <option><?php echo $name ?></option>
-                  <?php   }
-       ?> 
+                    $query = " SELECT * FROM farm where Breed_type='Broiler'";
+                    $result = mysqli_query($conn,$query);
+                    while($row = mysqli_fetch_array($result)){
+                      $name= $row['name'];
+                      ?>
+                                <option><?php echo $name ?></option>
+                                <?php   }
+                     ?> 
                 </select>
               </div>
               <!-- /.form-group -->

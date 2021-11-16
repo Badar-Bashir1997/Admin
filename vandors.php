@@ -15,8 +15,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='vandors.php?success';
+            alert('Vandor Successfully Added');
+            window.location.href='vandors.php';
             </script>
 <?php
     }
@@ -24,7 +24,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='vandors.php?success';
+        window.location.href='vandors.php';
     </script>
         <?php
     }
@@ -84,12 +84,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Add
-        <small>Vandors</small>
+        <small>Vendors</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Add</a></li>
-        <li class="active">Vandors</li>
+        <li class="active">Vendors</li>
       </ol>
     </section>
 
@@ -99,7 +99,7 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Vandors</h3>
+          <h3 class="box-title">Add New Vendors</h3>
 
           
         </div>
@@ -160,7 +160,7 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Brokers Record</h3>
+              <h3 class="box-title">Vendors Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">

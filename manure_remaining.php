@@ -10,7 +10,7 @@ echo $row['manure'] === "" ? "no suggestion" : $row['manure'];
 }
 else
 {
-    $r="No Production";
+    $r=0;
     echo $r === "" ? "no suggestion" : $r;
     
 }

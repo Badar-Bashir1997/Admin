@@ -17,7 +17,7 @@
 ?>
         <script>
             alert('Settings has been Successfully Updated in Database');
-            window.location.href='settings.php?success';
+            window.location.href='settings.php';
             </script>
 <?php
     }
@@ -25,7 +25,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='settings.php?success';
+        window.location.href='settings.php';
     </script>
         <?php
     }

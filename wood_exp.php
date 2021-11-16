@@ -48,8 +48,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='wood_exp.php?success';
+            alert('Wood Expenses Successfully Added');
+            window.location.href='wood_exp.php';
             </script>
 <?php
     }
@@ -57,7 +57,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='wood_exp.php?success';
+        window.location.href='wood_exp.php';
     </script>
         <?php
     }
@@ -155,8 +155,8 @@ include("includes/sidebar.php");
                 $row1 = mysqli_fetch_array($result1);
                 $ttl_wood="Total Wood=".$row1['Q'];
                  ?>
-                <label>Wood Quentity</label>
-               <input type="text" name="qnty_of_wood" parsley-trigger="change" required
+                <label>Wood Quantity</label>
+               <input type="Number" name="qnty_of_wood" parsley-trigger="change" required
                 placeholder="<?php echo $ttl_wood; ?>" class="form-control" id="qnty_of_wood">
               </div>
               <!-- /.form-group -->
@@ -178,7 +178,7 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){

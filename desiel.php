@@ -60,8 +60,8 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='desiel.php?success';
+            alert('Desiel Record has been Successfully Inserted');
+            window.location.href='desiel.php';
             </script>
 <?php
     }
@@ -69,7 +69,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='desiel.php?success';
+        window.location.href='desiel.php';
     </script>
         <?php
     }
@@ -118,12 +118,12 @@ include("includes/sidebar.php");
     <section class="content-header">
       <h1>
         Purchase
-        <small>Desiel</small>
+        <small>Diesel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Purchase</a></li>
-        <li class="active">Desiel</li>
+        <li class="active">Diesel</li>
       </ol>
     </section>
 
@@ -133,7 +133,7 @@ include("includes/sidebar.php");
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Purchase Desiel</h3>
+          <h3 class="box-title">Purchase Diesel</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -141,9 +141,9 @@ include("includes/sidebar.php");
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Desiel Quentity</label>
-               <input type="text" name="qnty_of_dsl" parsley-trigger="change" required
-                placeholder="Desiel Quentity" class="form-control" id="qnty_of_dsl">
+                <label>Diesel Quantity</label>
+               <input type="Number" name="qnty_of_dsl" parsley-trigger="change" required
+                placeholder="Diesel Quantity" class="form-control" id="qnty_of_dsl" onkeyup="totalp1(this.value)">
               </div>
               <!-- /.form-group -->
             
@@ -188,7 +188,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -211,7 +211,7 @@ include("includes/sidebar.php");
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Desiel Purchase Record</h3>
+              <h3 class="box-title">Diesel Purchase Record</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow: scroll;">
@@ -333,7 +333,25 @@ include("includes/control_sidebar.php");
 
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('qnty_of_dsl').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;

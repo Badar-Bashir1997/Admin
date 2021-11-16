@@ -105,7 +105,7 @@ include("includes/sidebar.php");
 ?>
         <script>
             alert('Record has been Successfully Inserted in Database');
-            window.location.href='breed_type.php?success';
+            window.location.href='breed_type.php';
             </script>
 <?php
  
@@ -114,7 +114,7 @@ include("includes/sidebar.php");
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='breed_type.php?success';
+        window.location.href='breed_type.php';
     </script>
         <?php
     }

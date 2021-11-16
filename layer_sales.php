@@ -53,17 +53,16 @@ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `b
 
        if($confirm_status && $confirm_status1)
        {
-        $sql = "SELECT flock.nob FROM flock WHERE flock.flock_id='$Flock'";
+        $sql = "SELECT flock.remaining FROM flock WHERE flock.flock_id='$Flock'";
           $result = mysqli_query($conn,$sql);
           $row = mysqli_fetch_array($result);
-          $qry="SELECT IFNULL(SUM(layer_sales.nob_sale),0)AS bs FROM layer_sales WHERE layer_sales.flock_id='$Flock'";
-          $result1 = mysqli_query($conn,$qry);
-          $row1 = mysqli_fetch_array($result1);
           
-          $re=$row['nob']-$row1['bs'];
+          $re=$row['remaining']-$no_of_birds;
           $sts="Sold";
           $f_sts="Available";
           $dt=date("y-m-d");
+          $qr1="UPDATE flock SET flock.remaining='$re' WHERE flock.flock_id='$Flock'";
+            mysqli_query($conn,$qr1);
           if($re==0){
             $q="UPDATE farm SET farm.Status='$f_sts' WHERE farm.Farm_id='$Farm'";
           mysqli_query($conn,$q);
@@ -74,8 +73,8 @@ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `b
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='layer_sales.php?success';
+            alert('Layer Successfully Sale');
+            window.location.href='layer_sales.php';
             </script>
 <?php
     }
@@ -83,7 +82,7 @@ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `b
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='layer_sales.php?success';
+        window.location.href='layer_sales.php';
     </script>
         <?php
     }
@@ -182,31 +181,30 @@ include("includes/sidebar.php");
               <div class="form-group" id="parent">
                 <label id="response">Number of Birds</label>
                  <input type="Number" name="no_of_birds" placeholder="" parsley-trigger="change" required
-                 class="form-control" id="no_of_birds" onkeyup="onRegister();">
+                 class="form-control" id="no_of_birds" onkeyup="onRegister();totalp1(this.value)">
                  
-                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <script>
-
                      function birds(str) {
                       xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                  window.t = this.responseText;  
-                    document.getElementById("no_of_birds").placeholder="Maximum Number of Birds="+window.t;
-                       }
+                      xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                          window.t = this.responseText;  
+
+                          document.getElementById("no_of_birds").placeholder="Maximum Number of Birds="+window.t;
+                        }
                       };
-                   xhttp.open("GET", "ttl_no_of_layer.php?q="+str, true);
-                   xhttp.send();
+                      xhttp.open("GET", "ttl_no_of_layer.php?q="+str, true);
+                      xhttp.send();
                       }
                       function onRegister()
-                       {
-                         var b = parseInt(window.t);
-                    if(document.form.no_of_birds.value>b)
-                        {
-                         alert("Enter Valid Number of Birds");
-                        document.form.no_of_birds.focus();
-                           return (false);
-                             }
+                      {
+                        var b = parseInt(window.t);
+                        if(document.form.no_of_birds.value>b)
+                          {document.getElementById('no_of_birds').value="";
+                          alert("Enter Valid Number of Birds");
+                          document.form.no_of_birds.focus();
+                          return (false);
+                          }
              
                                  else
                               {
@@ -235,7 +233,7 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){
@@ -287,7 +285,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -327,6 +325,7 @@ include("includes/sidebar.php");
                   <th>Sales Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Total</th>
                   <th>Actions</th>
                   
                 </tr>
@@ -337,7 +336,7 @@ include("includes/sidebar.php");
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
-                           {
+                           {$total=$row['nob_sale']*$row['price'];
                             ?> 
                 <tr>
                                   
@@ -347,7 +346,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['s_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
-                                  
+                                  <td><?php echo $total; ?></td>
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -444,7 +443,25 @@ include("includes/control_sidebar.php");
 
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('no_of_birds').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+                  
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;

@@ -18,8 +18,8 @@
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='manure.php?success';
+            alert('Manuer Successfully sale');
+            window.location.href='manure.php';
             </script>
 <?php
     }
@@ -27,7 +27,7 @@
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='manure.php?success';
+        window.location.href='manure.php';
     </script>
         <?php
     }
@@ -125,8 +125,8 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group">
                 <label>Quentity of Menure in Kg</label>
-               <input type="text" name="qnty_of_menure" parsley-trigger="change" required
-                 class="form-control" id="qnty_of_menure">
+               <input type="Number" name="qnty_of_menure" parsley-trigger="change" required
+                 class="form-control" id="qnty_of_menure"  onkeyup="onRegister();">
               </div>
                <script>
                     function flock(str) {
@@ -140,9 +140,22 @@ include("includes/sidebar.php");
                    xhttp.open("GET", "manure_remaining.php?q="+str, true);
                    xhttp.send();
                       }
-                      
-
-
+                      function onRegister()
+                       {
+                         var b = parseInt(window.t);
+                    if(document.form.qnty_of_menure.value>b)
+                        {
+                          document.getElementById('qnty_of_menure').value="";
+                         alert("Enter Valid Quantity");
+                        document.form.qnty_of_menure.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
                       </script>
               
             </div>
@@ -158,30 +171,8 @@ include("includes/sidebar.php");
                      .find('option')
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
-                     // xhttp = new XMLHttpRequest();
-                    //xhttp.onreadystatechange = function() {
-                  //if (this.readyState == 4 && this.status == 200) {
-                //     $('#Flock')
-                //     .find('option')
-                //    .remove();
-                //    var l= this.responseText.length; 
-                //     var t= this.responseText;
-                //     var t=this;
-                //      for(var i=0; i<l; i++){
-                //     optionText = t[i].id;
-                //    optionValue = t[i].id;         
-                // $('#Flock').append(`<option value="${optionValue}">
-                //   ${optionText}
-                // </option>`);
-                //      }
-                       
-                //       };
-                //    xhttp.open("GET", "flock_id_ajax.php?q="+str,dataType: 'JSON', true);
-                //    xhttp.send();
-                
-                      //}
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){
@@ -236,7 +227,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked >
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit"  >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank"  >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -276,6 +267,7 @@ include("includes/sidebar.php");
                   <th>Sales Dates</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Total</th>
                   <th>Actions</th>
                   
                 </tr>
@@ -286,16 +278,16 @@ include("includes/sidebar.php");
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
-                           {
+                           {$total=$row['qnty_of_manure']*$row['price']
                             ?> 
-                <tr>            <?php $p=$row['price']*$row['qnty_of_manure']; ?>
-                                  
+                              <tr>
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
                                   <td><?php echo $row['qnty_of_manure']; ?></td>
                                   <td><?php echo $row['m_date']; ?></td>
                                   <td><?php echo $row['p_method']; ?></td>
-                                  <td><?php echo $p; ?></td>
+                                  <td><?php echo $row['price']; ?></td>
+                                  <td><?php echo $total; ?></td>
                                   
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
@@ -381,20 +373,7 @@ include("includes/control_sidebar.php");
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script  src="plugins/datatables/script.js"></script>
 <script> 
-    function onRegister()
-          {
-            if(document.form.qnty_of_menure.value == "")
-            {
-            alert("Enter Quentity of Menure in Kg");
-            document.form.qnty_of_menure.focus();
-            return (false);
-            }
-             
-            else
-            {
-                return (true);
-            }
-          }
+    
           </script> 
           <script>
   $(function () {

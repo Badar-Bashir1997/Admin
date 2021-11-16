@@ -17,8 +17,8 @@ if(isset($_REQUEST['BtnSubmit']))
 
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='manure_production.php?success';
+            alert('Manure Production Successfully Inserted');
+            window.location.href='manure_production.php';
             </script>
 <?php
     }
@@ -26,7 +26,7 @@ if(isset($_REQUEST['BtnSubmit']))
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='manure_production.php?success';
+        window.location.href='manure_production.php';
     </script>
         <?php
     }
@@ -121,7 +121,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm ";
+                   $query = " SELECT * FROM farm WHERE Status='ongoing' OR Status='Available'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
@@ -151,7 +151,7 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
+              url: "flock_id_ajax.php?q="+str,
         type: 'get',
         dataType: 'JSON',
         success: function(response){

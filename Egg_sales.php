@@ -3,10 +3,12 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
     {
+      $Price1=0;
         $Farm=$_REQUEST['Farm'];
         $Flock_id=$_REQUEST['Flock'];
-        $no_of_Eggs=$_REQUEST['no_of_Eggs'];
-        $price=$_REQUEST['price'];
+        $Qty=$no_of_Eggs=$_REQUEST['no_of_Eggs'];
+        $pr=$price=$_REQUEST['price'];
+        $t_p=$price*$no_of_Eggs;
         $e_Date=$_REQUEST['e_Date'];
         $Status=$_REQUEST['Status'];
         if($Status=='Cash'){
@@ -35,6 +37,40 @@
         $remaning=$_REQUEST['txtremaning2'];
         $balance=$_REQUEST['txtbalance2'];
         }
+        $q1="SELECT id,remaining FROM egg_production WHERE remaining>0 ORDER BY id ASC";
+        $result1 = mysqli_query($conn,$q1);
+        while($row1=mysqli_fetch_array($result1))
+        {
+          $used=0;
+          $d_id=$row1['id'];
+          $d_q=$row1['remaining'];
+          if($GLOBALS['Qty']<=0)
+          {
+            
+          }
+          elseif($GLOBALS['Qty']>=$d_q)
+          {
+            $remaning_qnty=$GLOBALS['Qty'];
+            $GLOBALS['Qty']=$GLOBALS['Qty']-$d_q;
+            $used=$remaning_qnty-$GLOBALS['Qty'];
+            $GLOBALS['Price1']=$GLOBALS['Price1']+$used*$GLOBALS['pr'];
+            $qry2="UPDATE egg_production SET remaining=0 WHERE id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+          elseif($GLOBALS['Qty']<$d_q && $GLOBALS['Qty']>0 )
+          {
+
+            $GLOBALS['Price1']=$GLOBALS['Price1']+$GLOBALS['Qty']*$GLOBALS['pr'];
+            $Qnty=$d_q-$GLOBALS['Qty'];
+            $GLOBALS['Qty']=0;
+            $qry2="UPDATE egg_production SET remaining='$Qnty' WHERE id='$d_id'";
+            mysqli_query($conn,$qry2);
+          }
+        }
+        $tp=$GLOBALS['Price1'];
+        $Query = "INSERT INTO sales(Farm_id,flock_id,sale_name,sub_type,s_qnty,price,s_date) 
+        values('$Farm','$Flock_id','Egg','No','$no_of_Eggs','$tp','$e_Date')" ;
+ $confirm_status = mysqli_query($conn,$Query);
         $q="SELECT vandors.v_id FROM vandors WHERE name='$name'";
         $result= mysqli_query($conn,$q);
         $row = mysqli_fetch_array($result);
@@ -42,7 +78,7 @@
 
          $Query = "INSERT INTO egg_sales(Farm_id,v_id,flock_id,Sale_Date,noe,payment_method,price) 
         values('$Farm','$v_id','$Flock_id','$e_Date','$no_of_Eggs','$Status','$price')" ;
-        
+      
  $confirm_status = mysqli_query($conn,$Query);
  $qr="SELECT LAST_INSERT_ID()AS id";
  $result1 = mysqli_query($conn,$qr);
@@ -50,22 +86,25 @@ $row1=mysqli_fetch_array($result1);
 $s_id=$row1['id']."egg";
  $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);
+       $Query1 = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,s_date) 
+        values('$Farm','$Flock_id','Egg','$no_of_Eggs','$t_p','$e_Date')" ;
+        
+ $confirm_status2 = mysqli_query($conn,$Query1);
 
-       
-       if($confirm_status && $confirm_status1)
+       if($confirm_status && $confirm_status1 && $confirm_status2)
        {
-?>
+      ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
-            window.location.href='Egg_sales.php?success';
+            alert('Egg Sales Record has been Successfully Inserted ');
+            window.location.href='Egg_sales.php';
             </script>
-<?php
+      <?php
     }
     else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='Egg_sales.php?success';
+        window.location.href='Egg_sales.php';
     </script>
         <?php
     }
@@ -151,7 +190,7 @@ include("includes/sidebar.php");
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM farm where Breed_type='Layer' OR Breed_type='Both'";
+                   $query = " SELECT Farm_id FROM flock where Breed_type='Layer'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['Farm_id'];
@@ -164,7 +203,7 @@ include("includes/sidebar.php");
               <div class="form-group" id="parent">
                 <label >Number of Eggs:-</label>
                  <input type="Number" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
-                 class="form-control" id="no_of_Eggs" onkeyup="onRegister();">
+                 class="form-control" id="no_of_Eggs" onkeyup="onRegister();totalp1(this.value)">
                 <script>
                     function flock(str) {
                       xhttp = new XMLHttpRequest();
@@ -182,6 +221,7 @@ include("includes/sidebar.php");
                          var b = parseInt(window.t);
                     if(document.form.no_of_Eggs.value>b)
                         {
+                          document.getElementById('no_of_Eggs').value="";
                          alert("Enter Valid Number of Eggs");
                         document.form.no_of_Eggs.focus();
                            return (false);
@@ -199,11 +239,6 @@ include("includes/sidebar.php");
                     
               
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-             
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->
@@ -218,23 +253,23 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php ?q="+str,
-        type: 'get',
-        dataType: 'JSON',
-        success: function(response){
-            var len = response.length;
-            for(var i=0; i<len; i++){
-                var id = response[i].id;
-                optionText = response[i].id;
-                optionValue = response[i].id;
+              url: "flock_id_ajax.php?q="+str,
+                type: 'get',
+                dataType: 'JSON',
+                success: function(response){
+                    var len = response.length;
+                    for(var i=0; i<len; i++){
+                        var id = response[i].id;
+                        optionText = response[i].id;
+                        optionValue = response[i].id;
 
                 $('#Flock').append(`<option value="${optionValue}">
                  ${optionText}
                 </option>`);
-            }
+                        }
 
-        }
-    });
+                    }
+                });
                     }
                      
                       </script>
@@ -271,7 +306,7 @@ include("includes/sidebar.php");
                <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
                 <label for="cash" >Cash</label><br>
                 <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Cradit</label><br> 
+                <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
                 <label for="Bank">Bank</label><br>  
               </div>
@@ -286,9 +321,6 @@ include("includes/sidebar.php");
            </form>
         </div>
         <!-- /.box-body -->
-
-        
-        
       </div>
       <!-- /.box -->
     </section>
@@ -311,6 +343,7 @@ include("includes/sidebar.php");
                   <th>Number Of Eggs</th>
                   <th>Payment Method</th>
                   <th>Price</th>
+                  <th>Total</th>
                   <th>Actions</th>
                   
                 </tr>
@@ -322,8 +355,9 @@ include("includes/sidebar.php");
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
                            {
+                            $total=$row['noe']*$row['price'];
                             ?> 
-                <tr>
+                                  <tr>
                                   
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
@@ -331,7 +365,7 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['noe']; ?></td>
                                   <td><?php echo $row['payment_method']; ?></td>
                                   <td><?php echo $row['price']; ?></td>
-                                  
+                                  <td><?php echo $total; ?></td>
                    <td>
                 <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -428,10 +462,29 @@ include("includes/control_sidebar.php");
 
                   var num = parseInt(nm);
                   var num2= parseInt(document.getElementById('no_of_Eggs').value)
-                  var ttl=num*num2;
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
                   document.getElementById("txtcamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtamount").placeholder="total Amount="+ttl;
                   document.getElementById("txtbamount").placeholder="total Amount="+ttl;
                 }
+                function totalp1(nm){
+
+                  var num = parseInt(nm);
+                  var num2= parseInt(document.getElementById('price').value)
+                  window.ttl=num*num2;
+                  document.getElementById("txtcamount").placeholder="";
+                  document.getElementById("txtamount").placeholder="";
+                  document.getElementById("txtbamount").placeholder="";
+
+
+                  document.getElementById("txtcamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtamount").placeholder="total Amount="+ttl;
+                  document.getElementById("txtbamount").placeholder="total Amount="+ttl;
+                }
+                 
               </script>
 </html>

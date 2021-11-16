@@ -22,7 +22,7 @@
        {
 ?>
         <script>
-            alert('Record has been Successfully Inserted in Database');
+            alert('Employee Record has been Successfully Inserted in Database');
             window.location.href='Add_Employees.php?success';
             </script>
 <?php
