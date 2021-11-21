@@ -90,7 +90,7 @@
                              $.ajax({
                               type: 'post',
                               url: 'farm_popup_ajax.php',
-                              data: {fname: fname,Location: Location: txtphone: txtphone,capacity: capacity,Farmid: Farmid,breedtype: breedtype,txt_email: txt_email},
+                              // data: {fname: fname,Location: Location: txtphone: txtphone,capacity: capacity,Farmid: Farmid,breedtype: breedtype,txt_email: txt_email},
                               success: function(response){
                                optionText=optionValue=response;
                                $("#myModal").hide();

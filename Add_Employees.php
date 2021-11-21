@@ -145,7 +145,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92">
+                placeholder="+923XXXXXXXXX" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}">
               </div>
               <!-- /.form-group -->
             </div>

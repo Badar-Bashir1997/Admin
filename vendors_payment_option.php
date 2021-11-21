@@ -2,7 +2,7 @@
         <div class="col-md-6" >
               <div class="form-group">
                 <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="name" id="name" data-placeholder="Select Vendor" >
+                <select class="form-control select2" style="width: 100%;" name="name" id="name" data-placeholder="Select Vendor" onchange="blns_rmng(this.value);p_r_b();" >
                   <option></option>
                    <?php 
       
@@ -15,8 +15,33 @@
                   <?php   }
                    ?> 
                 </select>
+                <script>
+                    function blns_rmng(str) {
+                      $.ajax({
+                     url: "blns_rmng.php?q="+str,
+                      type: 'get',
+                      dataType: 'JSON',
+                      success: function(response){
+                          var len = response.length;
+                          for(var i=0; i<len; i++){
+                              window.blns1 = response[i].blns;
+                              window.rmng1 = response[i].rmng;
+                              document.getElementById("remaning").placeholder="Remaning="+rmng1;
+                              document.getElementById("balance").placeholder="Balance="+blns1;
+                          }
+
+                      }
+                  });
+                    }
+                    function p_r_b()
+                    {
+                      document.getElementById("remaning").value='';
+                    document.getElementById("balance").value='';
+                    document.getElementById("txtamount").value='';
+                    }
+                     
+                      </script>
               </div>
-              <!-- /.form-group -->
             </div>
             <div class="col-md-6" >
               <div class="form-group">
@@ -28,16 +53,46 @@
                    {
                     var v1  = window.ttl;
                     var ttl1 = parseInt(tl);
-                   
+                    var r = parseInt(window.rmng1);
+                   var b = parseInt(window.blns1);
+                   var b_a=b+ttl1;
+                   var r_a;
+
                   if(v1>ttl1)
-                  { var t_v1= v1-ttl1;
-                    document.getElementById("remaning").value=t_v1;
+                  { console.log('aaa');
+                    if(b_a>v1)
+                    { console.log('aaa1');
+                      var t_v1= ttl1-v1;
+                    var t_v2=b+t_v1-r;
+                    document.getElementById("remaning").value=0;
+                    document.getElementById("balance").value=t_v2;
+                    }
+                    else
+                    { console.log('aaa2');
+                      var t_v1= v1-ttl1;
+                    var t_v2=r+t_v1-b;
+                    document.getElementById("remaning").value=t_v2;
                     document.getElementById("balance").value=0;
+                    }
+                  
                   } else 
-                  {  var t_v1= ttl1-v1;
-                  document.getElementById("remaning").value=0;
-                  document.getElementById("balance").value=t_v1;  
-                  }
+                  {  console.log('bbb');
+
+                    if(b_a>v1)
+                    {console.log('bbb1');
+                    var t_v1=ttl1-v1;
+                    var t_v2=b+t_v1-r;
+                    document.getElementById("remaning").value=0;
+                    document.getElementById("balance").value=t_v2;
+                    }
+                    
+                  
+                  //   var t_v1= ttl1-v1;
+                  //   var t_v2=t_v1+b-r;
+                  // document.getElementById("remaning").value=0;
+                  // document.getElementById("balance").value=t_v2;  
+                  
+                }
                   
                    }
                  </script>
@@ -46,41 +101,27 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning" parsley-trigger="change" id="remaning" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning(this.value);">
+                 class="form-control" readonly >
               </div>
-              <script type="text/javascript">
-                function remaning(str){
-                  var b = parseInt(str);
-                  if(b>0){
-                    document.getElementById("balance").value=0;
-                  }
-                }
-              </script>
+              
               <!-- /.form-group -->
             </div>
             <div class="col-md-6" >
               <div class="form-group">
                 <label>Balance</label>
-                <input type="Number" name="txtbalance" parsley-trigger="change" id="balance" onchange="balance(this.value);"
-                placeholder="Enter Balance" class="form-control">
+                <input type="Number" name="txtbalance" parsley-trigger="change" id="balance" 
+                 class="form-control" readonly>
               </div>
-              <script type="text/javascript">
-                function balance(str){
-                  var b = parseInt(str);
-                  if(b>0){
-                    document.getElementById("remaning").value=0;
-                  }
-                }
-              </script>
+              
             </div>
             </div>
             <div id="bb">
               <div class="col-md-6" >
               <div class="form-group">
                 <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="txtchname" id="txtchname" data-placeholder="Select Vendor" >
+                <select class="form-control select2" style="width: 100%;" name="txtchname" id="txtchname" data-placeholder="Select Vendor"  onchange="blns_rmng1(this.value)">
                   <option></option>
                    <?php 
       
@@ -93,6 +134,26 @@
                   <?php   }
                    ?> 
                 </select>
+                <script>
+                    function blns_rmng1(str) {
+                      $.ajax({
+                     url: "blns_rmng.php?q="+str,
+                      type: 'get',
+                      dataType: 'JSON',
+                      success: function(response){
+                          var len = response.length;
+                          for(var i=0; i<len; i++){
+                              var blns2 = response[i].blns;
+                              var rmng2 = response[i].rmng;
+                              document.getElementById("remaning1").placeholder="Remaning="+rmng2;
+                              document.getElementById("balance1").placeholder="Balance="+blns2;
+                          }
+
+                      }
+                  });
+                    }
+                     
+                      </script>
               </div>
               <!-- /.form-group -->
             </div>
@@ -132,18 +193,11 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning1" parsley-trigger="change" id="remaning1" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning1(this.value);">
+                 class="form-control" readonly>
               </div>
-              <script type="text/javascript">
-                function remaning1(str){
-                  var b = parseInt(str);
-                  if(b>0){
-                    document.getElementById("balance1").value=0;
-                  }
-                }
-              </script>
+              
               <!-- /.form-group -->
             </div>
             <div class="row">
@@ -151,18 +205,10 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Balance</label>
-                    <input type="Number" name="txtbalance1" parsley-trigger="change" id="balance1" onchange="balance1(this.value);"
-                    placeholder="Enter Balance" class="form-control">
+                    <input type="Number" name="txtbalance1" parsley-trigger="change" id="balance1" 
+                     class="form-control" readonly>
                   </div>
-                  <script type="text/javascript">
-                    function balance1(str){
-                      var b = parseInt(str);
-                      if(b>0){
-                        document.getElementById("remaning1").value=0;
-                      }
-                    }
-                  </script>
-                  <!-- /.form-group -->
+                 
                 </div>
               </div>
             </div>
@@ -172,7 +218,7 @@
               <div class="col-md-6" >
               <div class="form-group">
                 <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="txtbahname" id="txtbahname" data-placeholder="Select Vendor" >
+                <select class="form-control select2" style="width: 100%;" name="txtbahname" id="txtbahname" data-placeholder="Select Vendor"  onchange="blns_rmng2(this.value)">
                   <option></option>
                    <?php 
       
@@ -185,6 +231,26 @@
                   <?php   }
                    ?> 
                 </select>
+                <script>
+                    function blns_rmng2(str) {
+                      $.ajax({
+                     url: "blns_rmng.php?q="+str,
+                      type: 'get',
+                      dataType: 'JSON',
+                      success: function(response){
+                          var len = response.length;
+                          for(var i=0; i<len; i++){
+                              var blns3 = response[i].blns;
+                              var rmng3 = response[i].rmng;
+                              document.getElementById("remaning2").placeholder="Remaning="+rmng3;
+                              document.getElementById("balance2").placeholder="Balance="+blns3;
+                          }
+
+                      }
+                  });
+                    }
+                     
+                      </script>
               </div>
               <!-- /.form-group -->
             </div>
@@ -232,34 +298,19 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning2" parsley-trigger="change" id="remaning2" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning2(this.value);">
+                 class="form-control" readonly>
               </div>
-              <script type="text/javascript">
-                function remaning2(str){
-                  var b = parseInt(str);
-                  if(b>0){
-                    document.getElementById("balance").value=0;
-                  }
-                }
-              </script>
               <!-- /.form-group -->
             </div>
             <div class="col-md-6" >
               <div class="form-group">
                 <label>Balance</label>
-                <input type="Number" name="txtbalance2" parsley-trigger="change" id="balance2" onchange="balance2(this.value);"
-                placeholder="Enter Balance" class="form-control">
+                <input type="Number" name="txtbalance2" parsley-trigger="change" id="balance2"
+                 class="form-control" readonly>
               </div>
-              <script type="text/javascript">
-                function balance2(str){
-                  var b = parseInt(str);
-                  if(b>0){
-                    document.getElementById("remaning").value=0;
-                  }
-                }
-              </script>
+              
               <!-- /.form-group -->
             </div>
             </div>

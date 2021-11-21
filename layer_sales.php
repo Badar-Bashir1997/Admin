@@ -70,7 +70,8 @@ $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `b
             mysqli_query($conn,$qr);
           }
 
-
+$qr1="UPDATE vandors SET remaining='$remaning',balance='$balance' WHERE v_id='$v_id'";
+           mysqli_query($conn,$qr1);
 ?>
         <script>
             alert('Layer Successfully Sale');
@@ -214,11 +215,6 @@ include("includes/sidebar.php");
 
                       </script>
               </div>
-              <!-- /.form-group -->
-            
-              <!-- /.form-group -->
-              
-              <!-- /.form-group -->
             </div>
             <!-- /.col -->
             <!-- /.col -->

@@ -46,9 +46,9 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning" parsley-trigger="change" id="remaning" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning(this.value);">
+                placeholder="Enter Remaining Amount" class="form-control" onchange="remaning(this.value);">
               </div>
               <script type="text/javascript">
                 function remaning(str){
@@ -132,9 +132,9 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning1" parsley-trigger="change" id="remaning1" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning1(this.value);">
+                placeholder="Enter Remaining Amount" class="form-control" onchange="remaning1(this.value);">
               </div>
               <script type="text/javascript">
                 function remaning1(str){
@@ -230,9 +230,9 @@
             </div>
             <div class="col-md-6" >
               <div class="form-group">
-                <label>Remaning</label>
+                <label>Remaining</label>
                 <input type="Number" name="txtremaning2" parsley-trigger="change" id="remaning2" 
-                placeholder="Enter Remaning Amount" class="form-control" onchange="remaning2(this.value);">
+                placeholder="Enter Remaining Amount" class="form-control" onchange="remaning2(this.value);">
               </div>
               <script type="text/javascript">
                 function remaning2(str){

@@ -1,6 +1,9 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+ if(isset($_GET['id'])){
+  $Farmid = $_GET['id'];
+    }
  ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -27,7 +30,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" style="overflow: unset;">
 
 <?php
 include("includes/header.php");
@@ -53,9 +56,10 @@ include("includes/sidebar.php");
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Flocks Record</h3>
+              <a class="btn btn-success pull-right"href="Add_flocks.php">+Add Farm</a>
             </div>
             <!-- /.box-header -->
-            <div class="box-body" style="overflow: scroll;">
+            <div class="box-body" style="overflow-x: scroll;">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
@@ -76,9 +80,13 @@ include("includes/sidebar.php");
         </tr>
     </thead>
     <tbody>
-        <?php
-        $query  = "SELECT * FROM flock WHERE Status='ongoing'OR Status='Sold'";
-        $result = mysqli_query($conn,$query);
+        <?php 
+        if( @$Farmid)
+          {$q1="SELECT * FROM flock WHERE Farm_id='$Farmid'";}
+          else 
+          {$q1="SELECT * FROM flock WHERE Status='ongoing'OR Status='Sold'";}
+        
+        $result = mysqli_query($conn,$q1);
           if (@$result->num_rows > 0) {      
             foreach($result as $row) {      
             // while( $row = mysqli_fetch_array($result) ) {

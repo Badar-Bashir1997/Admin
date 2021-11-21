@@ -41,7 +41,7 @@
         $result= mysqli_query($conn,$q);
         $row = mysqli_fetch_array($result);
         $v_id=$row['v_id'];
-
+        
         $Query = "INSERT INTO broiler_sales(Farm_id,v_id,flock_id,sale_Date,nob_sale,p_method,price) 
         values('$Farm','$v_id','$Flock','$e_Date',' $no_of_birds','$Status','$price')" ;
  $confirm_status = mysqli_query($conn,$Query);
@@ -52,12 +52,13 @@ $row1=mysqli_fetch_array($result1);
 $s_id=$row1['id']."Broiler";
  $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);
-       $Query1 = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,s_date) 
-        values('$Farm','$Flock','Broiler','$no_of_birds','$t_p','$e_Date')" ;
+       $Query1 = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,recived_amount,s_date) 
+        values('$Farm','$Flock','Broiler','$no_of_birds','$t_p','$amount','$e_Date')" ;
         
  $confirm_status2 = mysqli_query($conn,$Query1);
 
-       if($confirm_status && $confirm_status1 && $confirm_status2)
+
+       if($confirm_status && $confirm_status1 && $confirm_status2 )
       
        {
         $sql = "SELECT flock.remaining FROM flock WHERE flock.flock_id='$Flock'";
@@ -77,8 +78,10 @@ $s_id=$row1['id']."Broiler";
             mysqli_query($conn,$qr);
           }
 
-
-?>
+          $qr1="UPDATE vandors SET remaining='$remaning',balance='$balance' WHERE v_id='$v_id'";
+           mysqli_query($conn,$qr1);
+           
+          ?>
         <script>
             alert('Broiler Sale Successfull');
             window.location.href='Broiler_sales.php';
@@ -210,7 +213,6 @@ include("includes/sidebar.php");
                         document.form.no_of_birds.focus();
                            return (false);
                              }
-             
                                  else
                               {
                              return (true);
@@ -234,23 +236,23 @@ include("includes/sidebar.php");
                    .remove();
                    $('#Flock').append(`<option value=""></option>`);
                       $.ajax({
-              url: "flock_id_ajax.php?q="+str,
-        type: 'get',
-        dataType: 'JSON',
-        success: function(response){
-            var len = response.length;
-            for(var i=0; i<len; i++){
-                var id = response[i].id;
-                optionText = response[i].id;
-                optionValue = response[i].id;
+                                url: "flock_id_ajax.php?q="+str,
+                                type: 'get',
+                                dataType: 'JSON',
+                                success: function(response){
+                                  var len = response.length;
+                                  for(var i=0; i<len; i++){
+                                  var id = response[i].id;
+                                  optionText = response[i].id;
+                                  optionValue = response[i].id;
 
-                $('#Flock').append(`<option value="${optionValue}">
-                 ${optionText}
-                </option>`);
-            }
+                                  $('#Flock').append(`<option value="${optionValue}">
+                                   ${optionText}
+                                  </option>`);
+                              }
 
-        }
-    });
+                          }
+                      });
                     }
                      
                       </script>

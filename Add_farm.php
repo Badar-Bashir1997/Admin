@@ -13,6 +13,9 @@
         $status="Available";
         $Query = "INSERT INTO farm(Farm_id,name,location,Breed_type,phone_no,email,Status,bird_capacity) values('$f_id','$name','$location','$b_type','$phone','$email','$status','$capacity')" ;
         $confirm_status = mysqli_query($conn,$Query);
+        
+        $string=mysqli_error($conn);
+        
        if($confirm_status)
        {
         ?>
@@ -24,14 +27,15 @@
       }
     else
     {
+      if (str_contains($string, 'Duplicate')) {
+        $error_log = "Farm ID Allready Exist , Pleas Change Name OR Location";
+      }
         ?>
-        <script type="text/javascript">alert('not Working');
-        window.location.href='Add_farm.php';
-    </script>
+        <!-- <script type="text/javascript">alert('not Working');
+    </script> -->
         <?php
     }
 }
-
 
  ?>
  <!DOCTYPE html>
@@ -101,6 +105,9 @@ include("includes/sidebar.php");
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+          <?php if(@$error_log){ ?>
+            <p style="color: red;">1: <?php echo $error_log;?></p>
+          <?php } ?>
           <form action="#" method="post" name="form">
           <div class="row">
             <div class="col-md-6">

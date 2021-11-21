@@ -3,7 +3,6 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
     {
-      
       $Price=0;
       $Farm=$_REQUEST['Farm'];
         $Flock=$_REQUEST['Flock'];

@@ -61,32 +61,31 @@ include("includes/sidebar.php");
       <section class="content" style="">
      <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">ongoing Flocks</a></li>
+              <li class="active"><a href="#tab_1" data-toggle="tab">Ongoing Flocks</a></li>
               <li><a href="#tab_2" data-toggle="tab">Sold</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
                 <?php 
-                 $query=" SELECT flock_id,Status FROM flock Where Breed_type='Broiler'AND Status='ongoing' ";
+                 $query=" SELECT flock_id,Status,Farm_id FROM flock Where Breed_type='Broiler'AND Status='ongoing' ";
                 $result1 = mysqli_query($conn, $query);
                
                while($row = mysqli_fetch_array($result1))
                {
-                $id=$row['flock_id'];
                ?>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
 
           <div class="small-box bg-green">
+            <h4 style="text-align: center;">Farm:- <?php echo $row['Farm_id']; ?></h4>
             <img class="contacts-list-img" src="upload/broiler.png" alt="User Image">
             <div class="inner">
-              
-              <h4>Ongoing</h4>
-              <p><?php echo $id; ?></p>
+              <h4 style="text-align: center;">Flock:- <?php echo $row['flock_id']; ?></h4>
+              <h5 style="text-align: center;">Status:- Ongoing</h5>
             </div>
             <div class="icon">
             </div>
-            <a href="flock_detail.php?id=<?php echo $id; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="flock_detail.php?id=<?php echo $row['flock_id']; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <?php 
@@ -96,25 +95,25 @@ include("includes/sidebar.php");
               <div class="tab-pane" id="tab_2">
 
                 <?php 
-                 $query=" SELECT flock_id,Status FROM flock Where Breed_type='Broiler'AND Status='Sold' OR Breed_type='Both' ";
+                 $query=" SELECT flock_id,Status,Farm_id FROM flock Where Breed_type='Broiler'AND Status='Sold' OR Breed_type='Both' ";
                 $result1 = mysqli_query($conn, $query);
                
                while($row = mysqli_fetch_array($result1))
-               {$id=$row['flock_id'];
+               {
                ?>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
 
           <div class="small-box bg-yellow">
+             <h4 style="text-align: center;">Farm:- <?php echo $row['Farm_id']; ?></h4>
             <img class="contacts-list-img" src="upload/broiler.png" alt="User Image">
             <div class="inner">
-              
-              <h4>Sold</h4>
-              <p><?php echo $id ?></p>
+              <h4 style="text-align: center;">Flock:- <?php echo $row['flock_id']; ?></h4>
+              <h5 style="text-align: center;">Status:- Ongoing</h5>
             </div>
             <div class="icon">
             </div>
-            <a href="flock_detail.php?id=<?php echo $id; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="flock_detail.php?id=<?php echo $row['flock_id']; ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <?php 

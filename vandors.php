@@ -8,8 +8,8 @@
         $phone=$_REQUEST['txtPhone'];
         $Email=$_REQUEST['txtEmail'];
         $Address=$_REQUEST['txtAddress'];
-        $Query = "INSERT INTO vandors(name,phone_no,email,Address) 
-        values('$name','$phone','$Email','$Address')" ;
+        $Query = "INSERT INTO vandors(name,phone_no,email,Address,remaining,balance) 
+        values('$name','$phone','$Email','$Address','0','0')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -119,7 +119,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}" value="+92" >
+                placeholder="+923XXXXXXXXX" class="form-control" pattern="[+]{1}[9]{1}[2]{1}[0-9]{10}"  >
               </div>
               <!-- /.form-group -->
             </div>
@@ -172,6 +172,8 @@ include("includes/sidebar.php");
                   <th>Phone</th>
                   <th>Email</th>
                   <th>Address</th>
+                  <th>Remaining</th>
+                  <th>Balance</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
@@ -189,6 +191,8 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['phone_no']; ?></td>
                                   <td><?php echo $row['email']; ?></td>
                                   <td><?php echo $row['Address']; ?></td>
+                                  <td><?php echo $row['remaining']; ?></td>
+                                  <td><?php echo $row['balance']; ?></td>
                                   <td>
                              
                             <a href="#"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>

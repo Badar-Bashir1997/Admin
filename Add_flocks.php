@@ -1,9 +1,15 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+ if(isset($_GET['id'])){
+            $Farmid = $_GET['id'];
+            $sql = "SELECT Breed_type FROM farm WHERE f_id = '".$Farmid."'";
+            $result = mysqli_query($conn,$sql);
+            $row = mysqli_fetch_array($result);
+    }
 if(isset($_REQUEST['BtnSubmit']))
  {
-  $f_id=$_REQUEST['Flock_id'];
+        $f1_id=$_REQUEST['Flock_id'];
         $f_name=$_REQUEST['Flock_Name'];
         $st_date=$_REQUEST['st_date'];
         $End_date=$_REQUEST['end_date'];
@@ -40,26 +46,30 @@ if(isset($_REQUEST['BtnSubmit']))
 else
 {
   $Query = "INSERT INTO flock(flock_id,Flock_name,start_date,end_date,nob,remaining,Purchase_cost,farm_id,Breed_type,Status) 
-        values('$f_id','$f_name','$st_date','$End_date','$no_of_birds','$remaining','$Purchase_cost','$Farm','$Breed_type','$status')" ;
+        values('$f1_id','$f_name','$st_date','$End_date','$no_of_birds','$remaining','$Purchase_cost','$Farm','$Breed_type','$status')" ;
  $confirm_status = mysqli_query($conn,$Query);
  
  $Query1 = "INSERT INTO expences(Farm_id,flock_id,e_name,sub_type,e_qnty,price,e_date) 
-        values('$Farm','$f_id','Flock','No','$no_of_birds','$t_p','$st_date')" ;
+        values('$Farm','$f1_id','Flock','No','$no_of_birds','$t_p','$st_date')" ;
         
  $confirm_status1 = mysqli_query($conn,$Query1);
-       if($confirm_status&& $confirm_status1)
+       if($confirm_status && $confirm_status1)
        {
         $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
         mysqli_query($conn,$q);
-?>
-        <script>
-            alert('Flock has been Successfully Inserted');
-            window.location.href='view_flocks.php';
-            </script>
-<?php
+        if(@$Farmid!=" ")
+        {
+            header("location:view_all_farm.php");
+        }
+        else
+        {
+            header("location:view_flocks.php");
+        }
+              
     }
     else
     {
+      
         ?>
         <script type="text/javascript">alert('not Working');
         window.location.href='Add_flocks.php';
@@ -91,12 +101,14 @@ else
        {
         $q="UPDATE farm SET farm.Status='$status' WHERE farm.Farm_id='$Farm'";
         mysqli_query($conn,$q);
-?>
-        <script>
-            alert('Flock has been Successfully Inserted');
-            window.location.href='view_flocks.php';
-            </script>
-<?php
+if(@$Farmid!=" ")
+        {
+            header("location:view_all_farm.php");
+        }
+        else
+        {
+            header("location:view_flocks.php");
+        }
     }
     else
     {
@@ -188,24 +200,17 @@ include("includes/sidebar.php");
               </div>
               <div class="form-group">
                 <label >Select Farm</label>
-                <!-- <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Add New Farm</button> -->
-                <!-- <?php 
-                // include("farm_popup.php"); 
-                ?> -->
-                <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" >
-                  <option></option>
+                <button type="button" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal">+Add New Farm</button>
+                 
+                <select class="form-control select2"  style="width: 100%;" name="Farm" id="Farm">
+                  <option>Select Farm</option>
                    <?php 
-                      
-                   $query = " SELECT * FROM farm WHERE Status='Available' ";
-                   $result = mysqli_query($conn,$query);
+                   $query   = "SELECT * FROM farm WHERE Status='Available' ";
+                   $result  = mysqli_query($conn,$query);
                    
-                     while($row = mysqli_fetch_array($result)){
-                     $name= $row['Farm_id'];
-                      ?>
-                  <option value="<?php echo $name ?>"><?php echo $name ?></option>
-                  <?php   
-                    }
-                     ?>
+                    while($farms = mysqli_fetch_array($result)){ ?>
+                        <option value="<?php echo $farms['Farm_id'];?>" <?php if( @$Farmid == $farms['f_id'] ) { ?>selected <?php } ?> > <?php echo  $farms['Farm_id'];?></option>
+                    <?php } ?>
                 </select>
               </div>
              <div class="form-group">
@@ -213,7 +218,7 @@ include("includes/sidebar.php");
                 <div class="input-group date">
                   <div class="input-group-addon">
                   </div>
-                  <input type="Date" class="form-control pull-right" id="st_date" name="st_date" onchange="myChangeFunction2(this)">
+                  <input type="Date" class="form-control pull-right" id="st_date" name="st_date" onchange="myChangeFunction2(this)" required>
                   <!-- <script>
                        function date_chk(dt){
                         if(document.getElementById('breed').value=='')
@@ -300,49 +305,15 @@ include("includes/sidebar.php");
                 </script>
               <div class="form-group">
                 <label>Breed Type</label>
-                <select class="form-control select2" style="width: 100%;"id="breed" name="breed" >
+                <select class="form-control select2" style="width: 100%;"id="breed" name="breed" required>
 
-                <script>
-                    function Farm_id(str) {
-                      xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                    var t = this.responseText;
-                   if(t=="Both"){
-                    $('#breed')
-                    .find('option')
-                   .remove();
-                   $('#breed').append(`<option></option>`);
-                    optionText = "Broiler";
-                   optionValue = "Broiler";
-                   $('#breed').append(`<option value="${optionValue}">
-                  ${optionText}
-                </option>`);
-                   optionText = "Layer";
-                   optionValue = "Layer";
-                   $('#breed').append(`<option value="${optionValue}">
-                  ${optionText}
-                </option>`);
-                   }
-                   else{
-                    optionText = t;
-                   optionValue = t;
-                   
-                   $('#breed')
-                    .find('option')
-                   .remove();
-                         $('#breed').append(`<option></option>`);
-                $('#breed').append(`<option value="${optionValue}">
-                  ${optionText}
-                </option>`);}
-                       }
-                      };
-                   xhttp.open("GET", "ajax_file.php?q="+str, true);
-                   xhttp.send();
-                      }
-                     
-                      </script>
-                   
+                    <option value="0">Select breed type</option>
+                    <?php if( $row['Breed_type'] == "Both" ) { ?>
+                        <option value="Broiler">Broiler</option>
+                        <option value="Layer">Layer</option>
+                    <?php } else { ?>
+                    <option value="<?php echo @$row['Breed_type'];?>"><?php echo @$row['Breed_type'];?></option>
+                    <?php } ?>                
                 </select>
               </div>
               <div class="form-group">
@@ -350,7 +321,7 @@ include("includes/sidebar.php");
                 <div class="input-group date">
                   <div class="input-group-addon">
                   </div>
-                  <input type="Date" class="form-control pull-right" id="end_date" name="end_date" >
+                  <input type="Date" class="form-control pull-right" id="end_date" name="end_date" required>
                 </div>
                 <!-- <script>
                        function date_chk1(dt){
@@ -399,6 +370,9 @@ include("includes/sidebar.php");
     </section>
   <div class="control-sidebar-bg"></div>
 </div>
+<?php 
+                 include("farm_popup.php"); 
+                ?>
  <?php
   include("includes/footer.php");
 include("includes/control_sidebar.php");
@@ -443,3 +417,46 @@ include("includes/control_sidebar.php");
 </script>
 </body>
 </html>
+<script>
+    $(document).on("change" , "#Farm" , function() {
+        
+        var str=document.getElementById('Farm').value;
+              xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                
+          if (this.readyState == 4 && this.status == 200) {
+
+            var t = this.responseText;
+           if(t=="Both"){
+            $('#breed')
+            .find('option')
+           .remove();
+           $('#breed').append(`<option></option>`);
+            optionText = "Broiler";
+           optionValue = "Broiler";
+           $('#breed').append(`<option value="${optionValue}">
+          ${optionText}
+        </option>`);
+           optionText = "Layer";
+           optionValue = "Layer";
+           $('#breed').append(`<option value="${optionValue}">
+          ${optionText}
+        </option>`);
+           }
+           else{
+            optionText = t;
+           optionValue = t;
+           $('#breed')
+            .find('option')
+           .remove();
+                 $('#breed').append(`<option></option>`);
+        $('#breed').append(`<option value="${optionValue}">
+          ${optionText}
+        </option>`);}
+               }
+              };
+           xhttp.open("GET", "ajax_file.php?q="+str, true);
+           xhttp.send();
+            });
+                     
+                      </script>

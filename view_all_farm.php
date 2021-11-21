@@ -1,6 +1,7 @@
 <?php 
  include("lib/session.php");
  include("lib/DBConn.php");
+
  ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -27,7 +28,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" style="overflow: unset;">
 
 <?php
 include("includes/header.php");
@@ -58,11 +59,13 @@ include("includes/sidebar.php");
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Farms Record</h3>
+              <a class="btn btn-success pull-right"href="Add_farm.php">+Add Farm</a>
             </div>
             <!-- /.box-header -->
-            <div class="box-body" style="overflow: scroll;">
+            <div class="box-body " style="overflow-x: scroll;">
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
+
                         <tr>
                                   <th>Farm ID</th>
                                   <th>Name</th>
@@ -82,6 +85,7 @@ include("includes/sidebar.php");
                                         if ($result->num_rows > 0) {            
                                           while($row = mysqli_fetch_array($result))
                                              {
+                                              $id=$row['f_id'];
                                               $f_id=$row['Farm_id'];
                                               $f_id1=$f_id."dlt";
                                               $f_id2=$f_id."edit";
@@ -97,8 +101,11 @@ include("includes/sidebar.php");
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['Status']; ?></td>
                                                     <td>
-                                               
+                                               <a class="btn btn-success btn-xs dt-add  glyphicon glyphicon-plus" aria-hidden="true" href="Add_flocks.php?id=<?php echo $id; ?>"></a>
+
                                                 <a class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true" href="update_farm.php?id=<?php echo $f_id; ?>"></a>
+                                                
+                                                <a class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true" href="view_flocks.php?id=<?php echo $f_id; ?>"></a>
                                                      
                                                     <button type="submit" name="<?php echo $f_id1;?>" class="btn btn-danger btn-xs dt-delete glyphicon glyphicon-remove" aria-hidden="true"></button>
                                                     <?php 
@@ -150,9 +157,8 @@ include("includes/sidebar.php");
                                                       }
                                                     }
                                                      ?>
-                                              <br>
-                                              <!-- <a class="btn btn-success btn-xs  glyphicon glyphicon-eye-open" aria-hidden="true" href="#"></a> -->
                                               
+                                            
                                               <?php 
                                                     if(isset($_REQUEST[$f_id3]))
                                                       {

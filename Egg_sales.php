@@ -68,8 +68,8 @@
           }
         }
         $tp=$GLOBALS['Price1'];
-        $Query = "INSERT INTO sales(Farm_id,flock_id,sale_name,sub_type,s_qnty,price,s_date) 
-        values('$Farm','$Flock_id','Egg','No','$no_of_Eggs','$tp','$e_Date')" ;
+        $Query = "INSERT INTO sales(Farm_id,flock_id,sale_name,sub_type,s_qnty,price,recived_amount,s_date) 
+        values('$Farm','$Flock_id','Egg','No','$no_of_Eggs','$tp','$amount','$e_Date')" ;
  $confirm_status = mysqli_query($conn,$Query);
         $q="SELECT vandors.v_id FROM vandors WHERE name='$name'";
         $result= mysqli_query($conn,$q);
@@ -93,6 +93,8 @@ $s_id=$row1['id']."egg";
 
        if($confirm_status && $confirm_status1 && $confirm_status2)
        {
+        $qr1="UPDATE vandors SET remaining='$remaning',balance='$balance' WHERE v_id='$v_id'";
+           mysqli_query($conn,$qr1);
       ?>
         <script>
             alert('Egg Sales Record has been Successfully Inserted ');

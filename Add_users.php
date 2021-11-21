@@ -133,7 +133,7 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="txtPhone" parsley-trigger="change" required
-                placeholder="Phone Number" class="form-control" >
+                placeholder="+923XXXXXXXXX" class="form-control" >
               </div>
               <!-- /.form-group -->
             </div>
