@@ -1,7 +1,7 @@
 <?php
 include("lib/DBConn.php");
 $q=$_REQUEST['q'];
-$sql = "SELECT IFNULL(SUM(feed.remaining),0) AS feed_qnty FROM feed WHERE feed.remaining>0 AND feed.name='".$q."'";
+$sql = "SELECT IFNULL(SUM(purchase.remaining),0) AS feed_qnty FROM purchase WHERE purchase.remaining>0 AND purchase.name='Feed' AND purchase.type='".$q."'";
 $result = mysqli_query($conn,$sql);
 $row = mysqli_fetch_array($result);
 mysqli_close($conn);

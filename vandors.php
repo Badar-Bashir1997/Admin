@@ -3,74 +3,29 @@
  include("lib/DBConn.php");
  if(isset($_REQUEST['BtnSubmit']))
  {
-  
+        $fileinfo = PATHINFO($_FILES["image"]["name"]);
+      $newFilename = $fileinfo['filename'] ."_". time() . "." . $fileinfo['extension'];
+      move_uploaded_file($_FILES["image"]["tmp_name"],"upload/vendors/" . $newFilename);
+      $location = "upload/vendors/" . $newFilename;
         $name=$_REQUEST['txtName'];
         $phone=$_REQUEST['txtPhone'];
-        $Email=$_REQUEST['txtEmail'];
+        $id_card=$_REQUEST['cnic'];
         $Address=$_REQUEST['txtAddress'];
-        $Query = "INSERT INTO vandors(name,phone_no,email,Address,remaining,balance) 
-        values('$name','$phone','$Email','$Address','0','0')" ;
+        $txtbanum=$_REQUEST['txtbanum'];
+        $txtbname=$_REQUEST['txtbname'];
+        $Query = "INSERT INTO vendors(name,phone_no,id_card,Address,bank_name,account_number,balance,remaining,image) 
+        values('$name','$phone','$id_card','$Address','$txtbname','$txtbanum','0','0','$location')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-?>
-        <script>
-            alert('Vandor Successfully Added');
-            window.location.href='vandors.php';
-            </script>
-<?php
+        header("location:vandors.php");
     }
     else
     {
-        ?>
-        <script type="text/javascript">alert('not Working');
-        window.location.href='vandors.php';
-    </script>
-        <?php
+        header("location:vandors.php");
     }
 }
- ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin</title>
-   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
-<link rel="stylesheet" href="plugins/datatables/style.css">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="plugins/iCheck/all.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="plugins/colorpicker/bootstrap-colorpicker.min.css">
-  <!-- Bootstrap time Picker -->
-  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/select2.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
- <?php
+ 
 include("includes/header.php");
  ?>
   <!-- Left side column. contains the logo and sidebar -->
@@ -95,7 +50,7 @@ include("includes/sidebar.php");
 
     <!-- Main content -->
     <section class="content">
-<form action="#" method="post" class="was-validated">
+<form action="#" method="post" class="was-validated" enctype="multipart/form-data">
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -125,9 +80,8 @@ include("includes/sidebar.php");
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Email</label>
-                <input type="Email" name="txtEmail" parsley-trigger="change" required
-                placeholder="Email" class="form-control" >
+                <label>ID Card Number</label>
+                <input type="text" class="form-control" id="cnic" placeholder="Enter CNIC" name="cnic"  pattern="^[0-9]{5}-[0-9]{7}-[0-9]$" required>
               </div>
               <!-- /.form-group -->
             </div>
@@ -139,6 +93,30 @@ include("includes/sidebar.php");
                 placeholder="Address" class="form-control">
               </div>
               <!-- /.form-group -->
+            </div>
+            <div class="col-md-6" >
+              <div class="form-group">
+                <label>Bank Name</label>
+                <input type="text" name="txtbname" parsley-trigger="change"
+                placeholder="Please Enter Bank Name" class="form-control">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6" >
+              <div class="form-group">
+                <label>Bank Account Number</label>
+                <input type="Number" name="txtbanum" parsley-trigger="change"
+                placeholder="Please Enter Bank Account Number" class="form-control">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-2 col-form-label">Image<span class="text-danger">*</span></label>
+              <div class="col-12">
+              <input type="file" name="image" class="form-control">
+              </div>
+              </div>
             </div>
           </div>
           <!-- /.row -->
@@ -163,23 +141,26 @@ include("includes/sidebar.php");
               <h3 class="box-title">Vendors Record</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body" style="overflow: scroll;">
+            <div class="box-body" style="overflow-x: scroll;">
               <table id="example"  class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                   <th>id</th>
                   <th>Name</th>
                   <th>Phone</th>
-                  <th>Email</th>
+                  <th>CNIC</th>
                   <th>Address</th>
+                  <th>Bank Name</th>
+                  <th>Account Number</th>
                   <th>Remaining</th>
                   <th>Balance</th>
+                  <th>Image</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                    $query = "SELECT * FROM vandors";
+                    $query = "SELECT * FROM vendors";
                     $result = mysqli_query($conn,$query);
                       if ($result->num_rows > 0) {            
                         while($row = mysqli_fetch_array($result))
@@ -189,10 +170,13 @@ include("includes/sidebar.php");
                                   <td><?php echo $row['v_id']; ?></td> 
                                   <td><?php echo $row['name']; ?></td>
                                   <td><?php echo $row['phone_no']; ?></td>
-                                  <td><?php echo $row['email']; ?></td>
+                                  <td><?php echo $row['id_card']; ?></td>
                                   <td><?php echo $row['Address']; ?></td>
+                                  <td><?php echo $row['bank_name']; ?></td>
+                                  <td><?php echo $row['account_number']; ?></td>
                                   <td><?php echo $row['remaining']; ?></td>
                                   <td><?php echo $row['balance']; ?></td>
+                                  <td><img src="<?php echo $row['image']; ?>" width = "50" height = "50"></td>
                                   <td>
                              
                             <a href="#"><span class="btn btn-primary btn-xs dt-edit  glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
@@ -235,50 +219,7 @@ include("includes/sidebar.php");
    <?php
 include("includes/control_sidebar.php");
   ?>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-
-<!-- Select2 -->
-<script src="plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="plugins/input-mask/jquery.inputmask.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
-<!-- bootstrap time picker -->
-<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
-<!-- SlimScroll 1.3.0 -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="plugins/iCheck/icheck.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- Page script -->
-<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script  src="plugins/datatables/script.js"></script>
+</div>
+<?php include("includes/scripts.php");?>
 </body>
 </html>

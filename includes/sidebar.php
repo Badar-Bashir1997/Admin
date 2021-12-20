@@ -31,7 +31,7 @@
         </li>
         
         <li class="treeview <?php if( $URL_FILE_NAME ==  'view_all_farm.php' || $URL_FILE_NAME ==  'Add_farm.php' ){ echo 'active'; } ?>">
-          <a href="#">
+          <a href="javascript:void(0)">
             <i class="iconify" data-icon="iconoir:farm"></i> <span>Farms</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -44,7 +44,7 @@
                 </ul>
                 </li>
         <li class="treeview <?php if( $URL_FILE_NAME ==  'view_flocks.php' || $URL_FILE_NAME ==  'Add_flocks.php' ){ echo 'active'; } ?>">
-          <a href="#">
+          <a href="javascript:void(0)">
             <i class="iconify" data-icon="vs:chicken"></i> <span>Flocks</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -56,32 +56,37 @@
           
                 </ul>
                 </li>
-                <li>
+                <li class ="<?php if( $URL_FILE_NAME ==  'feed_buy.php' ){ echo 'active'; } ?>" >
+                <a href="feed_buy.php">
+                  <i  class="iconify" data-icon="cil:grain"></i> <span>Feed</span>
+                   </a>
+                     </li>
+                <li class ="<?php if( $URL_FILE_NAME ==  'Broiler.php' ){ echo 'active'; } ?>" >
                 <a href="Broiler.php">
                   <i  class="iconify" data-icon="emojione-monotone:chicken"></i> <span>Broiler</span>
                    </a>
                      </li>
                
-                 <li>
+                 <li class ="<?php if( $URL_FILE_NAME ==  'Layer.php' ){ echo 'active'; } ?>" >
           <a href="Layer.php">
             <i class="iconify" data-icon="vs:chicken"></i> <span>Layer</span>
           </a>
         
                 </li>
                <li class="treeview ">
-              <a href="#">
+              <a href="javascript:void(0)">
             <i class="fa fa-industry"></i> <span>Feed Mills</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-industry"></i>View all</a></li>
-            <li><a href="#"><i class="fa fa-industry"></i>Purchase New</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-industry"></i>View all</a></li>
+            <li><a href="javascript:void(0)"><i class="fa fa-industry"></i>Purchase New</a></li>
           </ul>
         </li>
         <li class="treeview <?php if( $URL_FILE_NAME ==  'egg_production.php' || $URL_FILE_NAME ==  'manure_production.php' ){ echo 'active'; } ?>">
-          <a href="#">
+          <a href="javascript:void(0)">
             <i  class="iconify" data-icon="vs:chicken"></i> <span>Production</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -93,7 +98,7 @@
             
           </ul>
         </li>
-         <li class="treeview <?php if( $URL_FILE_NAME ==  'Egg_sales.php' || $URL_FILE_NAME ==  'Broiler_sales.php'|| $URL_FILE_NAME ==  'layer_sales.php' || $URL_FILE_NAME ==  'manure.php'|| $URL_FILE_NAME ==  'bags.php'){ echo 'active'; } ?>">
+         <!-- <li class="treeview <?php if( $URL_FILE_NAME ==  'Egg_sales.php' || $URL_FILE_NAME ==  'Broiler_sales.php'|| $URL_FILE_NAME ==  'layer_sales.php' || $URL_FILE_NAME ==  'manure.php'|| $URL_FILE_NAME ==  'bags.php'){ echo 'active'; } ?>">
           <a href="#">
             <i  class="iconify" data-icon="flat-color-icons:sales-performance"></i> <span>Sales</span>
             <span class="pull-right-container">
@@ -107,7 +112,7 @@
             <li class ="<?php if( $URL_FILE_NAME ==  'manure.php' ){ echo 'active'; } ?>" ><a href="manure.php"><i class="fa fa-money"></i>Manure</a></li>
             <li class ="<?php if( $URL_FILE_NAME ==  'bags.php' ){ echo 'active'; } ?>" ><a href="bags.php"><i class="fa fa-money"></i>Bags</a></li>
           </ul>
-        </li>
+        </li> -->
            <li class="treeview <?php if( $URL_FILE_NAME ==  'feed.php' || $URL_FILE_NAME ==  'desiel.php'|| $URL_FILE_NAME ==  'wood.php' || $URL_FILE_NAME ==  'medicine.php'|| $URL_FILE_NAME ==  'misc.php'){ echo 'active'; } ?>">
           <a href="#">
             <i class="fa fa-money"></i> <span>Purchase</span>
@@ -152,6 +157,11 @@
         <li >
           <a href="Add_Vehical.php">
             <i class=" fa   fa-truck"></i> <span>Vehicles</span>
+          </a>
+        </li>
+        <li >
+          <a href="Add_driver.php">
+            <i class="iconify" data-icon="healthicons:truck-driver"></i> <span>Driver</span>
           </a>
         </li>
         <li >

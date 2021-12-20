@@ -4,35 +4,6 @@
  if(isset($_GET['id'])){
   $Farmid = $_GET['id'];
     }
- ?>
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
-<link rel="stylesheet" href="plugins/datatables/style.css">
-
- <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper" style="overflow: unset;">
-
-<?php
 include("includes/header.php");
 include("includes/sidebar.php");
  ?>
@@ -56,15 +27,15 @@ include("includes/sidebar.php");
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Flocks Record</h3>
-              <a class="btn btn-success pull-right"href="Add_flocks.php">+Add Farm</a>
+              <a class="btn btn-success pull-right"href="Add_flocks.php">+Add Flock</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="overflow-x: scroll;">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
-        <tr>
-                  <th>Farm ID</th>
+        <tr>      
                   <th>Flock ID</th>
+                  <th>Farm Name</th>
                   <th>Flock Name</th>
                   <th>Breed Type</th>
                   <th>Start Date</th>
@@ -82,9 +53,9 @@ include("includes/sidebar.php");
     <tbody>
         <?php 
         if( @$Farmid)
-          {$q1="SELECT * FROM flock WHERE Farm_id='$Farmid'";}
+          {$q1="SELECT *,(SELECT name FROM farm WHERE farm_id='$Farmid')AS f_name FROM flock WHERE farm_id='$Farmid'";}
           else 
-          {$q1="SELECT * FROM flock WHERE Status='ongoing'OR Status='Sold'";}
+          {$q1="SELECT *,(SELECT name FROM farm WHERE farm.farm_id=flock.farm_id)AS f_name FROM flock WHERE Status='ongoing'OR Status='Sold'";}
         
         $result = mysqli_query($conn,$q1);
           if (@$result->num_rows > 0) {      
@@ -96,8 +67,8 @@ include("includes/sidebar.php");
                 $f_id3  = $f_id."view";
                 $total= $row['Purchase_cost']*$row['nob'];?>     
               <tr>
-                <td><?php echo $row['Farm_id']; ?></td>
-                <td><?php echo $row['flock_id']; ?></td> 
+                <td><?php echo $row['flock_id']; ?></td>
+                <td><?php echo $row['f_name']; ?></td> 
                 <td><?php echo $row['Flock_name']; ?></td>
                 <td><?php echo $row['Breed_type']; ?></td> 
                 <td><?php echo $row['start_date']; ?></td>
@@ -151,26 +122,7 @@ include("includes/sidebar.php");
     </tbody>
 </table>
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Row information</h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 </div>
             <!-- /.box-body -->
@@ -192,30 +144,12 @@ include("includes/footer.php");
 
    // Control Sidebar 
 include("includes/control_sidebar.php");
+
+ include("includes/scripts.php");
 ?>
 
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- SlimScroll -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
   
-<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js'></script>
-<script src='https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script  src="plugins/datatables/script.js"></script>
+
 
 
 </body>

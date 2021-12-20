@@ -8,25 +8,21 @@ if(isset($_REQUEST['BtnSubmit']))
         $Flock=$_REQUEST['Flock'];
         $e_Date=$_REQUEST['e_Date'];
         $manure=$_REQUEST['manure'];
-        $Query = "INSERT INTO menure_production(Farm_id,flock_id,m_date,manure_p) 
-        values('$Farm','$Flock','$e_Date','$manure')" ;
+        $Query1="SELECT flock_id FROM flock WHERE flock.Flock_name='$Flock'";
+        $result = mysqli_query($conn,$Query1);
+        $row = mysqli_fetch_array($result);
+        $Flock1=$row['flock_id'];
+        $Query = "INSERT INTO production(flock_id,p_name,p_date,qnty,remaining)
+        values('$Flock1','Manure','$e_Date','$manure','$manure')" ;
  $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
-
-
-?>
-        <script>
-            alert('Manure Production Successfully Inserted');
-            window.location.href='manure_production.php';
-            </script>
-<?php
+         header("location:manure_production.php");
     }
     else
     {
         ?>
         <script type="text/javascript">alert('not Working');
-        window.location.href='manure_production.php';
     </script>
         <?php
     }
@@ -35,47 +31,7 @@ if(isset($_REQUEST['BtnSubmit']))
 
 
  ?>
- <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="plugins/iCheck/all.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="plugins/colorpicker/bootstrap-colorpicker.min.css">
-  <!-- Bootstrap time Picker -->
-  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/select2.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+ 
  <?php
 include("includes/header.php");
  ?>
@@ -111,38 +67,43 @@ include("includes/sidebar.php");
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <div class="row">
-            <div class="col-md-6">
-             <form action="#" method="post" name="form">  
-              
-              <div class="form-group">
-                <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+             <form action="#" method="post" name="form" class="was-validated">  
+              <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Select Farm:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                         <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);" required>
                   <option></option>
                    <?php 
       
                    $query = " SELECT * FROM farm WHERE Status='ongoing' OR Status='Available'";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
-                     $f_id= $row['Farm_id'];
+                     $f_id= $row['name'];
                      ?>
-                  <option><?php echo $f_id ?></option>
+                  <option value="<?php echo $row['farm_id'] ?>"><?php echo $f_id ?></option>
                   <?php   }
                    ?> 
                 </select>
-              </div>
-                <div class="form-group">
-                <label>Date</label>
-                <input type="Date" name="e_Date" parsley-trigger="change" required
+                      </div>
+                  </div>
+                  <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Date:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                         <input type="Date" name="e_Date" parsley-trigger="change" required
                  class="form-control" id="PurchaseCost">
-              </div>
-            </div>
-            <!-- /.col -->
-            <!-- /.col -->
-             <div class="col-md-6">
-              <div class="form-group">
-                <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock">
+                      </div>
+                  </div>
+            
+            <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Select Flock:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                         <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock" required>
                   
                    <script>
                     function Farm_id(str) {
@@ -172,19 +133,18 @@ include("includes/sidebar.php");
                      
                       </script>
                 </select>
-              </div>
-              
-              <!-- /.form-group -->
-            </div>
-             <div class="col-md-6">
-              <div class="form-group">
-                <label>Manure Quantity In Kg</label>
-                <input type="Number" name="manure" parsley-trigger="change" required
+                      </div>
+                  </div>
+                  <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Manure Quantity In Kg:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                        <input type="Number" name="manure" parsley-trigger="change" required
                 placeholder="Enter Manure Quantity In Kg" class="form-control" id="manure">
-              </div>
-              <!-- /.form-group -->
-            </div>
-          </div>
+                      </div>
+                  </div>
+          
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Submit</button>
            </form>
@@ -196,7 +156,63 @@ include("includes/sidebar.php");
       </div>
       <!-- /.box -->
     </section>
+ <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Egg Production</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="overflow-x: scroll;">
+                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                                  <th>Flock ID</th>
+                                  <th>Farm Name</th>
+                                  <th>Flock Name</th>
+                                  <th>Quantity</th>
+                                  <th>Production Date</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                    <?php
+                                      $query22 = "SELECT *,(SELECT Flock_name FROM flock WHERE flock_id=production.flock_id)AS Flock_name,(SELECT farm_id FROM flock WHERE flock_id=production.flock_id)AS frm_id,(SELECT name FROM farm WHERE farm_id=frm_id)AS farm_name FROM production WHERE p_name='Manure'";
+                                      $result22 = mysqli_query($conn,$query22);            
+                                          while(@$row = mysqli_fetch_array($result22))
+                                             {
+                                              
+                                              ?>      
+                                                <tr>
+                                                    <td><?php echo $row['flock_id']; ?></td>
+                                                    <td><?php echo $row['farm_name']; ?></td>
+                                                    <td><?php echo $row['Flock_name']; ?></td>
+                                                    <td><?php echo $row['qnty']; ?></td>
+                                                    <td><?php echo $row['p_date']; ?></td>
+                                                    
+                                                       </tr>
+                                                         <?php
+                                                                   }
+                                                                  
+                                                             
+                                                                      ?>
+        
+                                        </tbody>
+                                    </table>
 
+                                    <!-- Modal -->
+
+
+                                    </div>
+                                                <!-- /.box-body -->
+                                              </div>
+                                              <!-- /.box -->
+                                            </div>
+                                            <!-- /.col -->
+                                          </div>
+                                          <!-- /.row -->
+  </section>
+ 
      
  
 
@@ -213,44 +229,10 @@ include("includes/sidebar.php");
   <!-- Control Sidebar -->
    <?php
 include("includes/control_sidebar.php");
+include("includes/scripts.php");
   ?>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- Select2 -->
-<script src="plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="plugins/input-mask/jquery.inputmask.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
-<!-- bootstrap time picker -->
-<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
-<!-- SlimScroll 1.3.0 -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="plugins/iCheck/icheck.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- Page script -->
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $(".select2").select2();
-  });
-</script>
+
 </body>
 </html>

@@ -68,15 +68,15 @@
           }
         }
         $tp=$GLOBALS['Price1'];
-        $Query = "INSERT INTO sales(Farm_id,flock_id,sale_name,sub_type,s_qnty,price,recived_amount,s_date) 
-        values('$Farm','$Flock_id','Egg','No','$no_of_Eggs','$tp','$amount','$e_Date')" ;
+        $Query = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,recived_amount,s_date) 
+        values('$Farm','$Flock_id','Egg','$no_of_Eggs','$tp','$amount','$e_Date')" ;
  $confirm_status = mysqli_query($conn,$Query);
-        $q="SELECT vandors.v_id FROM vandors WHERE name='$name'";
+        $q="SELECT vendors.v_id FROM vendors WHERE name='$name'";
         $result= mysqli_query($conn,$q);
         $row = mysqli_fetch_array($result);
         $v_id=$row['v_id'];
 
-         $Query = "INSERT INTO egg_sales(Farm_id,v_id,flock_id,Sale_Date,noe,payment_method,price) 
+         $Query = "INSERT INTO egg_sales(Farm_id,b_id,flock_id,Sale_Date,noe,payment_method,price) 
         values('$Farm','$v_id','$Flock_id','$e_Date','$no_of_Eggs','$Status','$price')" ;
       
  $confirm_status = mysqli_query($conn,$Query);
@@ -84,7 +84,7 @@
  $result1 = mysqli_query($conn,$qr);
 $row1=mysqli_fetch_array($result1);
 $s_id=$row1['id']."egg";
- $qry="INSERT INTO `vandors_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
+ $qry="INSERT INTO `vendor_payment` ( `payment_option`,`s_id`,`v_id`, `name`, `balance`, `remaning`, `amount`, `card_no`, `Bank_name`, `Account_no`) VALUES ('$Status','$s_id','$v_id','$name','$balance','$remaning','$amount','$card','$Bank','$account')";
        $confirm_status1 = mysqli_query($conn,$qry);
        $Query1 = "INSERT INTO sales(Farm_id,flock_id,sale_name,s_qnty,price,s_date) 
         values('$Farm','$Flock_id','Egg','$no_of_Eggs','$t_p','$e_Date')" ;
@@ -93,7 +93,7 @@ $s_id=$row1['id']."egg";
 
        if($confirm_status && $confirm_status1 && $confirm_status2)
        {
-        $qr1="UPDATE vandors SET remaining='$remaning',balance='$balance' WHERE v_id='$v_id'";
+        $qr1="UPDATE broker SET remaining='$remaning',balance='$balance' WHERE b_id='$v_id'";
            mysqli_query($conn,$qr1);
       ?>
         <script>
@@ -184,141 +184,85 @@ include("includes/sidebar.php");
         <!-- /.box-header -->
         <div class="box-body">
             <form action="#" method="post" name="form">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Select Farm</label>
-                <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
-                  <option></option>
-                   <?php 
-      
-                   $query = " SELECT Farm_id FROM flock where Breed_type='Layer'";
-                    $result = mysqli_query($conn,$query);
-                     while($row = mysqli_fetch_array($result)){
-                     $f_id= $row['Farm_id'];
-                     ?>
-                  <option><?php echo $f_id ?></option>
-                  <?php   }
-                   ?> 
+              <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Select Farm:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                        <select class="form-control select2" style="width: 100%;" name="Farm" id="Farm" data-placeholder="Select Farm" onchange="Farm_id(this.value);">
+                          <option></option>
+                           <?php 
+              
+                           $query = " SELECT Farm_id FROM flock where Breed_type='Layer'";
+                            $result = mysqli_query($conn,$query);
+                             while($row = mysqli_fetch_array($result)){
+                             $f_id= $row['Farm_id'];
+                             ?>
+                          <option><?php echo $f_id ?></option>
+                          <?php   }
+                           ?> 
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Select Flock:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                        <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
+                   
                 </select>
-              </div>
-              <div class="form-group" id="parent">
-                <label >Number of Eggs:-</label>
-                 <input type="Number" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
+                      </div>
+                  </div>
+                   <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Number of Eggs:</label>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label>
+                          <a class="btn btn-success" style="margin-left :5px;">Per Crate</a>
+                          <a class="btn btn-primary" style="margin-left :5px;">Per Trayate</a>
+                          <a class="btn btn-warning" style="margin-left :5px;">Per Egg</a>
+                        </label>
+                      </div>
+                      <div class="form-group col-md-6">
+                        
+                          <input type="Number" name="no_of_Eggs" placeholder="" parsley-trigger="change" required
                  class="form-control" id="no_of_Eggs" onkeyup="onRegister();totalp1(this.value)">
-                <script>
-                    function flock(str) {
-                      xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                  window.t = this.responseText;  
-                    document.getElementById("no_of_Eggs").placeholder="Maximum Number of Eggs="+window.t;
-                       }
-                      };
-                   xhttp.open("GET", "flock_ajax.php?q="+str, true);
-                   xhttp.send();
-                      }
-                      function onRegister()
-                       {
-                         var b = parseInt(window.t);
-                    if(document.form.no_of_Eggs.value>b)
-                        {
-                          document.getElementById('no_of_Eggs').value="";
-                         alert("Enter Valid Number of Eggs");
-                        document.form.no_of_Eggs.focus();
-                           return (false);
-                             }
-             
-                                 else
-                              {
-                             return (true);
-                                 }
-                               }
-
-
-                      </script>
-                  
-                    
-              
-              </div>
-            </div>
-            <!-- /.col -->
-            <!-- /.col -->
-             <div class="col-md-6">
-              <div class="form-group">
-                <label>Select Flock</label>
-                <select class="form-control select2" style="width: 100%;" name="Flock" id="Flock" data-placeholder="Select Flock"  onchange="flock(this.value);">
-                   <script>
-                    function Farm_id(str) {
-                      $('#Flock')
-                     .find('option')
-                   .remove();
-                   $('#Flock').append(`<option value=""></option>`);
-                      $.ajax({
-              url: "flock_id_ajax.php?q="+str,
-                type: 'get',
-                dataType: 'JSON',
-                success: function(response){
-                    var len = response.length;
-                    for(var i=0; i<len; i++){
-                        var id = response[i].id;
-                        optionText = response[i].id;
-                        optionValue = response[i].id;
-
-                $('#Flock').append(`<option value="${optionValue}">
-                 ${optionText}
-                </option>`);
-                        }
-
-                    }
-                });
-                    }
-                     
-                      </script>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Date</label>
-                <input type="Date" name="e_Date" parsley-trigger="change" required
+                      </div>
+                  </div>
+                   <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Date:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                         <input type="Date" name="e_Date" parsley-trigger="change" required
                  class="form-control" id="e_Date">
-              </div>
-              <!-- /.form-group -->
-            </div>
-             
-          </div>
-          <div class="col-md-12">
-              <div style="margin: auto;width: 60%;" >
-          <div class="form-group">
-                <label>Price per Egg</label>
-                <input type="Number" name="price" parsley-trigger="change" required 
+                      </div>
+                  </div>
+                   <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                         <label>Price per Egg:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                        <input type="Number" name="price" parsley-trigger="change" required 
                 placeholder="Enter Price per Egg" class="form-control" id="price" onchange="totalp(this.value)">
-              </div>
-              
-            </div>
-          </div>
-          <div class="col-md-12">
-              <div class="box" style="margin: auto;width: 60%;" >
-            <div class="box-header">
-              <h3 class="box-title">Payments Method</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-            <div class="form-group">
-                
-               <input type="radio" id="cash" name="Status" value="Cash"checked onchange="change();">
-                <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit" onchange="change2();" >
-                <label for="Cradit">Credit</label><br> 
-                <input type="radio" id="Bank" name="Status" value="Bank" onchange="change3();" >
-                <label for="Bank">Bank</label><br>  
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-              <!-- /.form-group -->
-            </div>
-            <?php include("vendors_payment_option.php"); ?>
-          <!-- /.row -->
+                      </div>
+                  </div>
+                   <div class="row col-md-12">
+                      <div class="form-group col-md-2">
+                        <label>Payments Method:</label>
+                      </div>
+                      <div class="form-group col-md-10">
+                        <label><a class="btn btn-success" id="cash" name="Status" value="Cash" onclick="change();" style="margin-left :5px;">Cash</a>
+                          <a class="btn btn-primary" style="margin-left :5px;" id="Cradit" name="Status" value="Cradit" onclick ="change2();">Credit</a>
+                          <a class="btn btn-warning" style="margin-left :5px;" id="Bank" name="Status" value="Bank" onclick ="change3();" >Bank</a></label>
+
+                      </div>
+                  </div>
+                   <?php 
+            include("broker_payment_option.php");
+             ?>
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>
         </div>
@@ -360,7 +304,6 @@ include("includes/sidebar.php");
                             $total=$row['noe']*$row['price'];
                             ?> 
                                   <tr>
-                                  
                                   <td><?php echo $row['Farm_id']; ?></td> 
                                   <td><?php echo $row['flock_id']; ?></td>
                                   <td><?php echo $row['Sale_Date']; ?></td>
@@ -490,3 +433,61 @@ include("includes/control_sidebar.php");
                  
               </script>
 </html>
+<script>
+                    function flock(str) {
+                      xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                  window.t = this.responseText;  
+                    document.getElementById("no_of_Eggs").placeholder="Maximum Number of Eggs="+window.t;
+                       }
+                      };
+                   xhttp.open("GET", "flock_ajax.php?q="+str, true);
+                   xhttp.send();
+                      }
+                      function onRegister()
+                       {
+                         var b = parseInt(window.t);
+                    if(document.form.no_of_Eggs.value>b)
+                        {
+                          document.getElementById('no_of_Eggs').value="";
+                         alert("Enter Valid Number of Eggs");
+                        document.form.no_of_Eggs.focus();
+                           return (false);
+                             }
+             
+                                 else
+                              {
+                             return (true);
+                                 }
+                               }
+
+
+                      </script>
+ <script>
+                    function Farm_id(str) {
+                      $('#Flock')
+                     .find('option')
+                   .remove();
+                   $('#Flock').append(`<option value=""></option>`);
+                      $.ajax({
+              url: "flock_id_ajax.php?q="+str,
+                type: 'get',
+                dataType: 'JSON',
+                success: function(response){
+                    var len = response.length;
+                    for(var i=0; i<len; i++){
+                        var id = response[i].id;
+                        optionText = response[i].id;
+                        optionValue = response[i].id;
+
+                $('#Flock').append(`<option value="${optionValue}">
+                 ${optionText}
+                </option>`);
+                        }
+
+                    }
+                });
+                    }
+                     
+                      </script>                      

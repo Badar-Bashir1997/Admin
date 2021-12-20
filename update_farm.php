@@ -10,12 +10,10 @@
         $name=$_REQUEST['Farm_Name'];
         $location=$_REQUEST['Farm_Location'];
         $phone=$_REQUEST['txt_phone'];
-        $f_id=$_REQUEST['Farm_id'];
         $b_type=$_REQUEST['breed_type'];
-        $email=$_REQUEST['txt_email'];
         $capacity=$_REQUEST['txt_capacity'];
         $status="Available";
-        $q="SELECT flock.Farm_id,flock.nob FROM flock WHERE flock.Status='ongoing' AND flock.Farm_id='".$id."'";
+        $q="SELECT flock.farm_id,flock.nob FROM flock WHERE flock.Status='ongoing' AND flock.farm_id='".$id."'";
         $result1=mysqli_query($conn,$q);
         $row1=mysqli_fetch_array($result1);
         $frmID="";
@@ -27,7 +25,7 @@
          
         if($frmID==$id && $nobQ>$capacity)
         {
-          $Query = "UPDATE farm SET Farm_id='$f_id',name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',email='$email' WHERE Farm_id='".$id."'" ;
+          $Query = "UPDATE farm SET name='$name',location='$location',Breed_type='$b_type',phone_no='$phone' WHERE farm_id='".$id."'" ;
         $confirm_status = mysqli_query($conn,$Query);
        if($confirm_status)
        {
@@ -49,7 +47,7 @@
         }
         else
         {
-        $Query = "UPDATE farm SET Farm_id='$f_id',name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',email='$email',bird_capacity='$capacity' WHERE Farm_id='".$id."'" ;
+        $Query = "UPDATE farm SET name='$name',location='$location',Breed_type='$b_type',phone_no='$phone',bird_capacity='$capacity' WHERE farm_id='".$id."'" ;
         $confirm_status = mysqli_query($conn,$Query);
         
        if($confirm_status)
@@ -145,7 +143,7 @@ include("includes/sidebar.php");
             <div class="col-md-6">
                 <?php
                                         
-                  $Query = "SELECT Farm_id,name,location,Breed_type,phone_no,email,bird_capacity FROM farm WHERE Farm_id = '".$id."'";
+                  $Query = "SELECT farm_id,name,location,Breed_type,phone_no,bird_capacity FROM farm WHERE farm_id = '".$id."'";
                   $result = mysqli_query($conn, $Query);
                   $row = mysqli_fetch_array($result);
                   
@@ -154,13 +152,13 @@ include("includes/sidebar.php");
               <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="Farm_Name" parsley-trigger="change" required
-                placeholder="Farm Name" class="form-control" id="FarmName" onkeyup="myChangeFunction(this)" value="<?php echo $row['name'];  ?>">
+                placeholder="Farm Name" class="form-control" id="FarmName" value="<?php echo $row['name'];  ?>">
               </div>
               <!-- /.form-group -->
               <div class="form-group">
                 <label>Location</label>
                 <input type="text" name="Farm_Location" parsley-trigger="change" required
-                placeholder="Farm Location" class="form-control" id="FarmLocation" onchange="myChangeFunction2(this)" value="<?php echo $row['location'];  ?>">
+                placeholder="Farm Location" class="form-control" id="FarmLocation" value="<?php echo $row['location'];  ?>">
               </div>
               <div class="form-group">
                 <label>Phone No</label>
@@ -176,27 +174,8 @@ include("includes/sidebar.php");
             </div>
             <!-- /.col -->
             <div class="col-md-6">
-              <div class="form-group">
-                <label>Farm Id</label>
-                <input type="text" name="Farm_id" parsley-trigger="change" 
-                placeholder="Farm id" class="form-control" id="Farm_id" readonly="" value="<?php echo $row['Farm_id'];  ?>">
-              </div>
-              <script type="text/javascript">
-                
-                
-                function myChangeFunction(input1) {
-                  document.getElementById('Farm_id').value ='';
-                 var v1=document.getElementById('FarmLocation').value;
-               var input2 = document.getElementById('Farm_id');
-                input2.value =input1.value+"("+v1+")";
-                       }
-                       function myChangeFunction2(input1) {
-                        document.getElementById('Farm_id').value ='';
-                        var v=document.getElementById('FarmName').value;
-               var input2 = document.getElementById('Farm_id');
-                input2.value =v+"("+ input1.value+")";
-                       }
-                </script>
+              
+             
                <div class="form-group">
                 <label>Breed Type</label>
                 <select class="form-control select2" style="width: 100%;" name="breed_type" >
@@ -206,17 +185,13 @@ include("includes/sidebar.php");
                   <option>Both</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="txt_email" parsley-trigger="change" required
-                placeholder="Contact Email" class="form-control" id="email" value="<?php echo $row['email'];  ?>">
-              </div>
+              
               <!-- /.form-group -->
             </div>
             <!-- /.col -->
           </div>
           <!-- /.row -->
-           <button type="submit" name="BtnSubmit" class="btn btn-primary" onclick="return onRegister();" >Update</button>
+           <button type="submit" name="BtnSubmit" class="btn btn-primary"  >Update</button>
            </form>
         </div>
         <!-- /.box-body -->
@@ -262,33 +237,6 @@ include("includes/control_sidebar.php");
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<!-- Page script -->
- <script> 
-    function onRegister()
-          {
-            if(document.form.Farm_Name.value == "")
-            {
-            alert("Enter Farm Name");
-            document.form.Farm_Name.focus();
-            return (false);
-            }
-             else if(document.form.Farm_Location.value == "")
-            {
-            alert("Enter Farm Location");
-            document.form.Farm_Location.focus();
-            return (false);
-            }
-            else if(document.form.Farm_total_capacity.value == "")
-            {
-            alert("Enter Farm Capacity");
-            document.form.Farm_total_capacity.focus();
-            return (false);
-            }
-            else
-            {
-                return (true);
-            }
-          }
-        </script>  
+<!-- Page script -->  
 </body>
 </html>

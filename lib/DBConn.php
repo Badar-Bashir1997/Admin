@@ -2,7 +2,7 @@
  $servername = "localhost";
  $username = "root";
  $password = "";
- $dbname = "poultry_farm";
+ $dbname = "poultry_farm1";
  $conn = mysqli_connect($servername, $username, $password,$dbname);
  if (!$conn)
  	{
@@ -10,7 +10,11 @@
 	}
  else
  {
- //echo "Connected successfully";	
+ $Query = "SELECT * FROM settings";
+            $result1 = mysqli_query($conn, $Query);
+            $row = mysqli_fetch_array($result1);
+            $logo=$row['logo']	;
+            $favicon=$row['favicon']   ;
  }
 
 

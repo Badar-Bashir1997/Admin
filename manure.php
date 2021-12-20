@@ -226,7 +226,7 @@ include("includes/sidebar.php");
                 
                <input type="radio" id="cash" name="Status" value="Cash"checked >
                 <label for="cash" >Cash</label><br>
-                <input type="radio" id="Cradit" name="Status" value="Cradit"  >
+                <input type="radio" id="Cradit" name="Status" value="Cradit">
                 <label for="Cradit">Credit</label><br> 
                 <input type="radio" id="Bank" name="Status" value="Bank"  >
                 <label for="Bank">Bank</label><br>  

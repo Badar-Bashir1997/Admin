@@ -290,7 +290,7 @@ include("includes/sidebar.php");
           </div>
               <!-- /.form-group -->
             </div>
-            <?php include("vendors_payment_option.php"); ?>
+            <?php include("broker_payment_option.php"); ?>
           <!-- /.row -->
            <button type="submit" name="BtnSubmit" class="btn btn-primary pull-right"  onclick="return onRegister();">Submit</button>
            </form>

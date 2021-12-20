@@ -1,12 +1,12 @@
 <div id="aa">
         <div class="col-md-6" >
               <div class="form-group">
-                <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="name" id="name" data-placeholder="Select Vendor" onchange="blns_rmng(this.value);p_r_b();" >
+                <label>Select Brokers</label>
+                <select class="form-control select2" style="width: 100%;" name="name" id="name" data-placeholder="Select Brokers" onchange="blns_rmng(this.value);p_r_b();" >
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM vandors ";
+                   $query = " SELECT * FROM broker ";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['name'];
@@ -120,12 +120,12 @@
             <div id="bb">
               <div class="col-md-6" >
               <div class="form-group">
-                <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="txtchname" id="txtchname" data-placeholder="Select Vendor"  onchange="blns_rmng1(this.value)">
+                <label>Select Broker</label>
+                <select class="form-control select2" style="width: 100%;" name="txtchname" id="txtchname" data-placeholder="Select Brokers"  onchange="blns_rmng1(this.value)">
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM vandors ";
+                   $query = " SELECT * FROM broker ";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['name'];
@@ -217,12 +217,12 @@
             <div id="cc" class="row">
               <div class="col-md-6" >
               <div class="form-group">
-                <label>Select Vendor</label>
-                <select class="form-control select2" style="width: 100%;" name="txtbahname" id="txtbahname" data-placeholder="Select Vendor"  onchange="blns_rmng2(this.value)">
+                <label>Select Broker</label>
+                <select class="form-control select2" style="width: 100%;" name="txtbahname" id="txtbahname" data-placeholder="Select Brokers"  onchange="blns_rmng2(this.value)">
                   <option></option>
                    <?php 
       
-                   $query = " SELECT * FROM vandors ";
+                   $query = " SELECT * FROM broker ";
                     $result = mysqli_query($conn,$query);
                      while($row = mysqli_fetch_array($result)){
                      $f_id= $row['name'];
