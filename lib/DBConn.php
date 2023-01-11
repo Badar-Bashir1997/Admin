@@ -2,7 +2,7 @@
  $servername = "localhost";
  $username = "root";
  $password = "";
- $dbname = "poultry_farm1";
+ $dbname = "poultry_farm";
  $conn = mysqli_connect($servername, $username, $password,$dbname);
  if (!$conn)
  	{
